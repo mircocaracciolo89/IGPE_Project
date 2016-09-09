@@ -247,7 +247,7 @@ public class Racetrack {
 				
 			case COORDS_BONUS:
 				if (dim > 0) {
-					stillObjects.add(new Bonus(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken())));
+					stillObjects.add(new Bonus(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), 20d));
 					dim--;
 					if (dim == 0)
 						positionOnFile = PositionOnFile.NUM_MALUS;
@@ -261,7 +261,7 @@ public class Racetrack {
 				
 			case COORDS_MALUS:
 				if (dim > 0) {
-					stillObjects.add(new Malus(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken())));
+					stillObjects.add(new Malus(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), 20d));
 					dim--;
 					if (dim == 0)
 						positionOnFile = PositionOnFile.PARAM_CAR_PLAYER;

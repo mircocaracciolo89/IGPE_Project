@@ -66,13 +66,13 @@ public class GamePanel extends JPanel {
 		// CAR
 
 		g2d.setTransform(oldXform);
-		carPlayer.drawElement(g2d);
+		carPlayer.drawGameObject(g2d);
 
 		// VEHICLES
 		
 		for (Vehicle vehicle : vehicles) {
 			g2d.setTransform(oldXform);
-			vehicle.drawElement(g2d);
+			vehicle.drawGameObject(g2d);
 		}
 		
 		// INFO
@@ -90,7 +90,6 @@ public class GamePanel extends JPanel {
 		// SEMAPHORE
 		
 		if (gameManager.getSemaphore().isVisible()) {
-			System.out.println("ok");
 			g2d.drawImage(gameManager.getSemaphore().getImage(), 600, 5, null);
 		}
 		

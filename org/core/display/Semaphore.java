@@ -3,7 +3,6 @@ package org.core.display;
 import java.awt.Image;
 import java.awt.geom.Point2D;
 
-import org.core.display.Semaphore.SemaphoreState;
 import org.gui.Loader;
 
 public class Semaphore {

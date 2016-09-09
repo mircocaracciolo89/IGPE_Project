@@ -145,7 +145,7 @@ public abstract class Vehicle implements MovableObject {
 	public Point2D.Double 	getPosition() 				{ return position; }
 	public Double 			getOrientation_inDegrees() 	{ return orientation_inDegrees;	}
 	public Double 			getOrientation_inRadian() 	{ return ((orientation_inDegrees/180) * Math.PI);	}
-	public Point2D.Double	getVersors() 				{ return (new Point2D.Double(Math.cos(getOrientation_inRadian()), Math.sin(getOrientation_inRadian()))); }
+	public Point2D.Double	getVersors() 				{ return new Point2D.Double(Math.cos(getOrientation_inRadian()), Math.sin(getOrientation_inRadian())); }
 
 	public Double 			getMass() 						{ return mass; }
 	public Double 			getMaxSpeed() 					{ return maxSpeed; }

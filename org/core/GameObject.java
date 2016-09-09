@@ -11,5 +11,5 @@ public interface GameObject {
 	public int getWidth();
 	public Point2D.Double getPosition();
 	
-	public void drawElement(Graphics2D g2d);
+	public void drawGameObject(Graphics2D g2d);
 }

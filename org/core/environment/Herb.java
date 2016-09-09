@@ -92,7 +92,7 @@ public class Herb implements Environment {
 		// STILL OBJECTS
 
 		for (StillObject item : racetrack.getStillObjects())
-			item.drawElement(g2d);
+			item.drawGameObject(g2d);
 
 		//		try {
 		//			ImageIO.write(bi, "PNG", new File("img"+File.separator+"imageEnvironment.png"));

@@ -10,11 +10,12 @@ import org.gui.Loader;
 
 public class Malus extends RacetrackElement {
 
-	public Malus(double x, double y) {
-		super(x, y);
+	public Malus(double x, double y, double orientation) {
+		super(x, y, orientation);
 		image = Loader.imgMalus;
 		height = image.getHeight(null);
 		width = image.getWidth(null);
+		setVertex();
 	}
 
 	public void behavior(GameManager gameManager) { }

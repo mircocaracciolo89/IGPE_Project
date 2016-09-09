@@ -57,7 +57,7 @@ public class CarPlayer extends Vehicle {
 
 	/******************************************************************************************************************/
 	
-	public void drawElement(Graphics2D g2d) {
+	public void drawGameObject(Graphics2D g2d) {
 		g2d.translate(position.x, position.y);
 		g2d.rotate(getOrientation_inRadian());
 		g2d.drawImage(getImage(),AffineTransform.getTranslateInstance(-getWidth()/2, -getHeight()/2), null);
@@ -67,41 +67,33 @@ public class CarPlayer extends Vehicle {
 
 	protected void updateSteeringForwards() {
 
-		Double newOrientation = orientation_inDegrees;
-
 		switch (onSteering) {
 		case LEFT:
-			newOrientation -= braking ? getSteeringAngleInBraking() : steeringAngle;
+			orientation_inDegrees -= braking ? getSteeringAngleInBraking() : steeringAngle;
 			break;
 		case RIGHT:
-			newOrientation += braking ? getSteeringAngleInBraking() : steeringAngle;
+			orientation_inDegrees += braking ? getSteeringAngleInBraking() : steeringAngle;
 			break;
 		case UNDEFINED:
 		default:
 			break;
 		}
-
-		setOrientation_inDegrees(newOrientation);
 
 	}
 
 	protected void updateSteeringBackwards() {
 
-		Double newOrientation = orientation_inDegrees;
-
 		switch (onSteering) {
 		case LEFT:
-			newOrientation += braking ? getSteeringAngleInBraking() : steeringAngle;
+			orientation_inDegrees += braking ? getSteeringAngleInBraking() : steeringAngle;
 			break;
 		case RIGHT:
-			newOrientation -= braking ? getSteeringAngleInBraking() : steeringAngle;
+			orientation_inDegrees -= braking ? getSteeringAngleInBraking() : steeringAngle;
 			break;
 		case UNDEFINED:
 		default:
 			break;
 		}
-
-		setOrientation_inDegrees(newOrientation);
 
 	}
 	
