@@ -12,6 +12,8 @@ public class Tree extends EnvironmentElement {
 	public Tree(double x, double y, Image image) {
 		super(x, y);
 		this.image = image;
+		height = image.getHeight(null);
+		width = image.getWidth(null);
 	}
 
 	public void behavior(GameManager gameManager) { }

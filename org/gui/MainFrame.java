@@ -42,8 +42,6 @@ public class MainFrame extends JFrame {
 		});
 
 		gameManager = new GameManager();
-
-
 		menuPanel = new MenuPanel(this);
 
 		setContentPane(menuPanel);
@@ -110,7 +108,7 @@ public class MainFrame extends JFrame {
 
 	public void selectCar(String nameFile)
 	{
-		gameManager.setRacetrackFile(nameFile);
+		gameManager.setEnvironment(nameFile);
 
 		try {
 			selectCarPanel = new SelectCarPanel(this);
@@ -150,11 +148,9 @@ public class MainFrame extends JFrame {
 
 		loader = new Loader();
 		if(loader.load()) {
-			System.out.println("ok");
 			MainFrame mainFrame = new MainFrame();
 			mainFrame.setVisible(true);
 		}
-		else System.err.println("error");
 
 	}
 

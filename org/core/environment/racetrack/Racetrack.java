@@ -6,7 +6,6 @@ import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.DirectoryIteratorException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,14 +15,11 @@ import java.util.StringTokenizer;
 import org.apache.commons.io.FileUtils;
 
 import org.core.movable_object.Vehicle.Direction;
-import org.core.movable_object.Vehicle.VehicleState;
 import org.core.still_object.StillObject;
-import org.core.still_object.environment.EnvironmentElement;
 import org.core.still_object.environment.Stone;
 import org.core.still_object.environment.Tree;
 import org.core.still_object.racetrack.Bonus;
 import org.core.still_object.racetrack.Malus;
-import org.core.still_object.racetrack.RacetrackElement;
 import org.gui.Loader;
 import org.gui.panels.GamePanel;
 
@@ -33,7 +29,7 @@ public class Racetrack {
 		UNDEFINED (0X0), DIM_OUT(0x1), DIM_IN(0x2), COORDS_OUT(0x3), COORDS_IN(0x4),
 		NUM_PARTS(0x5), RANGE(0x6), DIRECTION(0x7),
 		NUM_STONE(0x8), COORDS_STONE1(0x9), NUM_STONE1(0x10), COORDS_STONE2(0x11), NUM_STONE2(0x12), COORDS_STONE3(0x13),
-		NUM_TREE(0x14), COORDS_TREE1(0x15), NUM_TREE1(0x16), COORDS_TREE2(0x17), NUM_TREE2(0x18), COORDS_TREE3(0x19),
+		NUM_TREE(0x14), COORDS_TREE1(0x15), NUM_TREE1(0x16), COORDS_TREE2(0x17), NUM_TREE3(0x18), COORDS_TREE3(0x19),
 		NUM_BONUS(0x20), COORDS_BONUS(0x21), NUM_MALUS(0x22), COORDS_MALUS(0x23),
 		PARAM_CAR_PLAYER(0x24), NUM_CARS_COMPUTER(0x25), PARAM_CARS_COMPUTER(0x26),
 		START_LINE(0x27), NUM_INTELLIGENCE_POINTS(0x28), INTELLIGENCE_POINT(0x29);
@@ -195,7 +191,7 @@ public class Racetrack {
 				
 			case COORDS_STONE3:
 				if (dim > 0) {
-					stillObjects.add(new Stone(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgStone1));
+					stillObjects.add(new Stone(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgStone3));
 					dim--;
 					if (dim == 0)
 						positionOnFile = PositionOnFile.NUM_TREE;
@@ -209,7 +205,7 @@ public class Racetrack {
 				
 			case COORDS_TREE1:
 				if (dim > 0) {
-					stillObjects.add(new Tree(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgTree5));
+					stillObjects.add(new Tree(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgTree4));
 					dim--;
 					if (dim == 0)
 						positionOnFile = PositionOnFile.NUM_TREE1;
@@ -226,18 +222,18 @@ public class Racetrack {
 					stillObjects.add(new Tree(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgTree5));
 					dim--;
 					if (dim == 0)
-						positionOnFile = PositionOnFile.NUM_TREE2;
+						positionOnFile = PositionOnFile.NUM_TREE3;
 				}
 				break;
 				
-			case NUM_TREE2:
+			case NUM_TREE3:
 				dim = Integer.parseInt(line);
 				positionOnFile = PositionOnFile.COORDS_TREE3;
 				break;
 				
 			case COORDS_TREE3:
 				if (dim > 0) {
-					stillObjects.add(new Tree(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgTree5));
+					stillObjects.add(new Tree(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgTree6));
 					dim--;
 					if (dim == 0)
 						positionOnFile = PositionOnFile.NUM_BONUS;

@@ -17,21 +17,21 @@ import org.gui.Loader;
 import org.gui.panels.GamePanel;
 
 public class CarComputer extends Vehicle {
-	
+
 	Point2D.Double point_succ;
 	Double degrees_succ;
-	
+
 	public static final int RANGE_POINT = 50;
 
-	public CarComputer(double x, double y, double startOrientation) {
-		super(x * GamePanel.SCALE, y * GamePanel.SCALE);
-		
+	public CarComputer(Point2D.Double startPoint, double startOrientation) {
+		super(startPoint.x * GamePanel.SCALE, startPoint.y * GamePanel.SCALE);
+
 		point_succ = new Point2D.Double();
 		degrees_succ = null;
 		
 		image = Loader.imgYellowCarComputer;
-		height = Loader.imgCarPlayer.getHeight(null);
-		width = Loader.imgCarPlayer.getWidth(null);
+		height = image.getHeight(null);
+		width = image.getWidth(null);
 
 		mass = 1d;
 
@@ -48,22 +48,22 @@ public class CarComputer extends Vehicle {
 		g2d.rotate(getOrientation_inRadian());
 		g2d.drawImage(getImage(),AffineTransform.getTranslateInstance(-getWidth()/2, -getHeight()/2), null);
 	}
-	
+
 	/******************************************************************************************************************/
 
 	private void updateSteering(Double value, Double degrees_succ) {
-		
+
 		switch (onSteering) {
 		case RIGHT:
 			if (orientation_inDegrees < degrees_succ)
 				orientation_inDegrees += value;
 			break;
-		
+
 		case LEFT:
 			System.out.println("ENtrat");
 			System.out.println("deg in "+degrees_succ);
 			System.out.println("val in "+value);
-			
+
 			if (orientation_inDegrees > degrees_succ)
 				orientation_inDegrees -= value;
 			break;
@@ -72,10 +72,10 @@ public class CarComputer extends Vehicle {
 		default:
 			break;
 		}
-		
+
 	}
-	
-	
+
+
 	/******************************************************************************************************************/
 
 	public synchronized void update(GameManager gameManager) {
@@ -87,24 +87,24 @@ public class CarComputer extends Vehicle {
 		Point2D.Double b = new Point2D.Double(920d * GamePanel.SCALE, 160d * GamePanel.SCALE);
 		Point2D.Double c = new Point2D.Double(1005d * GamePanel.SCALE, 230d * GamePanel.SCALE);
 		Point2D.Double d = new Point2D.Double(1110d * GamePanel.SCALE, 350d * GamePanel.SCALE);
-		
+
 		Map<Point2D.Double, OnSteering> map = new HashMap<>();
-		
+
 		map.put(a, OnSteering.LEFT);
 		map.put(b, OnSteering.RIGHT);
 		map.put(c, OnSteering.RIGHT);
 		map.put(d, OnSteering.UNDEFINED);
-		
-		
-//		
-//		for (Map.Entry<Point2D.Double, OnSteering> entry : map.entrySet()) {
-//			entry.
-//		}
 
-		
-		
-		
-		
+
+		//		
+		//		for (Map.Entry<Point2D.Double, OnSteering> entry : map.entrySet()) {
+		//			entry.
+		//		}
+
+
+
+
+
 		if (position.x == 650d * GamePanel.SCALE  && position.y == 140d * GamePanel.SCALE) {
 			this.state = VehicleState.ACCELERATION_FORWARD;
 			point_succ = a;
@@ -117,16 +117,16 @@ public class CarComputer extends Vehicle {
 		Double value = orientation_inDegrees/iterations;
 
 		updateSteering(value, degrees_succ);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
+
+
 
 		//		if (position.x == 810d * GamePanel.SCALE)
 		//			setOrientation_inDegrees(0.98d);
@@ -144,7 +144,7 @@ public class CarComputer extends Vehicle {
 				currentSpeed = getActualInitialAcceleration();
 
 			updateGears();
-			
+
 			updatePositionXForwards();
 			updatePositionYForwards();
 

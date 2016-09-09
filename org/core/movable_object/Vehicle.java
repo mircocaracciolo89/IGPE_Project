@@ -90,7 +90,6 @@ public abstract class Vehicle implements MovableObject {
 	protected Integer 			width;
 
 	protected Point2D.Double 	position;
-//	protected Point2D.Double	translation;
 	protected Double 			orientation_inDegrees;
 
 	protected Double 			mass;
@@ -117,9 +116,6 @@ public abstract class Vehicle implements MovableObject {
 	/******************* CONSTRUCTOR **********************************************************************************************/
 
 	public Vehicle(double x, double y) {
-
-//		image = null;
-//		height = width = null;
 
 		position = new Point2D.Double(x, y);
 
@@ -175,12 +171,12 @@ public abstract class Vehicle implements MovableObject {
 	public Double			getPercentageAccelerationIncreaseBackwardsMarch()	{ return (((maxSpeed * getActualInitialAcceleration())/800d) * currentSpeed); }
 	public Double			getPercentageAccelerationDecrease()					{ return (((maxSpeed * getActualInitialAcceleration())/(300d * (currentGear * 2))) * currentSpeed); }
 
-	public VehicleState 	getVehicleState() 	{ return this.state; }
-	public OnSteering 		getOnSteering() 	{ return this.onSteering; }
-	public Direction		getDirection()		{ return this.direction; }
+	public VehicleState 	getVehicleState() 	{ return state; }
+	public OnSteering 		getOnSteering() 	{ return onSteering; }
+	public Direction		getDirection()		{ return direction; }
 
-	public Boolean			isForwardsMarch() 	{ return (this.state == VehicleState.ACCELERATION_FORWARD || this.state == VehicleState.DECELERATION_FORWARD); }
-	public Boolean			isBackwardsMarch() 	{ return (this.state == VehicleState.ACCELERATION_BACKWARD || this.state == VehicleState.DECELERATION_BACKWARD); }
+	public Boolean			isForwardsMarch() 	{ return (state == VehicleState.ACCELERATION_FORWARD || state == VehicleState.DECELERATION_FORWARD); }
+	public Boolean			isBackwardsMarch() 	{ return (state == VehicleState.ACCELERATION_BACKWARD || state == VehicleState.DECELERATION_BACKWARD); }
 	public Boolean			isBraking() 		{ return braking; }
 
 	public Point2D.Double	getVertexLeftBack()		{ return vertexLeftBack; }

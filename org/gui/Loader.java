@@ -62,40 +62,42 @@ public class Loader extends JComponent {
 
 	public boolean load() throws MalformedURLException {
 
-		imgBackgroundMenu = 	tk.getImage( "img"+File.separator+"Backgrounds"+File.separator+"backgroundMenu.jpg");
-		imgBackGroundEnvironment = 			tk.getImage( "img"+File.separator+"Backgrounds"+File.separator+"backgroundEnvironment.jpg");
-		imgButtonStart =	tk.getImage( "img"+File.separator+"Buttons"+File.separator+"quickStart.png");
-		imgButtonStart2 =	tk.getImage( "img"+File.separator+"Buttons"+File.separator+"QuickStartFocus.png");
-		imgButtonMultiplayer =	tk.getImage( "img"+File.separator+"Buttons"+File.separator+"multiplayer.png");
-		imgButtonEditor = 		tk.getImage( "img"+File.separator+"Buttons"+File.separator+"editor.png");
-		imgButtonExit = 	tk.getImage( "img"+File.separator+"Buttons"+File.separator+"exit.png");
-		imgButtonExit2 = 	tk.getImage( "img"+File.separator+"Buttons"+File.separator+"ExitFocus.png");
-		imgButtonBack = 	tk.getImage( "img"+File.separator+"Buttons"+File.separator+"back.png");
-		imgButtonBack2 =	tk.getImage( "img"+File.separator+"Buttons"+File.separator+"backFocus.png");
+		imgBackgroundMenu = 		tk.getImage( "img"+File.separator+"Backgrounds"+File.separator+"backgroundMenu.jpg");
+		imgBackGroundEnvironment = 	tk.getImage( "img"+File.separator+"Backgrounds"+File.separator+"backgroundEnvironment.jpg");
+		imgButtonStart =			tk.getImage( "img"+File.separator+"Buttons"+File.separator+"quickStart.png");
+		imgButtonStart2 =			tk.getImage( "img"+File.separator+"Buttons"+File.separator+"QuickStartFocus.png");
+		imgButtonMultiplayer =		tk.getImage( "img"+File.separator+"Buttons"+File.separator+"multiplayer.png");
+		imgButtonEditor = 			tk.getImage( "img"+File.separator+"Buttons"+File.separator+"editor.png");
+		imgButtonExit = 			tk.getImage( "img"+File.separator+"Buttons"+File.separator+"exit.png");
+		imgButtonExit2 = 			tk.getImage( "img"+File.separator+"Buttons"+File.separator+"ExitFocus.png");
+		imgButtonBack = 			tk.getImage( "img"+File.separator+"Buttons"+File.separator+"back.png");
+		imgButtonBack2 =			tk.getImage( "img"+File.separator+"Buttons"+File.separator+"backFocus.png");
+		
 		imgItaRacetrack = 			tk.getImage( "img"+File.separator+"Buttons"+File.separator+"Italy.png");
 		imgBraRacetrack = 			tk.getImage( "img"+File.separator+"Buttons"+File.separator+"Brasil.png");
-		imgCarPlayer = 			tk.getImage( "img"+File.separator+"Cars"+File.separator+"carPlayer.png");
-		imgCar1Menu = 		tk.getImage( "img"+File.separator+"Buttons"+File.separator+"redCar.png");
-		imgCar2Menu = 		tk.getImage( "img"+File.separator+"Buttons"+File.separator+"yellowCar.png");
-		imgGreenCarComputer =  tk.getImage( "img"+File.separator+"Cars"+File.separator+"greenCarComputer.png");
-		imgYellowCarComputer = tk.getImage( "img"+File.separator+"Cars"+File.separator+"yellowCarComputer.png");
-		imgBlueCarComputer = tk.getImage( "img"+File.separator+"Cars"+File.separator+"blueCarComputer.png");
-		imgTree1 = 			tk.getImage( "img"+File.separator+"Trees"+File.separator+"tree1.png");
-		imgTree2 = 			tk.getImage( "img"+File.separator+"Trees"+File.separator+"tree2.png");
-		imgTree3 = 			tk.getImage( "img"+File.separator+"Trees"+File.separator+"tree3.png");
-		imgTree4 = 			tk.getImage( "img"+File.separator+"Trees"+File.separator+"tree4.png");
-		imgTree5 =			tk.getImage( "img"+File.separator+"Trees"+File.separator+"tree5.png");
-		imgTree6 =			tk.getImage( "img"+File.separator+"Trees"+File.separator+"tree6.png");
+		
+		imgCarPlayer = 				tk.getImage( "img"+File.separator+"Cars"+File.separator+"carPlayer.png");
+		imgCar1Menu = 				tk.getImage( "img"+File.separator+"Buttons"+File.separator+"redCar.png");
+		imgCar2Menu = 				tk.getImage( "img"+File.separator+"Buttons"+File.separator+"yellowCar.png");
+		imgGreenCarComputer = 		tk.getImage( "img"+File.separator+"Cars"+File.separator+"greenCarComputer.png");
+		imgYellowCarComputer = 		tk.getImage( "img"+File.separator+"Cars"+File.separator+"yellowCarComputer.png");
+		imgBlueCarComputer = 		tk.getImage( "img"+File.separator+"Cars"+File.separator+"blueCarComputer.png");
+		
+		imgTree1 = 					tk.getImage( "img"+File.separator+"Trees"+File.separator+"tree1.png");
+		imgTree2 = 					tk.getImage( "img"+File.separator+"Trees"+File.separator+"tree2.png");
+		imgTree3 = 					tk.getImage( "img"+File.separator+"Trees"+File.separator+"tree3.png");
+		imgTree4 = 					tk.getImage( "img"+File.separator+"Trees"+File.separator+"tree4.png");
+		imgTree5 =					tk.getImage( "img"+File.separator+"Trees"+File.separator+"tree5.png");
+		imgTree6 =					tk.getImage( "img"+File.separator+"Trees"+File.separator+"tree6.png");
 
-		imgStone1 =			tk.getImage( "img"+File.separator+"Stones"+File.separator+"stone1.png");
-		imgStone2 =			tk.getImage( "img"+File.separator+"Stones"+File.separator+"stone2.png");
-		imgStone3 =			tk.getImage( "img"+File.separator+"Stones"+File.separator+"stone3.png");
+		imgStone1 =					tk.getImage( "img"+File.separator+"Stones"+File.separator+"stone1.png");
+		imgStone2 =					tk.getImage( "img"+File.separator+"Stones"+File.separator+"stone2.png");
+		imgStone3 =					tk.getImage( "img"+File.separator+"Stones"+File.separator+"stone3.png");
 		
-		
-		imgSemaphoreStart = 	tk.getImage( "img"+File.separator+"Semaphore"+File.separator+"fullSemaphore.png");
-		imgSemaphoreRed = 		tk.getImage( "img"+File.separator+"Semaphore"+File.separator+"redSemaphore.png");
-		imgSemaphoreOrange = 	tk.getImage( "img"+File.separator+"Semaphore"+File.separator+"yellowSemaphore.png");
-		imgSemaphoreGreen = 	tk.getImage( "img"+File.separator+"Semaphore"+File.separator+"greenSemaphore.png");
+		imgSemaphoreStart = 		tk.getImage( "img"+File.separator+"Semaphore"+File.separator+"fullSemaphore.png");
+		imgSemaphoreRed = 			tk.getImage( "img"+File.separator+"Semaphore"+File.separator+"redSemaphore.png");
+		imgSemaphoreOrange = 		tk.getImage( "img"+File.separator+"Semaphore"+File.separator+"yellowSemaphore.png");
+		imgSemaphoreGreen = 		tk.getImage( "img"+File.separator+"Semaphore"+File.separator+"greenSemaphore.png");
 
 		mt.addImage(imgBackgroundMenu, 1);
 		mt.addImage(imgBackGroundEnvironment, 2);

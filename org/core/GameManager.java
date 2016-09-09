@@ -115,8 +115,6 @@ public class GameManager {
 	public static GameState gameState;
 	private static Border 	border;
 
-	private File racetrackFile;
-
 	private static Environment 	environment;
 
 	private static CarPlayer 	carPlayer;
@@ -162,16 +160,15 @@ public class GameManager {
 	public int 						getLapCounter() 	{ return lapCounter; }
 
 	public static int 				getIndexCheckpointNumber() { return indexCheckpointNumber; }
-	public static Stopwatch getStopwatch() { return stopwatch; }
+	public static Stopwatch 		getStopwatch() { return stopwatch; }
 
 	public void 					quit() 				{ running = false; }
 
 	/******************* SETTERS **********************************************************************************************/
 
-	public void setRacetrackFile(String nameFile) {
-		this.racetrackFile = new File("racetrackFiles"+File.separator+nameFile);
+	public void setEnvironment(String nameFile) {
 		try {
-			environment = new Herb(racetrackFile);
+			environment = new Herb(new File("racetrackFiles"+File.separator+nameFile));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -182,7 +179,7 @@ public class GameManager {
 		carPlayer = new CarPlayer(startPoint, startTranslation, startOrientation, img);
 
 		for (Map.Entry<Point2D.Double, Double> entry : environment.getRacetrack().getParamVehicles().entrySet()) {
-			vehicles.add(new CarComputer(entry.getKey().x, entry.getKey().y, entry.getValue()));
+			vehicles.add(new CarComputer(entry.getKey(), entry.getValue()));
 		}
 
 	}
@@ -419,6 +416,14 @@ public class GameManager {
 		return border;
 	}
 
+	public void intersectBetweenVehicles() {
+		
+	}
+
+	public void intersectBetweenElements() {
+		
+	}
+	
 	/******************************************************************************************************************/
 
 	public void start(final Runnable runnable) { 
@@ -427,35 +432,29 @@ public class GameManager {
 		new Thread() {
 			public void run() {
 
-				//				semaphore.run();
-
-
-				try {
-					sleep(1500);
-					semaphore.setState(SemaphoreState.RED);
-					runnable.run();
-					sleep(1500);
-					semaphore.setState(SemaphoreState.ORANGE);
-					runnable.run();
-					sleep(1500);
-					semaphore.setState(SemaphoreState.GREEN);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
-
+				semaphore.start(runnable);
 				stopwatch.startTimer();
 
 				while (running) {
 
 					if(GameManager.paused == false) { 
+						
+						intersectBetweenVehicles();
+						intersectBetweenElements();
+						
 						carPlayer.update(gameManager);
 						for (Vehicle vehicle : vehicles) {
 							vehicle.update(gameManager);
 						}
 						runnable.run();
+						
 					}
-//					if (gameManager.time <= 0f)
-//						running = false;
+
+					//					if (gameManager.time <= 0f)
+					//						running = false;
+
+					if (lapCounter == 1)
+						semaphore.setVisible(false);
 
 					try {
 						Thread.sleep(35);
@@ -463,16 +462,13 @@ public class GameManager {
 						e.printStackTrace();
 					}
 
-					if (lapCounter == 1)
-						semaphore.setVisible(false);
-
 				}
 
 			}
 
 		}.start();
 	}
-
+	
 	/******************************************************************************************************************/
 
 }

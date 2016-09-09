@@ -30,7 +30,6 @@ public class CarPlayer extends Vehicle {
 
 		mass = 1d;
 		steeringAngle = 10d;
-//		orientation_inDegrees = 315d;
 		orientation_inDegrees = startOrientation;
 		updateDirection();
 		direction = getDirection();

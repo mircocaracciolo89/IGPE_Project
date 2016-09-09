@@ -2,16 +2,11 @@ package org.core.display;
 
 import java.awt.Image;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 
-import org.core.GameManager;
-import org.core.GameManager.GameState;
-import org.gui.ImageProvider;
+import org.core.display.Semaphore.SemaphoreState;
 import org.gui.Loader;
-import org.gui.panels.GamePanel;
 
-
-public class Semaphore {//implements Runnable {
+public class Semaphore {
 
 	public enum SemaphoreState {
 		UNDEFINED(0x0), START(0x1), RED(0x2), ORANGE(0x3), GREEN(0x4);
@@ -40,12 +35,8 @@ public class Semaphore {//implements Runnable {
 
 	private SemaphoreState state;
 	private Image image;
-	public static final int HEIGHT = 15;
-	public static final int WIDTH = 15;
-
-	private boolean visible;
-
 	private Point2D.Double position;
+	private boolean visible;
 
 	public Semaphore() {
 		state = SemaphoreState.START;
@@ -57,7 +48,6 @@ public class Semaphore {//implements Runnable {
 	public void setState(SemaphoreState state) { this.state = state; }
 
 	public Image getImage() {
-		System.out.println(state);
 		switch (this.state) {
 		case START:
 			image = Loader.imgSemaphoreStart;
@@ -82,21 +72,19 @@ public class Semaphore {//implements Runnable {
 
 	public boolean isVisible() { return visible; }
 	public void setVisible(boolean visible) { this.visible = visible; }
-//
-//	public void run() {
-//		try {
-//			Thread.sleep(1000);
-//			state = State.RED;
-//			Thread.sleep(1000);
-//			state = State.ORANGE;
-//			Thread.sleep(1000);
-//			state = State.GREEN;
-//			//			GameManager.gameState = GameState.RUN;
-//			//			Thread.sleep(2500);
-//			visible = false;
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//
-//	}
+	
+	public void start(Runnable runnable) {
+		try {
+			Thread.sleep(1500);
+			setState(SemaphoreState.RED);
+			runnable.run();
+			Thread.sleep(1500);
+			setState(SemaphoreState.ORANGE);
+			runnable.run();
+			Thread.sleep(1500);
+			setState(SemaphoreState.GREEN);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+	}
 }
