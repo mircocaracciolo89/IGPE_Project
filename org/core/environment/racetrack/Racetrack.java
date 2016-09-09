@@ -32,8 +32,8 @@ public class Racetrack {
 	public enum PositionOnFile { 
 		UNDEFINED (0X0), DIM_OUT(0x1), DIM_IN(0x2), COORDS_OUT(0x3), COORDS_IN(0x4),
 		NUM_PARTS(0x5), RANGE(0x6), DIRECTION(0x7),
-		NUM_STONE(0x8), COORDS_STONE(0x9), NUM_STONE1(0x10), COORDS_STONE1(0x11), NUM_STONE2(0x12), COORDS_STONE2(0x13),
-		NUM_TREE(0x14), COORDS_TREE(0x15), NUM_TREE1(0x16), COORDS_TREE1(0x17), NUM_TREE2(0x18), COORDS_TREE2(0x19),
+		NUM_STONE(0x8), COORDS_STONE1(0x9), NUM_STONE1(0x10), COORDS_STONE2(0x11), NUM_STONE2(0x12), COORDS_STONE3(0x13),
+		NUM_TREE(0x14), COORDS_TREE1(0x15), NUM_TREE1(0x16), COORDS_TREE2(0x17), NUM_TREE2(0x18), COORDS_TREE3(0x19),
 		NUM_BONUS(0x20), COORDS_BONUS(0x21), NUM_MALUS(0x22), COORDS_MALUS(0x23),
 		PARAM_CAR_PLAYER(0x24), NUM_CARS_COMPUTER(0x25), PARAM_CARS_COMPUTER(0x26),
 		START_LINE(0x27), NUM_INTELLIGENCE_POINTS(0x28), INTELLIGENCE_POINT(0x29);
@@ -162,12 +162,12 @@ public class Racetrack {
 				
 			case NUM_STONE:
 				dim = Integer.parseInt(line);
-				positionOnFile = PositionOnFile.COORDS_STONE;
+				positionOnFile = PositionOnFile.COORDS_STONE1;
 				break;
 
-			case COORDS_STONE:
+			case COORDS_STONE1:
 				if (dim > 0) {
-					stillObjects.add(new Stone(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgTree));
+					stillObjects.add(new Stone(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgStone1));
 					dim--;
 					if (dim == 0)
 						positionOnFile = PositionOnFile.NUM_STONE1;
@@ -176,12 +176,12 @@ public class Racetrack {
 				
 			case NUM_STONE1:
 				dim = Integer.parseInt(line);
-				positionOnFile = PositionOnFile.COORDS_STONE1;
+				positionOnFile = PositionOnFile.COORDS_STONE2;
 				break;
 				
-			case COORDS_STONE1:
+			case COORDS_STONE2:
 				if (dim > 0) {
-					stillObjects.add(new Stone(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgTree));
+					stillObjects.add(new Stone(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgStone2));
 					dim--;
 					if (dim == 0)
 						positionOnFile = PositionOnFile.NUM_STONE2;
@@ -190,12 +190,12 @@ public class Racetrack {
 				
 			case NUM_STONE2:
 				dim = Integer.parseInt(line);
-				positionOnFile = PositionOnFile.COORDS_STONE2;
+				positionOnFile = PositionOnFile.COORDS_STONE3;
 				break;
 				
-			case COORDS_STONE2:
+			case COORDS_STONE3:
 				if (dim > 0) {
-					stillObjects.add(new Stone(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgTree));
+					stillObjects.add(new Stone(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgStone1));
 					dim--;
 					if (dim == 0)
 						positionOnFile = PositionOnFile.NUM_TREE;
@@ -204,12 +204,12 @@ public class Racetrack {
 				
 			case NUM_TREE:
 				dim = Integer.parseInt(line);
-				positionOnFile = PositionOnFile.COORDS_TREE;
+				positionOnFile = PositionOnFile.COORDS_TREE1;
 				break;
 				
-			case COORDS_TREE:
+			case COORDS_TREE1:
 				if (dim > 0) {
-					stillObjects.add(new Tree(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgTree));
+					stillObjects.add(new Tree(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgTree5));
 					dim--;
 					if (dim == 0)
 						positionOnFile = PositionOnFile.NUM_TREE1;
@@ -218,12 +218,12 @@ public class Racetrack {
 				
 			case NUM_TREE1:
 				dim = Integer.parseInt(line);
-				positionOnFile = PositionOnFile.COORDS_TREE1;
+				positionOnFile = PositionOnFile.COORDS_TREE2;
 				break;
 				
-			case COORDS_TREE1:
+			case COORDS_TREE2:
 				if (dim > 0) {
-					stillObjects.add(new Tree(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgTree));
+					stillObjects.add(new Tree(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgTree5));
 					dim--;
 					if (dim == 0)
 						positionOnFile = PositionOnFile.NUM_TREE2;
@@ -232,12 +232,12 @@ public class Racetrack {
 				
 			case NUM_TREE2:
 				dim = Integer.parseInt(line);
-				positionOnFile = PositionOnFile.COORDS_TREE2;
+				positionOnFile = PositionOnFile.COORDS_TREE3;
 				break;
 				
-			case COORDS_TREE2:
+			case COORDS_TREE3:
 				if (dim > 0) {
-					stillObjects.add(new Tree(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgTree));
+					stillObjects.add(new Tree(Double.parseDouble(item.nextToken()), Double.parseDouble(item.nextToken()), Loader.imgTree5));
 					dim--;
 					if (dim == 0)
 						positionOnFile = PositionOnFile.NUM_BONUS;

@@ -39,7 +39,7 @@ public class MenuPanel extends JPanel {
 		quickStart.setPressedIcon(icona2);
 		
 		
-		ImageIcon icona3 = new ImageIcon( Loader.imgEditor);
+		ImageIcon icona3 = new ImageIcon( Loader.imgButtonEditor);
 		JButton editorButton = new JButton(icona3);
 		editorButton.setOpaque(false);
 		editorButton.setContentAreaFilled(false);
@@ -47,7 +47,7 @@ public class MenuPanel extends JPanel {
 		editorButton.setFocusPainted(false);
 		editorButton.setIcon(icona3);
 		
-		ImageIcon icona5 = new ImageIcon( Loader.imgMultiplayer);
+		ImageIcon icona5 = new ImageIcon( Loader.imgButtonMultiplayer);
 		JButton multiplayerButton = new JButton(icona5);
 		multiplayerButton.setOpaque(false);
 		multiplayerButton.setContentAreaFilled(false);
@@ -95,6 +95,6 @@ public class MenuPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(Loader.imgBackground,0,0,null);
+		g.drawImage(Loader.imgBackgroundMenu,0,0,null);
 	}
 }

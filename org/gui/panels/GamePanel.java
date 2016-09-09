@@ -82,16 +82,16 @@ public class GamePanel extends JPanel {
 
 		// PAUSE
 
-		if(GameManager.paused) {
-			g2d.setTransform(oldXform);
-			g2d.drawImage(Loader.imgPauseImage, 0, 0, GameManager.WIDTH, GameManager.HEIGHT, null);
-		}
-		
+//		if(GameManager.paused) {
+//			g2d.setTransform(oldXform);
+//			g2d.drawImage(Loader.imgPauseImage, 0, 0, GameManager.WIDTH, GameManager.HEIGHT, null);
+//		}
+//		
 		// SEMAPHORE
 		
 		if (gameManager.getSemaphore().isVisible()) {
 			System.out.println("ok");
-			g2d.drawImage(gameManager.getSemaphore().getImage(), 600, 20, null);
+			g2d.drawImage(gameManager.getSemaphore().getImage(), 600, 5, null);
 		}
 		
 		g2d.dispose();

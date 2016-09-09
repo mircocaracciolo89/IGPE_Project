@@ -12,7 +12,7 @@ public class Malus extends RacetrackElement {
 
 	public Malus(double x, double y) {
 		super(x, y);
-		image = Loader.imgTree;
+		image = Loader.imgTree1;
 	}
 
 	public void behavior(GameManager gameManager) { }

@@ -336,11 +336,11 @@ public class GameManager {
 		g2d.drawString(String.format("CURRENT SPEED: %1$.0f KM/H", carPlayer.getCurrentSpeed().floatValue() * 10f) , 1150, 100);
 
 		if (lapCounter <= 0)
-			g2d.drawString("LAP: -", 1150, 150);
+			g2d.drawString("LAP: -", 50, 50);
 		else 
-			g2d.drawString("LAP: " + lapCounter, 1150, 150);
+			g2d.drawString("LAP: " + lapCounter, 50, 50);
 
-		g2d.drawString(String.format("Time: %1$.3f", Math.abs(time)), 1150, 200);
+		g2d.drawString(String.format("TIME REMAINING: %1$.3f", Math.abs(time)), 50, 100);
 
 		if (!isCorrectDirection())
 			g2d.drawString("WRONG DIRECTION", 600, 400);

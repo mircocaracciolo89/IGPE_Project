@@ -29,7 +29,7 @@ public class Herb implements Environment {
 	BufferedImage bufferedImageEnvironment;
 
 	public Herb(File racetrackFile) throws IOException {
-		imageBackgroud = Loader.imgHerb;
+		imageBackgroud = Loader.imgBackGroundEnvironment;
 		elements = new ArrayList<EnvironmentElement>();
 		racetrack = new Racetrack(racetrackFile);
 		createImageEnvironmet();

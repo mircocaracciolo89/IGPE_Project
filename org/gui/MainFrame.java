@@ -47,7 +47,7 @@ public class MainFrame extends JFrame {
 		menuPanel = new MenuPanel(this);
 
 		setContentPane(menuPanel);
-		//setUndecorated(true);
+		setUndecorated(true);
 		pack();
 
 	}

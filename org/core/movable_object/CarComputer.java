@@ -29,9 +29,9 @@ public class CarComputer extends Vehicle {
 		point_succ = new Point2D.Double();
 		degrees_succ = null;
 		
-		image = Loader.imgCar;
-		height = Loader.imgCar.getHeight(null);
-		width = Loader.imgCar.getWidth(null);
+		image = Loader.imgYellowCarComputer;
+		height = Loader.imgCarPlayer.getHeight(null);
+		width = Loader.imgCarPlayer.getWidth(null);
 
 		mass = 1d;
 

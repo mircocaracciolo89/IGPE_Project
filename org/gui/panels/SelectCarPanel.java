@@ -22,10 +22,10 @@ public class SelectCarPanel extends JPanel {
 	public SelectCarPanel(MainFrame mainFrame) throws IOException {
 		setLayout(null);
 		
-		ImageIcon icona = new ImageIcon( Loader.imgCar1);
-		ImageIcon icona2 = new ImageIcon( Loader.imgCar2);
-		ImageIcon icona3 = new ImageIcon( Loader.imgBackButton);
-		ImageIcon icona4 = new ImageIcon( Loader.imgBackButton2);
+		ImageIcon icona = new ImageIcon( Loader.imgCar1Menu);
+		ImageIcon icona2 = new ImageIcon( Loader.imgCar2Menu);
+		ImageIcon icona3 = new ImageIcon( Loader.imgButtonBack);
+		ImageIcon icona4 = new ImageIcon( Loader.imgButtonBack2);
 
 		JButton buttonCar1 = new JButton(icona);
 		JButton buttonCar2 = new JButton(icona2);
@@ -48,14 +48,14 @@ public class SelectCarPanel extends JPanel {
 		
 		setPreferredSize(new Dimension(GameManager.WIDTH-2,GameManager.HEIGHT-2));
 		
-		buttonCar1.addActionListener(e -> mainFrame.startGame(Loader.imgCar));
+		buttonCar1.addActionListener(e -> mainFrame.startGame(Loader.imgCarPlayer));
 		backButton.addActionListener( e -> mainFrame.goSelectRacetrack());
 	}
 	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(Loader.imgBackground, 0, 0, null);
+		g.drawImage(Loader.imgBackgroundMenu, 0, 0, null);
 	}
 	
 }

@@ -8,7 +8,7 @@ public class Bonus extends RacetrackElement {
 	
 	public Bonus(double x, double y) {
 		super(x, y);
-		image = Loader.imgTree;
+		image = Loader.imgTree1;
 	}
 
 	public void behavior(GameManager gameManager) { }

@@ -25,10 +25,10 @@ public class SelectRacetrackPanel extends JPanel {
 	public SelectRacetrackPanel(MainFrame mainFrame) {
 		setLayout(null);
 		
-		ImageIcon icona = new ImageIcon( Loader.imgIta);
-		ImageIcon icona2 = new ImageIcon( Loader.imgBra);
-		ImageIcon icona3 = new ImageIcon(  Loader.imgBackButton);
-		ImageIcon icona4 = new ImageIcon( Loader.imgBackButton2);
+		ImageIcon icona = new ImageIcon( Loader.imgItaRacetrack);
+		ImageIcon icona2 = new ImageIcon( Loader.imgBraRacetrack);
+		ImageIcon icona3 = new ImageIcon(  Loader.imgButtonBack);
+		ImageIcon icona4 = new ImageIcon( Loader.imgButtonBack2);
 
 		JButton buttonRacetrack1 = new JButton(icona);
 		JButton buttonRacetrack2 = new JButton(icona2);
@@ -60,7 +60,7 @@ public class SelectRacetrackPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 	//	g.drawImage(img, 0, 0, (int)d.getWidth(), (int)d.getHeight(), null);
-		g.drawImage(Loader.imgBackground,0,0,null);
+		g.drawImage(Loader.imgBackgroundMenu,0,0,null);
 
 
 	}

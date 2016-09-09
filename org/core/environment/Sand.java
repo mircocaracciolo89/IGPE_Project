@@ -22,7 +22,7 @@ public class Sand implements Environment {
 	private Racetrack racetrack;
 
 	public Sand(File racetrackFile) throws IOException {
-		image = Loader.imgHerb;
+		image = Loader.imgBackGroundEnvironment;
 		elements = new ArrayList<EnvironmentElement>();
 		racetrack = new Racetrack(racetrackFile);
 	}
