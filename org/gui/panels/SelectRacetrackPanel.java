@@ -28,7 +28,7 @@ public class SelectRacetrackPanel extends JPanel {
 		ImageIcon icona = new ImageIcon( Loader.imgItaRacetrack);
 		ImageIcon icona2 = new ImageIcon( Loader.imgBraRacetrack);
 		ImageIcon icona3 = new ImageIcon(  Loader.imgButtonBack);
-		ImageIcon icona4 = new ImageIcon( Loader.imgButtonBack2);
+		ImageIcon icona4 = new ImageIcon( Loader.imgButtonBackFocus);
 
 		JButton buttonRacetrack1 = new JButton(icona);
 		JButton buttonRacetrack2 = new JButton(icona2);

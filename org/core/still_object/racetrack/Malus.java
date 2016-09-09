@@ -12,7 +12,7 @@ public class Malus extends RacetrackElement {
 
 	public Malus(double x, double y) {
 		super(x, y);
-		image = Loader.imgTree1;
+		image = Loader.imgMalus;
 		height = image.getHeight(null);
 		width = image.getWidth(null);
 	}

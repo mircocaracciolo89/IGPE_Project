@@ -28,7 +28,7 @@ public class MenuPanel extends JPanel {
 		
 		
 		ImageIcon icona = new ImageIcon( Loader.imgButtonStart);
-		ImageIcon icona2 = new ImageIcon( Loader.imgButtonStart2);
+		ImageIcon icona2 = new ImageIcon( Loader.imgButtonStartFocus);
 		JButton quickStart = new JButton(icona);
 		quickStart.setOpaque(false);
 		quickStart.setContentAreaFilled(false);
@@ -56,7 +56,7 @@ public class MenuPanel extends JPanel {
 		multiplayerButton.setIcon(icona5);
 
 		ImageIcon icona7 = new ImageIcon(  Loader.imgButtonExit);
-		ImageIcon icona8 = new ImageIcon(  Loader.imgButtonExit2);
+		ImageIcon icona8 = new ImageIcon(  Loader.imgButtonExitFocus);
 		JButton exitButton = new JButton(icona7);
 		exitButton.setOpaque(false);
 		exitButton.setContentAreaFilled(false);

@@ -3,8 +3,8 @@ package org.core.movable_object;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
-import org.core.GameObject;
 import org.core.GameManager;
+import org.core.GameObject;
 
 public interface MovableObject extends GameObject {
 

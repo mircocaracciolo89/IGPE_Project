@@ -11,7 +11,7 @@ public class Stone extends EnvironmentElement {
 		this.image = image;
 		height = image.getHeight(null);
 		width = image.getWidth(null);
-		updateVertex();
+		//updateVertex();
 	}
 
 	public void behavior(GameManager gameManager) { }

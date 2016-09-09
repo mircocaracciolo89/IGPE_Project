@@ -25,7 +25,7 @@ public class SelectCarPanel extends JPanel {
 		ImageIcon icona = new ImageIcon( Loader.imgCar1Menu);
 		ImageIcon icona2 = new ImageIcon( Loader.imgCar2Menu);
 		ImageIcon icona3 = new ImageIcon( Loader.imgButtonBack);
-		ImageIcon icona4 = new ImageIcon( Loader.imgButtonBack2);
+		ImageIcon icona4 = new ImageIcon( Loader.imgButtonBackFocus);
 
 		JButton buttonCar1 = new JButton(icona);
 		JButton buttonCar2 = new JButton(icona2);
