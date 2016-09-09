@@ -117,6 +117,9 @@ public class Herb implements Environment {
 			else g2d.setColor(Color.YELLOW);
 			g2d.draw(line2d);
 		}
+		
+		for (StillObject item : racetrack.getStillObjects())
+			item.drawElement(g2d);
 
 	}
 }

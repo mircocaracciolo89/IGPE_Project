@@ -96,7 +96,7 @@ public class Loader extends JComponent {
 		imgSemaphoreOrange = 		tk.getImage( "img"+File.separator+"Semaphore"+File.separator+"yellowSemaphore.png");
 		imgSemaphoreGreen = 		tk.getImage( "img"+File.separator+"Semaphore"+File.separator+"greenSemaphore.png");
 
-		imgBonus = 					tk.getImage( "img"+File.separator+"Bonus"+File.separator+"gifBonus.gif");
+		imgBonus = 					tk.getImage( "img"+File.separator+"Bonus"+File.separator+"provaBonus.gif");
 		imgMalus = 					tk.getImage( "img"+File.separator+"Malus"+File.separator+"imgMalus1.png");
 
 		mt.addImage(imgBackgroundMenu, 1);

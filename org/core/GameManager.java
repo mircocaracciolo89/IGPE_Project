@@ -344,7 +344,6 @@ public class GameManager {
 		if (!isOnTrack())
 			g2d.drawString("BACK ON TRACK", 600, 400);
 		if (isCorrectDirection() && intersectCheckpoint()) {
-			g2d.drawString("CHECKPOINT", 600, 400);
 			indexCheckpointNumber = (indexCheckpointNumber + 1) % environment.getRacetrack().getCheckpoints().size();
 			if (indexCheckpointNumber == 1) isNewLap = false;
 		}

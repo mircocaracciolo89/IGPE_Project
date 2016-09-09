@@ -90,7 +90,6 @@ public class GamePanel extends JPanel {
 		// SEMAPHORE
 		
 		if (gameManager.getSemaphore().isVisible()) {
-			System.out.println("ok");
 			g2d.drawImage(gameManager.getSemaphore().getImage(), 600, 5, null);
 		}
 		
