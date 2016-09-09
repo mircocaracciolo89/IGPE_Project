@@ -1,6 +1,7 @@
 package org.core.still_object.environment;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
 import org.core.still_object.Element;
@@ -26,6 +27,7 @@ public abstract class EnvironmentElement extends Element {
 	}
 
 	public void drawGameObject(Graphics2D g2d) {
-		g2d.drawImage(image, (int) position.x, (int) position.y, getWidth(), getHeight(), null);
+		g2d.translate(position.x, position.y);
+		g2d.drawImage(image, AffineTransform.getTranslateInstance(-getWidth()/2, -getHeight()/2), null);
 	}
 }

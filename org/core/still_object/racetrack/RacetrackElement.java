@@ -2,6 +2,7 @@ package org.core.still_object.racetrack;
 
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
 import org.core.still_object.Element;
@@ -10,9 +11,8 @@ public abstract class RacetrackElement extends Element {
 
 	protected Double orientation_inDegrees;
 
-	public RacetrackElement(double x, double y, Double orientation) {
+	public RacetrackElement(double x, double y) {
 		super(x, y);
-		orientation_inDegrees = orientation;
 	}
 
 	public Double getOrientation_inDegrees() 	{ return orientation_inDegrees;	}
@@ -37,14 +37,34 @@ public abstract class RacetrackElement extends Element {
 				y41 = -sinWidth + cosHeight;
 
 
-		vertexNorthWest = new Point2D.Double((position.x + x11), (position.y - y11));
-		vertexNorthEast = new Point2D.Double((position.x - x21), (position.y + y21));
-		vertexSouthWest = new Point2D.Double((position.x - x31), (position.y + y31));
-		vertexSouthEast = new Point2D.Double((position.x + x41), (position.y - y41));
+		vertexSouthWest = new Point2D.Double((position.x + x11), (position.y - y11));
+		System.out.println("R SW "+vertexSouthWest);
+		vertexNorthWest = new Point2D.Double((position.x - x21), (position.y + y21));
+		System.out.println("R NW "+vertexNorthWest);
+		vertexSouthEast = new Point2D.Double((position.x - x31), (position.y + y31));
+		System.out.println("R SE "+vertexSouthEast);
+		vertexNorthEast = new Point2D.Double((position.x + x41), (position.y - y41));
+		System.out.println("R NE "+vertexNorthEast);
+
+		//				double a = Math.sqrt((((double) getWidth())/2d * ((double) getWidth())/2d) + (((double) getHeight())/2d * ((double) getHeight())/2d));
+		//				double sin_gamma = (((double) getHeight())/2d) / a;
+		//				double gamma = Math.asin(sin_gamma);
+		//		
+		//				double ax = a * Math.cos(gamma);
+		//				double ay = a * Math.sin(gamma);
+		//		
+		//				vertexNorthWest = new Point2D.Double((position.x - ax), (position.y - ay));
+		//				vertexNorthEast = new Point2D.Double((position.x + ax), (position.y - ay));
+		//				vertexSouthWest = new Point2D.Double((position.x - ax), (position.y + ay));
+		//				vertexSouthEast = new Point2D.Double((position.x + ax), (position.y + ay));
 	}
 
 	public void drawGameObject(Graphics2D g2d) {
+		//		g2d.translate(position.x, position.y);
+		//		g2d.drawImage(image,AffineTransform.getRotateInstance(getOrientation_inRadian()), null);
+		//		g2d.drawImage(image, (int) position.x, (int) position.y, getWidth(), getHeight(), null);
+		g2d.translate(position.x, position.y);
 		g2d.rotate(getOrientation_inRadian());
-		g2d.drawImage(image, (int) position.x, (int) position.y, getWidth(), getHeight(), null);
+		g2d.drawImage(image, AffineTransform.getTranslateInstance(-getWidth()/2, -getHeight()/2), null);
 	}
 }
