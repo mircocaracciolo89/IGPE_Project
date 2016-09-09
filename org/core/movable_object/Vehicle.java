@@ -1,4 +1,4 @@
-package core.movable_object;
+package org.core.movable_object;
 
 import java.awt.Graphics2D;
 import java.awt.Image;

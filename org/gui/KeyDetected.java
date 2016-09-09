@@ -1,12 +1,12 @@
-package gui;
+package org.gui;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import core.GameManager;
-import core.movable_object.Vehicle.OnSteering;
-import core.movable_object.Vehicle.VehicleState;
-import gui.panels.GamePanel;
+import org.core.GameManager;
+import org.core.movable_object.Vehicle.OnSteering;
+import org.core.movable_object.Vehicle.VehicleState;
+import org.gui.panels.GamePanel;
 
 public class KeyDetected extends KeyAdapter {
 

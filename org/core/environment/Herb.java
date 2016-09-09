@@ -1,12 +1,12 @@
-package core.environment;
+package org.core.environment;
 
-import core.GameManager;
-import core.environment.racetrack.Racetrack;
-import core.movable_object.CarPlayer;
-import core.still_object.StillObject;
-import core.still_object.environment.EnvironmentElement;
-import gui.Loader;
-import gui.panels.GamePanel;
+import org.core.GameManager;
+import org.core.environment.racetrack.Racetrack;
+import org.core.movable_object.CarPlayer;
+import org.core.still_object.StillObject;
+import org.core.still_object.environment.EnvironmentElement;
+import org.gui.Loader;
+import org.gui.panels.GamePanel;
 
 import java.awt.Color;
 import java.awt.Graphics;

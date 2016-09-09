@@ -1,12 +1,12 @@
-package core.still_object.racetrack;
+package org.core.still_object.racetrack;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 
-import core.GameManager;
-import gui.Loader;
+import org.core.GameManager;
+import org.gui.Loader;
 
 public class Malus extends RacetrackElement {
 

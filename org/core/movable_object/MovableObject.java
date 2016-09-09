@@ -1,7 +1,7 @@
-package core.movable_object;
+package org.core.movable_object;
 
-import core.GameElement;
-import core.GameManager;
+import org.core.GameElement;
+import org.core.GameManager;
 
 public interface MovableObject extends GameElement {
 	

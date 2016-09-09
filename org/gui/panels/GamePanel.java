@@ -1,4 +1,4 @@
-package gui.panels;
+package org.gui.panels;
 
 import java.awt.BasicStroke;
 import java.awt.Dimension;
@@ -11,11 +11,11 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import core.GameManager;
-import core.environment.Environment;
-import core.movable_object.CarPlayer;
-import core.movable_object.Vehicle;
-import gui.Loader;
+import org.core.GameManager;
+import org.core.environment.Environment;
+import org.core.movable_object.CarPlayer;
+import org.core.movable_object.Vehicle;
+import org.gui.Loader;
 
 public class GamePanel extends JPanel {
 	private static final long serialVersionUID = 1L;

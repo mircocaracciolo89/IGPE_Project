@@ -1,9 +1,9 @@
-package gui;
+package org.gui;
 
-import gui.panels.GamePanel;
-import gui.panels.MenuPanel;
-import gui.panels.SelectCarPanel;
-import gui.panels.SelectRacetrackPanel;
+import org.gui.panels.GamePanel;
+import org.gui.panels.MenuPanel;
+import org.gui.panels.SelectCarPanel;
+import org.gui.panels.SelectRacetrackPanel;
 
 import java.awt.Image;
 import java.awt.event.WindowAdapter;
@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import core.GameManager;
+import org.core.GameManager;
 
 public class MainFrame extends JFrame {
 
@@ -43,11 +43,8 @@ public class MainFrame extends JFrame {
 
 		gameManager = new GameManager();
 
-		//		gamePanel = new GamePanel(/*this*/);
 
 		menuPanel = new MenuPanel(this);
-		//		selectRacetrackPanel = new SelectRacetrackPanel(this);
-		//		selectCarPanel = new SelectCarPanel(this);
 
 		setContentPane(menuPanel);
 		//setUndecorated(true);
@@ -153,9 +150,11 @@ public class MainFrame extends JFrame {
 
 		loader = new Loader();
 		if(loader.load()) {
+			System.out.println("ok");
 			MainFrame mainFrame = new MainFrame();
 			mainFrame.setVisible(true);
 		}
+		else System.err.println("error");
 
 	}
 

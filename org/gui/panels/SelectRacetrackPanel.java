@@ -1,4 +1,4 @@
-package gui.panels;
+package org.gui.panels;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -11,9 +11,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import core.GameManager;
-import gui.Loader;
-import gui.MainFrame;
+import org.core.GameManager;
+import org.gui.Loader;
+import org.gui.MainFrame;
 
 public class SelectRacetrackPanel extends JPanel {
 

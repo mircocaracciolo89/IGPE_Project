@@ -1,6 +1,6 @@
-package core.still_object.environment;
+package org.core.still_object.environment;
 
-import gui.Loader;
+import org.gui.Loader;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -8,7 +8,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 
-import core.GameManager;
+import org.core.GameManager;
 
 public class Stone extends EnvironmentElement {
 

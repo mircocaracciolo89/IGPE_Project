@@ -1,14 +1,14 @@
-package core.display;
+package org.core.display;
 
 import java.awt.Image;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
-import core.GameManager;
-import core.GameManager.GameState;
-import gui.ImageProvider;
-import gui.Loader;
-import gui.panels.GamePanel;
+import org.core.GameManager;
+import org.core.GameManager.GameState;
+import org.gui.ImageProvider;
+import org.gui.Loader;
+import org.gui.panels.GamePanel;
 
 
 public class Semaphore {//implements Runnable {

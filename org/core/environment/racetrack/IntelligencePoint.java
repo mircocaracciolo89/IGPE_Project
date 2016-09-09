@@ -1,8 +1,8 @@
-package core.environment.racetrack;
+package org.core.environment.racetrack;
 
 import java.awt.geom.Point2D;
 
-import core.movable_object.Vehicle.OnSteering;
+import org.core.movable_object.Vehicle.OnSteering;
 
 public class IntelligencePoint {
 

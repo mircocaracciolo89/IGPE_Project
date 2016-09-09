@@ -1,4 +1,4 @@
-package core;
+package org.core;
 
 import java.awt.Graphics2D;
 import java.awt.Image;

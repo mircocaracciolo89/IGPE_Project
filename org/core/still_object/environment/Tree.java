@@ -1,11 +1,11 @@
-package core.still_object.environment;
+package org.core.still_object.environment;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Point2D;
 
-import core.GameManager;
-import gui.Loader;
+import org.core.GameManager;
+import org.gui.Loader;
 
 public class Tree extends EnvironmentElement {
 

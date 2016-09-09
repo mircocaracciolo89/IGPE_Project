@@ -1,4 +1,4 @@
-package core.environment.racetrack;
+package org.core.environment.racetrack;
 
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
@@ -15,17 +15,17 @@ import java.util.StringTokenizer;
 
 import org.apache.commons.io.FileUtils;
 
-import core.movable_object.Vehicle.Direction;
-import core.movable_object.Vehicle.VehicleState;
-import core.still_object.StillObject;
-import core.still_object.environment.EnvironmentElement;
-import core.still_object.environment.Stone;
-import core.still_object.environment.Tree;
-import core.still_object.racetrack.Bonus;
-import core.still_object.racetrack.Malus;
-import core.still_object.racetrack.RacetrackElement;
-import gui.Loader;
-import gui.panels.GamePanel;
+import org.core.movable_object.Vehicle.Direction;
+import org.core.movable_object.Vehicle.VehicleState;
+import org.core.still_object.StillObject;
+import org.core.still_object.environment.EnvironmentElement;
+import org.core.still_object.environment.Stone;
+import org.core.still_object.environment.Tree;
+import org.core.still_object.racetrack.Bonus;
+import org.core.still_object.racetrack.Malus;
+import org.core.still_object.racetrack.RacetrackElement;
+import org.gui.Loader;
+import org.gui.panels.GamePanel;
 
 public class Racetrack {
 

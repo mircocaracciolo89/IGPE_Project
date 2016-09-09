@@ -1,11 +1,11 @@
-package core.display;
+package org.core.display;
 import java.awt.Graphics2D;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import core.GameManager;
+import org.core.GameManager;
 
 public class Stopwatch {
 	

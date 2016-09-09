@@ -1,14 +1,14 @@
-package core.still_object.racetrack;
+package org.core.still_object.racetrack;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 
-import core.GameManager;
-import core.movable_object.CarPlayer;
-import core.still_object.StillObject;
-import gui.panels.GamePanel;
+import org.core.GameManager;
+import org.core.movable_object.CarPlayer;
+import org.core.still_object.StillObject;
+import org.gui.panels.GamePanel;
 
 public abstract class RacetrackElement implements StillObject {
 	

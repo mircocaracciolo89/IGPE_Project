@@ -1,7 +1,7 @@
-package core.environment;
+package org.core.environment;
 
-import core.environment.racetrack.Racetrack;
-import core.still_object.environment.EnvironmentElement;
+import org.core.environment.racetrack.Racetrack;
+import org.core.still_object.environment.EnvironmentElement;
 
 import java.awt.Graphics2D;
 import java.awt.Image;

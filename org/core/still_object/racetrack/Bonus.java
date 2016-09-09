@@ -1,7 +1,7 @@
-package core.still_object.racetrack;
+package org.core.still_object.racetrack;
 
-import core.GameManager;
-import gui.Loader;
+import org.core.GameManager;
+import org.gui.Loader;
 
 
 public class Bonus extends RacetrackElement {

@@ -1,4 +1,4 @@
-package core;
+package org.core;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,12 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import core.display.*;
-import core.display.Semaphore.SemaphoreState;
-import core.environment.*;
-import core.movable_object.*;
-import core.movable_object.Vehicle.OnSteering;
-import gui.panels.GamePanel;
+import org.core.display.*;
+import org.core.display.Semaphore.SemaphoreState;
+import org.core.environment.*;
+import org.core.movable_object.*;
+import org.core.movable_object.Vehicle.OnSteering;
+import org.gui.panels.GamePanel;
 
 // PER LE COLLISIONI STUDIARE SEPARATING AXIS THEOREM "S.A.T."
 

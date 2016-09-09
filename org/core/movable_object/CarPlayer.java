@@ -1,4 +1,4 @@
-package core.movable_object;
+package org.core.movable_object;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -6,14 +6,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
-import core.GameManager;
-import core.GameManager.Border;
-import core.GameManager.BorderArea;
-import gui.Loader;
+import org.core.GameManager;
+import org.core.GameManager.Border;
+import org.core.GameManager.BorderArea;
+import org.gui.Loader;
 
 public class CarPlayer extends Vehicle {
 
-	private int score = 0;
 	protected static Point2D.Double translation;
 	protected Point2D.Double positionOnEnvironment;
 
@@ -40,8 +39,6 @@ public class CarPlayer extends Vehicle {
 
 	}
 
-	public void addScore(final int score) { this.score += score; }
-	public int getScore() { return this.score; }
 	public static Point2D.Double 	getTranslation() { return translation; }
 	
 	public Line2D.Double	getLeftLineOnEnvironment() 	{ return new Line2D.Double(vertexLeftBack.x + Math.abs(translation.x), vertexLeftBack.y + Math.abs(translation.y), vertexLeftFront.x + Math.abs(translation.x), vertexLeftFront.y + Math.abs(translation.y)); }

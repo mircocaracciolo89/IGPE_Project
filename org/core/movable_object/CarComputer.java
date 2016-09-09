@@ -1,4 +1,4 @@
-package core.movable_object;
+package org.core.movable_object;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -11,24 +11,17 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import core.GameManager;
-import core.GameManager.BorderArea;
-import gui.Loader;
-import gui.panels.GamePanel;
+import org.core.GameManager;
+import org.core.GameManager.BorderArea;
+import org.gui.Loader;
+import org.gui.panels.GamePanel;
 
 public class CarComputer extends Vehicle {
-	
-	
 	
 	Point2D.Double point_succ;
 	Double degrees_succ;
 	
-	
-	
-	
 	public static final int RANGE_POINT = 50;
-
-	private int score = 0;
 
 	public CarComputer(double x, double y, double startOrientation) {
 		super(x * GamePanel.SCALE, y * GamePanel.SCALE);
@@ -47,9 +40,6 @@ public class CarComputer extends Vehicle {
 		initialAcceleration = 5d;
 
 	}
-
-	public void addScore(final int score) { this.score += score; }
-	public int getScore() { return this.score; }
 
 	/******************************************************************************************************************/
 

@@ -1,10 +1,13 @@
-package gui;
+package org.gui;
 
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import javax.naming.LinkRef;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
@@ -44,10 +47,36 @@ public class Loader extends JComponent {
 		super();
 	}
 
-	public boolean load() {
+	public boolean load() throws MalformedURLException {
+//		imgBackground = 	tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/sfondo.jpg"));
+//		imgRacetrack1 = 	tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/Ita.png"));
+//		imgRacetrack2 = 	tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/Bra.png"));
+//		imgCar = 			tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/car.jpg"));
+//		imgCar1 = 			tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/car.png"));
+//		imgCar2 = 			tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/yellowCar2.png"));
+//		imgHerb = 			tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/herb.jpg"));
+//		imgButtonStart =	tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/quickStartChiaro.png"));
+//		imgButtonStart2 =	tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/QuickStartNuovo.png"));
+//		imgPauseImage = 	tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/pauseImage.png"));
+//		imgTree = 			tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/tree.png"));
+//		imgMultiplayer =	tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/multiplayerChiaro.png"));
+//		imgEditor = 		tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/editorChiaro.png"));
+//		imgButtonExit = 	tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/exitChiaro.png"));
+//		imgButtonExit2 = 	tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/ExitNuovo.png"));
+//		imgBra = 			tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/Bra.png"));
+//		imgIta = 			tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/Ita.png"));
+//		imgBackButton = 	tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/backButton.png"));
+//		imgBackButton2 =	tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/backButtonScuro.png"));
+//		
+//		imgSemaphoreStart = 	tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/pieno.png"));
+//		imgSemaphoreRed = 		tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/rosso.png"));
+//		imgSemaphoreOrange = 	tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/giallo.png"));
+//		imgSemaphoreGreen = 	tk.getImage( new URL("https://github.com/mircocaracciolo89/IGPE_Project/blob/master/img/verde.png"));
+		
+		
 		imgBackground = 	tk.getImage( "img"+File.separator+"sfondo.jpg");
 		imgRacetrack1 = 	tk.getImage( "img"+File.separator+"Ita.png");
-		imgRacetrack2 = 	tk.getImage(  "img"+File.separator+"Bra.png");
+		imgRacetrack2 = 	tk.getImage( "img"+File.separator+"Bra.png");
 		imgCar = 			tk.getImage( "img"+File.separator+"car.jpg");
 		imgCar1 = 			tk.getImage( "img"+File.separator+"car.png");
 		imgCar2 = 			tk.getImage( "img"+File.separator+"yellowCar2.png");

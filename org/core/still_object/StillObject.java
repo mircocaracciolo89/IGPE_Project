@@ -1,7 +1,7 @@
-package core.still_object;
+package org.core.still_object;
 
-import core.GameElement;
-import core.GameManager;
+import org.core.GameElement;
+import org.core.GameManager;
 
 public interface StillObject extends GameElement {
 	
