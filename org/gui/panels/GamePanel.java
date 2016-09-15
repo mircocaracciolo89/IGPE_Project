@@ -1,6 +1,7 @@
 package org.gui.panels;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -29,7 +30,7 @@ public class GamePanel extends JPanel {
 
 	private GameManager gameManager;
 
-	private Vehicle carPlayer;
+	private CarPlayer carPlayer;
 	private List<Vehicle> vehicles;
 	private Environment environment;
 

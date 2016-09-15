@@ -6,7 +6,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
-public abstract class Vehicle implements MovableObject {
+import org.core.GameManager;
+import org.core.GameManager.Border;
+
+public abstract class Vehicle extends MovableObject {
 
 	/******************* ENUM **********************************************************************************************/
 
@@ -58,6 +61,30 @@ public abstract class Vehicle implements MovableObject {
 		}
 	}
 
+	public enum VehicleStateOnRacetrack { 
+		UNDEFINED(0x0), ON_BONUS(0x1), ON_MALUS(0x2), OFF_TRACK(0X3);
+		private int format;
+		VehicleStateOnRacetrack (int format) {
+			this.format = format;
+		}
+
+		public static VehicleStateOnRacetrack fromInteger(int format) throws IllegalArgumentException {
+			for (VehicleStateOnRacetrack dir : values()) {
+				if(dir.format == format)
+					return dir;
+			}
+			throw new IllegalArgumentException();
+		}
+
+		public int toInteger() {
+			return format;
+		}
+
+		public static VehicleStateOnRacetrack getDefault() {
+			return UNDEFINED;
+		}
+	}
+
 	public enum Direction {
 		UNDEFINED(0x0), NORTH(0x1), SOUTH(0x2), EAST(0x3), WEST(0x4), NE(0x5), NW(0x6), SE(0x7), SW(0x8);
 		private int format;
@@ -79,6 +106,31 @@ public abstract class Vehicle implements MovableObject {
 
 		public static Direction getDefault() {
 			return UNDEFINED;
+		}
+
+	}
+
+	public enum DegreesRange {
+		PART_0(0x0), PART_1(0x1), PART_2(0x2), PART_3(0x3), PART_4(0x4), PART_5(0x5), PART_6(0x6), PART_7(0x7);
+		private int format;
+		DegreesRange (int format) {
+			this.format = format;
+		}
+
+		public static DegreesRange fromInteger(int format) throws IllegalArgumentException {
+			for (DegreesRange dir : values()) {
+				if(dir.format == format)
+					return dir;
+			}
+			throw new IllegalArgumentException();
+		}
+
+		public int toInteger() {
+			return format;
+		}
+
+		public static DegreesRange getDefault() {
+			return PART_0;
 		}
 
 	}
@@ -107,16 +159,16 @@ public abstract class Vehicle implements MovableObject {
 	protected Point2D.Double 	vertexRightFront;
 	protected Point2D.Double 	vertexLeftFront;
 
-	protected VehicleState 		state;
-	protected OnSteering 		onSteering;
-	protected Direction 		direction;
-
-	protected Boolean 			braking;
+	protected VehicleState 				state;
+	protected VehicleStateOnRacetrack	stateOnRacetrack;
+	protected OnSteering 				onSteering;
+	protected Direction 				direction;
+	protected Boolean 					braking;
 
 	/******************* CONSTRUCTOR **********************************************************************************************/
 
 	public Vehicle(double x, double y) {
-
+		
 		position = new Point2D.Double(x, y);
 
 		orientation_inDegrees = mass = maxSpeed = initialAcceleration = currentSpeed = steeringAngle = null;
@@ -131,7 +183,7 @@ public abstract class Vehicle implements MovableObject {
 
 		state = VehicleState.STOP;
 		onSteering = OnSteering.UNDEFINED;
-
+		stateOnRacetrack = VehicleStateOnRacetrack.UNDEFINED;
 		braking = false;
 
 	}
@@ -149,12 +201,25 @@ public abstract class Vehicle implements MovableObject {
 
 	public Double 			getMass() 						{ return mass; }
 	public Double 			getMaxSpeed() 					{ return maxSpeed; }
-	public Double 			getMaxSpeedBackwardsMarch() 	{ return maxSpeed - (maxSpeed * 0.8d); }
+	public Double 			getActualMaxSpeed() 			{ 
+		switch (stateOnRacetrack) {
+		case ON_BONUS:
+			return maxSpeed + (0.3d * maxSpeed);
+		case ON_MALUS:
+			return maxSpeed - (0.3d * maxSpeed);
+		case OFF_TRACK:
+			return maxSpeed - (0.5d * maxSpeed);
+		case UNDEFINED:
+		default:
+			return maxSpeed; 
+		}
+	}
+	public Double 			getMaxSpeedBackwardsMarch() 	{ return getActualMaxSpeed() - (getActualMaxSpeed() * 0.8d); }
 	public Double 			getInitialAcceleration() 		{ return initialAcceleration; }
 	public Double 			getActualInitialAcceleration() 	{ return initialAcceleration/mass; }
 	public Double 			getCurrentSpeed() 				{ return currentSpeed; } 
-	public Double 			getActualPercentageSpeed() 		{ return ((currentSpeed * 100) / maxSpeed); }
-	public Double 			getPercentageSpeedOf(double v)	{ return (maxSpeed * (v / 100d)); }
+	public Double 			getActualPercentageSpeed() 		{ return ((currentSpeed * 100) / getActualMaxSpeed()); }
+	public Double 			getPercentageSpeedOf(double v)	{ return (getActualMaxSpeed() * (v / 100d)); }
 
 	public Double 			getDeltaX()			{ return (currentSpeed * getVersors().x); }
 	public Double 			getDeltaY()			{ return (currentSpeed * getVersors().y); }
@@ -167,13 +232,35 @@ public abstract class Vehicle implements MovableObject {
 	public Double 			getSteeringAngle() 			{ return steeringAngle;	}
 	public Double 			getSteeringAngleInBraking() { return steeringAngle + (steeringAngle * 0.3d);	}
 
-	public Double			getPercentageAccelerationIncreaseForwardsMarch()	{ return (((maxSpeed * getActualInitialAcceleration())/(1000d * (currentGear * 2))) * currentSpeed); }
-	public Double			getPercentageAccelerationIncreaseBackwardsMarch()	{ return (((maxSpeed * getActualInitialAcceleration())/800d) * currentSpeed); }
-	public Double			getPercentageAccelerationDecrease()					{ return (((maxSpeed * getActualInitialAcceleration())/(300d * (currentGear * 2))) * currentSpeed); }
+	public Double			getPercentageAccelerationIncreaseForwardsMarch()	{ return (((getActualMaxSpeed() * getActualInitialAcceleration())/(1000d * (currentGear * 3))) * currentSpeed); }
+	public Double			getPercentageAccelerationIncreaseBackwardsMarch()	{ return (((getActualMaxSpeed() * getActualInitialAcceleration())/800d) * currentSpeed); }
+	public Double			getPercentageAccelerationDecrease()					{ return (((getActualMaxSpeed() * getActualInitialAcceleration())/(300d * (currentGear * 3))) * currentSpeed); }
 
-	public VehicleState 	getVehicleState() 	{ return state; }
-	public OnSteering 		getOnSteering() 	{ return onSteering; }
-	public Direction		getDirection()		{ return direction; }
+	public VehicleState 			getVehicleState() 		{ return state; }
+	public VehicleStateOnRacetrack 	getStateOnRacetrack() 	{ return stateOnRacetrack; }
+	public OnSteering 				getOnSteering() 		{ return onSteering; }
+	public Direction				getDirection()			{ return direction; }
+	public DegreesRange				getDegreesRange(double orientation_inDegrees)		{
+
+		if (orientation_inDegrees < 45d && orientation_inDegrees >= 0d)
+			return DegreesRange.PART_0;
+		if (orientation_inDegrees < 90d && orientation_inDegrees >= 45)
+			return DegreesRange.PART_1;
+		if (orientation_inDegrees < 135d && orientation_inDegrees >= 90d)
+			return DegreesRange.PART_2;
+		if (orientation_inDegrees < 180d && orientation_inDegrees >= 135d)
+			return DegreesRange.PART_3;
+		if (orientation_inDegrees < (-135d) && orientation_inDegrees >= (-180d))
+			return DegreesRange.PART_4;
+		if (orientation_inDegrees < (-90d) && orientation_inDegrees >= (-135d))
+			return DegreesRange.PART_5;
+		if (orientation_inDegrees < (-45d) && orientation_inDegrees >= (-90d))
+			return DegreesRange.PART_6;
+		if (orientation_inDegrees < 0d && orientation_inDegrees >= (-45d))
+			return DegreesRange.PART_7;
+
+		return null;
+	}
 
 	public Boolean			isForwardsMarch() 	{ return (state == VehicleState.ACCELERATION_FORWARD || state == VehicleState.DECELERATION_FORWARD); }
 	public Boolean			isBackwardsMarch() 	{ return (state == VehicleState.ACCELERATION_BACKWARD || state == VehicleState.DECELERATION_BACKWARD); }
@@ -194,7 +281,7 @@ public abstract class Vehicle implements MovableObject {
 	public void 	setPosition(Point2D.Double p) 		{ position = p; }
 	public void 	setPositionX(Double x) 				{ position.x = x; }
 	public void 	setPositionY(Double y) 				{ position.y = y; }
-	public void 	setOrientation_inDegrees(Double o) 	{ orientation_inDegrees = o; }
+
 	public void 	setMass(Double m) 					{ mass = m; }
 
 	public void 	setMaxSpeed(Double m) 				{ maxSpeed = m; }
@@ -207,27 +294,33 @@ public abstract class Vehicle implements MovableObject {
 
 	public void 	setSteeringAngle(Double f)	{ steeringAngle = f; }
 
-	public void 	setVehicleState(VehicleState state) 	{ this.state = state; }
-	public void 	setOnSteering(OnSteering onSteering) 	{ this.onSteering = onSteering; }
-
-	public void 	setBraking(boolean value) 				{ braking = value; }
+	public void 	setVehicleState(VehicleState state) 				{ this.state = state; }
+	public void 	setOnSteering(OnSteering onSteering) 				{ this.onSteering = onSteering; }
+	public void 	setStateOnRacetrack(VehicleStateOnRacetrack value)	{ this.stateOnRacetrack = value; }
+	public void 	setBraking(boolean value) 							{ braking = value; }
 
 	/******************* SERVICE METHODS **********************************************************************************************/
-	
-	protected void updatePositionXForwards(){
-		position.x += getDeltaX();
-	}
 
-	protected void updatePositionYForwards(){
-		position.y += getDeltaY();
-	}
+	protected void updatePositionXForwards(){ position.x += getDeltaX(); }
+	protected void updatePositionYForwards(){ position.y += getDeltaY(); }
 
-	protected void updatePositionXBackwards(){
-		position.x -= getDeltaX();
-	}
+	protected void updatePositionXBackwards(){ position.x -= getDeltaX(); }
+	protected void updatePositionYBackwards(){ position.y -= getDeltaY(); }
 
-	protected void updatePositionYBackwards(){
-		position.y -= getDeltaY();
+	public void 	fixOrientation_inDegrees() 	{
+
+//		if (this instanceof CarPlayer)
+//			System.out.println("orientation prima "+orientation_inDegrees);
+
+
+			if (orientation_inDegrees < 0d && orientation_inDegrees < (-180d))
+				orientation_inDegrees += 360d;
+			else if (orientation_inDegrees > 0d && orientation_inDegrees > 180d)
+				orientation_inDegrees -= 360d;
+			
+
+//		if (this instanceof CarPlayer)
+//			System.out.println("orientation dopo "+orientation_inDegrees);
 	}
 
 	public void updateDirection() {
@@ -286,61 +379,21 @@ public abstract class Vehicle implements MovableObject {
 	}
 
 
-//	protected void updateSteeringForwards() {
-//
-//		Double newOrientation = orientation_inDegrees;
-//
-//		switch (onSteering) {
-//		case LEFT:
-//			newOrientation -= braking ? getSteeringAngleInBraking() : steeringAngle;
-//			break;
-//		case RIGHT:
-//			newOrientation += braking ? getSteeringAngleInBraking() : steeringAngle;
-//			break;
-//		case UNDEFINED:
-//		default:
-//			break;
-//		}
-//
-//		setOrientation_inDegrees(newOrientation);
-//
-//	}
-//
-//	protected void updateSteeringBackwards() {
-//
-//		Double newOrientation = orientation_inDegrees;
-//
-//		switch (onSteering) {
-//		case LEFT:
-//			newOrientation += braking ? getSteeringAngleInBraking() : steeringAngle;
-//			break;
-//		case RIGHT:
-//			newOrientation -= braking ? getSteeringAngleInBraking() : steeringAngle;
-//			break;
-//		case UNDEFINED:
-//		default:
-//			break;
-//		}
-//
-//		setOrientation_inDegrees(newOrientation);
-//
-//	}
-
 	protected void updateGears() {
 
-		if (getActualInitialAcceleration() <= currentSpeed && currentSpeed < getPercentageSpeedOf(30d)) {
+		if (currentSpeed < getPercentageSpeedOf(20d)) {
 			setGear(1);
 		}
-		if (getPercentageSpeedOf(30d) <= currentSpeed && currentSpeed < getPercentageSpeedOf(50d)) {
+		if (getPercentageSpeedOf(20d) <= currentSpeed && currentSpeed < getPercentageSpeedOf(40d)) {
 			setGear(2);
 		}
-		if (getPercentageSpeedOf(50d) <= currentSpeed && currentSpeed < getPercentageSpeedOf(70d)) {
+		if (getPercentageSpeedOf(40d) <= currentSpeed && currentSpeed < getPercentageSpeedOf(70d)) {
 			setGear(3);
 		}
-		if (getPercentageSpeedOf(70d) <= currentSpeed && currentSpeed < getPercentageSpeedOf(90d)) {
+		if (getPercentageSpeedOf(70d) <= currentSpeed && currentSpeed < getPercentageSpeedOf(95d)) {
 			setGear(4);
 		}
-		if (getPercentageSpeedOf(90d) <= currentSpeed && currentSpeed <= getMaxSpeed()) {
+		if (getPercentageSpeedOf(95d) <= currentSpeed) {
 			setGear(5);
 		}
 
@@ -348,9 +401,163 @@ public abstract class Vehicle implements MovableObject {
 
 	/******************************************************************************************************************/
 
+	protected void updatePositionForwards() {
+
+		switch (GameManager.intersectBorder(this)) {
+
+		case UNDEFINED:
+			updatePositionXForwards();
+			updatePositionYForwards();
+			break;
+
+		case TOP:
+			updatePositionXForwards();
+
+			switch (getDirection()) {
+			case SOUTH:
+			case SE:
+			case SW:
+				updatePositionYForwards();
+				break;
+			default:
+				break;
+			}
+			break;
+
+		case RIGHT:
+			updatePositionYForwards();
+
+			switch (getDirection()) {
+			case WEST:
+			case NW:
+			case SW:
+				updatePositionXForwards();
+				break;
+			default:
+				break;
+			}
+
+			break;
+
+		case BOTTOM:
+			updatePositionXForwards();
+
+			switch (getDirection()) {
+			case NORTH:
+			case NW:
+			case NE:
+				updatePositionYForwards();
+				break;
+
+			default:
+				break;
+			}
+
+			break;
+
+		case LEFT:
+			updatePositionYForwards();
+
+			switch (getDirection()) {
+			case EAST:
+			case NE:
+			case SE:
+				updatePositionXForwards();
+				break;
+
+			default:
+				break;
+			}
+
+			break;
+
+		default:
+			break;
+		}
+
+	}
+
+	protected void updatePositionBackwards() {
+
+
+		switch (GameManager.intersectBorder(this)) {
+
+		case UNDEFINED:
+			updatePositionXBackwards();
+			updatePositionYBackwards();
+			break;
+
+		case BOTTOM:
+			updatePositionXBackwards();
+
+			switch (getDirection()) {
+			case SOUTH:
+			case SE:
+			case SW:
+				updatePositionYBackwards();
+				break;
+			default:
+				break;
+			}
+			break;
+
+		case LEFT:
+			updatePositionYBackwards();
+
+			switch (getDirection()) {
+			case WEST:
+			case NW:
+			case SW:
+				updatePositionXBackwards();
+				break;
+			default:
+				break;
+			}
+
+			break;
+
+		case TOP:
+			updatePositionXBackwards();
+
+			switch (getDirection()) {
+			case NORTH:
+			case NW:
+			case NE:
+				updatePositionYBackwards();
+				break;
+
+			default:
+				break;
+			}
+
+			break;
+
+		case RIGHT:
+			updatePositionYBackwards();
+
+			switch (getDirection()) {
+			case EAST:
+			case NE:
+			case SE:
+				updatePositionXBackwards();
+				break;
+
+			default:
+				break;
+			}
+
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	/******************************************************************************************************************/
+
 	protected void inAcceleration() {
 
-		if (currentSpeed == 0d)
+		if (currentSpeed <= 2d)
 			currentSpeed = getActualInitialAcceleration();
 
 		if (braking && currentSpeed >= getActualInitialAcceleration())
@@ -369,7 +576,6 @@ public abstract class Vehicle implements MovableObject {
 			this.state = VehicleState.STOP;
 			currentSpeed = 0d;
 		}
-
 	}
 
 }

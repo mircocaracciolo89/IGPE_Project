@@ -10,11 +10,11 @@ import org.gui.panels.GamePanel;
 
 public class KeyDetected extends KeyAdapter {
 
-	GamePanel gamePanel;
-	MainFrame mainFrame;
+//	GamePanel gamePanel;
+//	MainFrame mainFrame;
 
-	public KeyDetected(GamePanel gamePanel) {
-		this.gamePanel = gamePanel;
+	public KeyDetected() {
+//		this.gamePanel = gamePanel;
 	}
 
 	public void keyPressed(final KeyEvent e) {
@@ -31,34 +31,32 @@ public class KeyDetected extends KeyAdapter {
 
 		case KeyEvent.VK_UP:
 
-			if (gamePanel.getGameManager().getCarPlayer().getVehicleState() == VehicleState.ACCELERATION_BACKWARD || gamePanel.getGameManager().getCarPlayer().getVehicleState() == VehicleState.DECELERATION_BACKWARD)
-				break;			
+			if (GameManager.getCarPlayer().getVehicleState() == VehicleState.ACCELERATION_BACKWARD || GameManager.getCarPlayer().getVehicleState() == VehicleState.DECELERATION_BACKWARD)
+				GameManager.getCarPlayer().setBraking(true);
 			else
-				gamePanel.getGameManager().getCarPlayer().setVehicleState(VehicleState.ACCELERATION_FORWARD);
-
+				GameManager.getCarPlayer().setVehicleState(VehicleState.ACCELERATION_FORWARD);
 			break;
 
 		case KeyEvent.VK_DOWN:
 
-			if (gamePanel.getGameManager().getCarPlayer().getVehicleState() == VehicleState.ACCELERATION_FORWARD || gamePanel.getGameManager().getCarPlayer().getVehicleState() == VehicleState.DECELERATION_FORWARD)
-				break;
-			else 
-				gamePanel.getGameManager().getCarPlayer().setVehicleState(VehicleState.ACCELERATION_BACKWARD);
-
+			if (GameManager.getCarPlayer().getVehicleState() == VehicleState.ACCELERATION_FORWARD || GameManager.getCarPlayer().getVehicleState() == VehicleState.DECELERATION_FORWARD)
+				GameManager.getCarPlayer().setBraking(true);
+			else
+				GameManager.getCarPlayer().setVehicleState(VehicleState.ACCELERATION_BACKWARD);
 			break;
 
 		case KeyEvent.VK_LEFT:
-			gamePanel.getGameManager().getCarPlayer().setOnSteering(OnSteering.LEFT);
+			GameManager.getCarPlayer().setOnSteering(OnSteering.LEFT);
 
 			break;
 
 		case KeyEvent.VK_RIGHT:
-			gamePanel.getGameManager().getCarPlayer().setOnSteering(OnSteering.RIGHT);
+			GameManager.getCarPlayer().setOnSteering(OnSteering.RIGHT);
 
 			break;
 
 		case KeyEvent.VK_SPACE:
-			gamePanel.getGameManager().getCarPlayer().setBraking(true);
+			GameManager.getCarPlayer().setBraking(true);
 
 			break;
 
@@ -71,29 +69,32 @@ public class KeyDetected extends KeyAdapter {
 
 		case KeyEvent.VK_UP:
 
-			if (gamePanel.getGameManager().getCarPlayer().getVehicleState() == VehicleState.ACCELERATION_FORWARD)
-				gamePanel.getGameManager().getCarPlayer().setVehicleState(VehicleState.DECELERATION_FORWARD);
+			if (GameManager.getCarPlayer().getVehicleState() == VehicleState.ACCELERATION_FORWARD)
+				GameManager.getCarPlayer().setVehicleState(VehicleState.DECELERATION_FORWARD);
 
+			GameManager.getCarPlayer().setBraking(false);
 			break;
 
 		case KeyEvent.VK_DOWN:
-			if (gamePanel.getGameManager().getCarPlayer().getVehicleState() == VehicleState.ACCELERATION_BACKWARD)
-				gamePanel.getGameManager().getCarPlayer().setVehicleState(VehicleState.DECELERATION_BACKWARD);
+			if (GameManager.getCarPlayer().getVehicleState() == VehicleState.ACCELERATION_BACKWARD)
+				GameManager.getCarPlayer().setVehicleState(VehicleState.DECELERATION_BACKWARD);
+
+			GameManager.getCarPlayer().setBraking(false);
 
 			break;
 
 		case KeyEvent.VK_LEFT:
-			gamePanel.getGameManager().getCarPlayer().setOnSteering(OnSteering.getDefault());
+			GameManager.getCarPlayer().setOnSteering(OnSteering.getDefault());
 
 			break;
 
 		case KeyEvent.VK_RIGHT:
-			gamePanel.getGameManager().getCarPlayer().setOnSteering(OnSteering.getDefault());
+			GameManager.getCarPlayer().setOnSteering(OnSteering.getDefault());
 
 			break;
 
 		case KeyEvent.VK_SPACE:
-			gamePanel.getGameManager().getCarPlayer().setBraking(false);
+			GameManager.getCarPlayer().setBraking(false);
 
 			break;
 

@@ -45,7 +45,7 @@ public class MainFrame extends JFrame {
 		menuPanel = new MenuPanel(this);
 
 		setContentPane(menuPanel);
-		setUndecorated(true);
+//		setUndecorated(true);
 		pack();
 
 	}
@@ -89,7 +89,7 @@ public class MainFrame extends JFrame {
 			setLocationRelativeTo(null);
 
 			gamePanel.requestFocusInWindow();
-			gamePanel.addKeyListener(new KeyDetected(gamePanel));
+			gamePanel.addKeyListener(new KeyDetected());
 
 			pack();
 			start();

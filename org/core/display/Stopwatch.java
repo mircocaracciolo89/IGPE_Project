@@ -1,14 +1,11 @@
 package org.core.display;
-import java.awt.Graphics2D;
-import java.util.Date;
-import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import org.core.GameManager;
 
 public class Stopwatch {
-	
+
 	GameManager gameManager;
 
 	static float interval;
@@ -20,17 +17,17 @@ public class Stopwatch {
 
 	public Stopwatch(GameManager gameManager) {
 		this.gameManager = gameManager;
-		
+
 		timer = new Timer();
-		interval = 5f;
-		start = true;
+		interval = gameManager.getTime();
 		delay = 0;
 		period = 10;
 		decreaseValue = 1;
 	}
-	
-	private static float getDecreaseInterval() { return (((float) period) / 1000f) * decreaseValue; }
-	public void setDecreaseValue(int value) { decreaseValue = value; }
+
+	private static float 	getDecreaseInterval()  { return ( ((float) period) / 1000f) * decreaseValue; }
+	public void 			setDecreaseValue(int value) 	{ decreaseValue = value; }
+	public void				increaseInterval()				{ interval += 5f; }
 
 	public void startTimer() {
 		timer.scheduleAtFixedRate(new TimerTask() {
@@ -43,11 +40,9 @@ public class Stopwatch {
 	}
 
 	private static final float setInterval() {
-		if (interval <= getDecreaseInterval())
+		if (interval <= getDecreaseInterval()) {
 			timer.cancel();
-		if (start) {
-			start = false;
-			return interval;
+			return 0f;
 		}
 		else
 			return interval -= getDecreaseInterval();
