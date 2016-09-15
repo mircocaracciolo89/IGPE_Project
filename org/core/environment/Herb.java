@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -43,6 +44,7 @@ public class Herb implements Environment {
 
 		bufferedImageEnvironment = new BufferedImage(GameManager.WIDTH * GamePanel.SCALE, GameManager.HEIGHT * GamePanel.SCALE, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = bufferedImageEnvironment.createGraphics();
+		AffineTransform oldXform = g2d.getTransform();
 
 		// BACKGROUND
 
@@ -91,8 +93,27 @@ public class Herb implements Environment {
 
 		// STILL OBJECTS
 
-		for (StillObject item : racetrack.getStillObjects())
-			item.drawElement(g2d);
+		g2d.setStroke(GamePanel.stroke);
+		for (StillObject item : racetrack.getStillObjects()) {
+			g2d.setTransform(oldXform);
+			item.drawGameObject(g2d);
+			
+			g2d.setColor(Color.BLUE);
+			g2d.setTransform(oldXform);
+			g2d.draw(item.getLeftLine());
+			
+			g2d.setColor(Color.BLACK);
+			g2d.setTransform(oldXform);
+			g2d.draw(item.getRightLine());
+			
+			g2d.setColor(Color.ORANGE);
+			g2d.setTransform(oldXform);
+			g2d.draw(item.getBottomLine());
+			
+			g2d.setColor(Color.GRAY);
+			g2d.setTransform(oldXform);
+			g2d.draw(item.getTopLine());
+		}
 
 		//		try {
 		//			ImageIO.write(bi, "PNG", new File("img"+File.separator+"imageEnvironment.png"));
@@ -118,8 +139,13 @@ public class Herb implements Environment {
 			g2d.draw(line2d);
 		}
 		
-		for (StillObject item : racetrack.getStillObjects())
-			item.drawElement(g2d);
+//		for (StillObject item : racetrack.getStillObjects())
+//			item.drawElement(g2d);
+
+		// STILL OBJECTS
+
+				for (StillObject item : racetrack.getStillObjects())
+					item.drawGameObject(g2d);
 
 	}
 }

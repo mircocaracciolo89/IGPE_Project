@@ -431,7 +431,7 @@ public class GameManager {
 		new Thread() {
 			public void run() {
 
-				semaphore.start(runnable);
+//				semaphore.start(runnable);
 				stopwatch.startTimer();
 
 				while (running) {

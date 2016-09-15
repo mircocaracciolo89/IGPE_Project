@@ -66,13 +66,13 @@ public class GamePanel extends JPanel {
 		// CAR
 
 		g2d.setTransform(oldXform);
-		carPlayer.drawElement(g2d);
+		carPlayer.drawGameObject(g2d);
 
 		// VEHICLES
 		
 		for (Vehicle vehicle : vehicles) {
 			g2d.setTransform(oldXform);
-			vehicle.drawElement(g2d);
+			vehicle.drawGameObject(g2d);
 		}
 		
 		// INFO

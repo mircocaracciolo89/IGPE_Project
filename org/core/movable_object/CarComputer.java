@@ -43,7 +43,7 @@ public class CarComputer extends Vehicle {
 
 	/******************************************************************************************************************/
 
-	public void drawElement(Graphics2D g2d) {
+	public void drawGameObject(Graphics2D g2d) {
 		g2d.translate(position.x + CarPlayer.getTranslation().x, position.y + CarPlayer.getTranslation().y);
 		g2d.rotate(getOrientation_inRadian());
 		g2d.drawImage(getImage(),AffineTransform.getTranslateInstance(-getWidth()/2, -getHeight()/2), null);
