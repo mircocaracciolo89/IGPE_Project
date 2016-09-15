@@ -65,8 +65,8 @@ public class Racetrack {
 	private GeneralPath pathIn;
 
 	private List<int[]> 		ranges;
-	private List<Direction[]> 	directions;
-	private List<GeneralPath> 	racetrackParts;
+	private static List<Direction[]> 	directions;
+	private static List<GeneralPath> 	racetrackParts;
 
 	private List<StillObject> 		stillObjects;
 	private static List<IntelligencePoint> intelligencePoints;
@@ -384,7 +384,7 @@ public class Racetrack {
 	}
 
 	public List<StillObject> getStillObjects() { return stillObjects; }
-	public List<GeneralPath> getRacetrackParts() { return racetrackParts; }
+	public static List<GeneralPath> getRacetrackParts() { return racetrackParts; }
 
 	public GeneralPath getPathOut() { return pathOut; }
 	public GeneralPath getPathIn() { return pathIn; }
@@ -392,7 +392,7 @@ public class Racetrack {
 	public List<Point2D.Double> getCoordsOut() { return coordsOut; }
 	public List<Point2D.Double> getCoordsIn() { return coordsIn; }
 
-	public List<Direction[]> getDirections() { return directions; }
+	public static List<Direction[]> getDirections() { return directions; }
 	public List<Line2D.Double> getCheckpoints() { return checkpoints; }
 
 	public Point2D.Double getStartPointCarPlayer() { return startPointCarPlayer; }

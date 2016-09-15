@@ -2,6 +2,7 @@ package org.core.movable_object;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,13 +58,6 @@ public class CarComputer extends Vehicle {
 
 	private void updateSteering(Double value, Double nextDegree) {
 
-<<<<<<< HEAD
-=======
-
-		//System.out.println("");
-
-
->>>>>>> origin/master
 		if (orientation_inDegrees < 0d && nextDegree < 0d) {
 			onSteering = (orientation_inDegrees > nextDegree) ? OnSteering.RIGHT : OnSteering.LEFT;
 		}
@@ -73,7 +67,6 @@ public class CarComputer extends Vehicle {
 		else {
 
 			DegreesRange nextRange = getDegreesRange(nextDegree);
-			System.out.println(nextRange);
 
 			switch (getDegreesRange(orientation_inDegrees)) {
 
@@ -127,7 +120,6 @@ public class CarComputer extends Vehicle {
 				break;
 
 			case PART_3:
-				System.out.println("OK");
 				switch (nextRange) {
 				case PART_7:
 					onSteering = OnSteering.fromInteger((int) (Math.random()*2));
@@ -215,23 +207,11 @@ public class CarComputer extends Vehicle {
 
 		switch (onSteering) {
 		case RIGHT:
-<<<<<<< HEAD
 			orientation_inDegrees += value;
 			break;
 
 		case LEFT:
 			orientation_inDegrees -= value;
-=======
-						System.out.println("RIGHT");
-			if (orientation_inDegrees < nextDegree)
-				orientation_inDegrees += value;
-			break;
-
-		case LEFT:
-						System.out.println("LEFT");
-			if (orientation_inDegrees > nextDegree)
-				orientation_inDegrees -= value;
->>>>>>> origin/master
 			break;
 
 		case UNDEFINED:
@@ -250,25 +230,60 @@ public class CarComputer extends Vehicle {
 
 		updateVertex();
 		updateDirection();
-		fixOrientation_inDegrees();
+//		fixOrientation_inDegrees();
 
 		GameManager.isOnTrack(this);
 
 		IntelligencePoint nextIntelligencePoint = intelligencePoints.get(indexOfIntelligencePoint);
 
 		Double distance = Math.sqrt(Math.pow((nextIntelligencePoint.getPoint().x - position.x), 2) + Math.pow((nextIntelligencePoint.getPoint().y - position.y), 2));
-		
 
-		
-//		distance = Math.sqrt(Math.pow((intelligencePoints.get(indexOfIntelligencePoint).getPoint().x - position.x), 2) + Math.pow((intelligencePoints.get(indexOfIntelligencePoint).getPoint().y - position.y), 2));
-		
-		for (IntelligencePoint intelligencePoint : intelligencePoints) {
-			Double tmp = Math.sqrt(Math.pow((intelligencePoint.getPoint().x - position.x), 2) + Math.pow((intelligencePoint.getPoint().y - position.y), 2));
-			if (tmp < distance) {
-				distance = tmp;
-				indexOfIntelligencePoint = intelligencePoints.indexOf(intelligencePoint);
-			}
-		}
+
+
+		//		distance = Math.sqrt(Math.pow((intelligencePoints.get(indexOfIntelligencePoint).getPoint().x - position.x), 2) + Math.pow((intelligencePoints.get(indexOfIntelligencePoint).getPoint().y - position.y), 2));
+
+//		for (IntelligencePoint intelligencePoint : intelligencePoints) {
+//
+//			boolean candidated = true;
+//			switch (getDirection()) {
+//			case NORTH:
+//				if (intelligencePoint.getPoint().y > position.y)
+//					candidated = false;
+//				break;
+//			case SOUTH:
+//				if (intelligencePoint.getPoint().y < position.y)
+//					candidated = false;
+//				break;
+//			case NE:
+//				if (intelligencePoint.getPoint().y > position.y && intelligencePoint.getPoint().x < position.x)
+//					candidated = false;
+//				break;
+//			case NW:
+//				if (intelligencePoint.getPoint().y > position.y && intelligencePoint.getPoint().x > position.x)
+//					candidated = false;
+//				break;
+//			case SE:
+//				if (intelligencePoint.getPoint().y < position.y && intelligencePoint.getPoint().x < position.x)
+//					candidated = false;
+//				break;
+//			case SW:
+//				if (intelligencePoint.getPoint().y > position.y && intelligencePoint.getPoint().x > position.x)
+//					candidated = false;
+//				break;
+//			default:
+//				break;
+//			}
+//
+//			if (candidated) {
+//				Double tmp = Math.sqrt(Math.pow((intelligencePoint.getPoint().x - position.x), 2) + Math.pow((intelligencePoint.getPoint().y - position.y), 2));
+//				if (tmp < distance) {
+//					distance = tmp;
+//					indexOfIntelligencePoint = intelligencePoints.indexOf(intelligencePoint);
+//				}
+//			}
+//
+//		}
+
 		System.out.println(this.toString()+" index: "+indexOfIntelligencePoint);
 
 		Double iterations = distance/currentSpeed;
@@ -283,7 +298,7 @@ public class CarComputer extends Vehicle {
 			indexOfIntelligencePoint = (indexOfIntelligencePoint + 1) % intelligencePoints.size();
 			//			System.out.println(this.toString()+" index: "+indexOfIntelligencePoint);
 		}
-		
+		fixOrientation_inDegrees();
 		updateSteering(value, nextIntelligencePoint.getDegree());
 
 		switch (this.state) {
