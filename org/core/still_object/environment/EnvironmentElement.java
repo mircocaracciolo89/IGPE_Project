@@ -4,13 +4,14 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
+import org.core.GameManager.Border;
 import org.core.still_object.Element;
 
 public abstract class EnvironmentElement extends Element {
-
+	
 	public EnvironmentElement(double x, double y) {
 		super(x, y);
-	}	
+	}
 	
 	public void setVertex() {
 		double a = Math.sqrt((((double) getWidth())/2d * ((double) getWidth())/2d) + (((double) getHeight())/2d * ((double) getHeight())/2d));

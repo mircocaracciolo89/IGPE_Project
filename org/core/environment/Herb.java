@@ -1,7 +1,9 @@
 package org.core.environment;
 
 import org.core.GameManager;
+import org.core.environment.racetrack.IntelligencePoint;
 import org.core.environment.racetrack.Racetrack;
+import org.core.movable_object.CarComputer;
 import org.core.movable_object.CarPlayer;
 import org.core.still_object.StillObject;
 import org.core.still_object.environment.EnvironmentElement;
@@ -14,6 +16,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -97,23 +100,22 @@ public class Herb implements Environment {
 		for (StillObject item : racetrack.getStillObjects()) {
 			g2d.setTransform(oldXform);
 			item.drawGameObject(g2d);
-			
-			g2d.setColor(Color.BLUE);
-			g2d.setTransform(oldXform);
-			g2d.draw(item.getLeftLine());
-			
-			g2d.setColor(Color.BLACK);
-			g2d.setTransform(oldXform);
-			g2d.draw(item.getRightLine());
-			
-			g2d.setColor(Color.ORANGE);
-			g2d.setTransform(oldXform);
-			g2d.draw(item.getBottomLine());
-			
-			g2d.setColor(Color.GRAY);
-			g2d.setTransform(oldXform);
-			g2d.draw(item.getTopLine());
 		}
+		
+		// INTELLIGENCE POINTS
+		
+		for (IntelligencePoint intPoint : Racetrack.getIntelligencePoints()) {
+			g2d.setTransform(oldXform);
+			g2d.drawString(""+Racetrack.getIntelligencePoints().indexOf(intPoint), (int) intPoint.getPoint().getX(), (int) intPoint.getPoint().getY());
+			g2d.drawString(""+intPoint.getDegree(), (int) intPoint.getPoint().getX()+10, (int) intPoint.getPoint().getY()+10);
+			g2d.draw(intPoint.getBounds());
+			
+//			CarComputer car = new CarComputer(new Point2D.Double(intPoint.getPoint().getX(), intPoint.getPoint().getY()), intPoint.getDegree());
+//			car.drawGameObject(g2d);
+			
+		}
+		
+		
 
 		//		try {
 		//			ImageIO.write(bi, "PNG", new File("img"+File.separator+"imageEnvironment.png"));

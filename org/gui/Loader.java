@@ -96,7 +96,7 @@ public class Loader extends JComponent {
 		imgSemaphoreOrange = 		tk.getImage( "img"+File.separator+"Semaphore"+File.separator+"yellowSemaphore.png");
 		imgSemaphoreGreen = 		tk.getImage( "img"+File.separator+"Semaphore"+File.separator+"greenSemaphore.png");
 
-		imgBonus = 					tk.getImage( "img"+File.separator+"Bonus"+File.separator+"imgBonus.gif");
+		imgBonus = 					tk.getImage( "img"+File.separator+"Bonus"+File.separator+"imgBonus.png");
 		imgMalus = 					tk.getImage( "img"+File.separator+"Malus"+File.separator+"imgMalus1.png");
 
 		mt.addImage(imgBackgroundMenu, 1);
@@ -127,8 +127,10 @@ public class Loader extends JComponent {
 		mt.addImage(imgSemaphoreRed, 26);
 		mt.addImage(imgSemaphoreOrange, 27);
 		mt.addImage(imgSemaphoreGreen, 28);
+		mt.addImage(imgBonus, 29);
+		mt.addImage(imgMalus, 30);
 
-		for(int i = 0; i < 28; i++)
+		for(int i = 1; i <= 30; i++)
 		{
 			try {
 				mt.waitForID(i);

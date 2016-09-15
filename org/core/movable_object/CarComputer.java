@@ -12,23 +12,22 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.core.GameManager;
+import org.core.GameManager.Border;
 import org.core.GameManager.BorderArea;
+import org.core.environment.racetrack.IntelligencePoint;
+import org.core.environment.racetrack.Racetrack;
+import org.core.movable_object.Vehicle.VehicleState;
 import org.gui.Loader;
 import org.gui.panels.GamePanel;
 
 public class CarComputer extends Vehicle {
 
-	Point2D.Double point_succ;
-	Double degrees_succ;
-
-	public static final int RANGE_POINT = 50;
+	private List<IntelligencePoint> intelligencePoints;
+	private int indexOfIntelligencePoint;
 
 	public CarComputer(Point2D.Double startPoint, double startOrientation) {
 		super(startPoint.x * GamePanel.SCALE, startPoint.y * GamePanel.SCALE);
 
-		point_succ = new Point2D.Double();
-		degrees_succ = null;
-		
 		image = Loader.imgYellowCarComputer;
 		height = image.getHeight(null);
 		width = image.getWidth(null);
@@ -36,9 +35,14 @@ public class CarComputer extends Vehicle {
 		mass = 1d;
 
 		orientation_inDegrees = startOrientation;
+		fixOrientation_inDegrees();
 		maxSpeed = 10d;
 		initialAcceleration = 5d;
 
+		intelligencePoints = Racetrack.getIntelligencePoints();
+		indexOfIntelligencePoint = 0;
+
+		state = VehicleState.ACCELERATION_FORWARD;
 	}
 
 	/******************************************************************************************************************/
@@ -51,20 +55,169 @@ public class CarComputer extends Vehicle {
 
 	/******************************************************************************************************************/
 
-	private void updateSteering(Double value, Double degrees_succ) {
+	private void updateSteering(Double value, Double nextDegree) {
+
+
+		System.out.println("");
+
+
+		if (orientation_inDegrees < 0d && nextDegree < 0d) {
+			onSteering = (orientation_inDegrees > nextDegree) ? OnSteering.RIGHT : OnSteering.LEFT;
+		}
+		else if (orientation_inDegrees > 0d && nextDegree > 0d)  {
+			onSteering = (orientation_inDegrees < nextDegree) ? OnSteering.RIGHT : OnSteering.LEFT;
+		}
+		else {
+
+			DegreesRange nextRange = getDegreesRange(nextDegree);
+
+			switch (getDegreesRange(orientation_inDegrees)) {
+
+			case PART_0:
+				switch (nextRange) {
+				case PART_4:
+					onSteering = OnSteering.fromInteger((int) (Math.random()*2));
+					break;
+				case PART_5:
+				case PART_6:
+				case PART_7:
+					onSteering = OnSteering.LEFT;
+					break;
+				default:
+					break;
+				}
+				break;
+
+			case PART_1:
+				switch (nextRange) {
+				case PART_5:
+					onSteering = OnSteering.fromInteger((int) (Math.random()*2));
+					break;
+				case PART_6:
+				case PART_7:
+					onSteering = OnSteering.LEFT;
+					break;
+				case PART_4:
+					onSteering = OnSteering.RIGHT;
+					break;
+				default:
+					break;
+				}
+				break;
+
+			case PART_2:
+				switch (nextRange) {
+				case PART_6:
+					onSteering = OnSteering.fromInteger((int) (Math.random()*2));
+					break;
+				case PART_7:
+					onSteering = OnSteering.LEFT;
+					break;
+				case PART_4:
+				case PART_5:
+					onSteering = OnSteering.RIGHT;
+					break;
+				default:
+					break;
+				}
+				break;
+
+			case PART_3:
+				switch (nextRange) {
+				case PART_7:
+					onSteering = OnSteering.fromInteger((int) (Math.random()*2));
+					break;
+				case PART_4:
+				case PART_5:
+				case PART_6:
+					onSteering = OnSteering.RIGHT;
+					break;
+				default:
+					break;
+				}
+				break;
+
+			case PART_4:
+				switch (nextRange) {
+				case PART_0:
+					onSteering = OnSteering.fromInteger((int) (Math.random()*2));
+					break;
+				case PART_1:
+				case PART_2:
+				case PART_3:
+					onSteering = OnSteering.LEFT;
+					break;
+				default:
+					break;
+				}
+				break;
+
+			case PART_5:
+				switch (nextRange) {
+				case PART_1:
+					onSteering = OnSteering.fromInteger((int) (Math.random()*2));
+					break;
+				case PART_2:
+				case PART_3:
+					onSteering = OnSteering.LEFT;
+					break;
+				case PART_0:
+					onSteering = OnSteering.RIGHT;
+					break;
+				default:
+					break;
+				}
+				break;
+
+			case PART_6:
+				switch (nextRange) {
+				case PART_2:
+					onSteering = OnSteering.fromInteger((int) (Math.random()*2));
+					break;
+				case PART_3:
+					onSteering = OnSteering.LEFT;
+					break;
+				case PART_0:
+				case PART_1:
+					onSteering = OnSteering.RIGHT;
+					break;
+				default:
+					break;
+				}
+				break;
+
+			case PART_7:
+				switch (nextRange) {
+				case PART_3:
+					onSteering = OnSteering.fromInteger((int) (Math.random()*2));
+					break;
+				case PART_0:
+				case PART_1:
+				case PART_2:
+					onSteering = OnSteering.RIGHT;
+					break;
+				default:
+					break;
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
+
+
 
 		switch (onSteering) {
 		case RIGHT:
-			if (orientation_inDegrees < degrees_succ)
+			//			System.out.println("RIGHT");
+			if (orientation_inDegrees < nextDegree)
 				orientation_inDegrees += value;
 			break;
 
 		case LEFT:
-			System.out.println("ENtrat");
-			System.out.println("deg in "+degrees_succ);
-			System.out.println("val in "+value);
-
-			if (orientation_inDegrees > degrees_succ)
+			//			System.out.println("LEFT");
+			if (orientation_inDegrees > nextDegree)
 				orientation_inDegrees -= value;
 			break;
 
@@ -72,6 +225,8 @@ public class CarComputer extends Vehicle {
 		default:
 			break;
 		}
+
+		//		fixOrientation_inDegrees();
 
 	}
 
@@ -82,126 +237,64 @@ public class CarComputer extends Vehicle {
 
 		updateVertex();
 		updateDirection();
+		fixOrientation_inDegrees();
 
-		Point2D.Double a = new Point2D.Double(810d * GamePanel.SCALE, 160d * GamePanel.SCALE);
-		Point2D.Double b = new Point2D.Double(920d * GamePanel.SCALE, 160d * GamePanel.SCALE);
-		Point2D.Double c = new Point2D.Double(1005d * GamePanel.SCALE, 230d * GamePanel.SCALE);
-		Point2D.Double d = new Point2D.Double(1110d * GamePanel.SCALE, 350d * GamePanel.SCALE);
+		IntelligencePoint nextIntelligencePoint = intelligencePoints.get(indexOfIntelligencePoint);
 
-		Map<Point2D.Double, OnSteering> map = new HashMap<>();
-
-		map.put(a, OnSteering.LEFT);
-		map.put(b, OnSteering.RIGHT);
-		map.put(c, OnSteering.RIGHT);
-		map.put(d, OnSteering.UNDEFINED);
-
-
-		//		
-		//		for (Map.Entry<Point2D.Double, OnSteering> entry : map.entrySet()) {
-		//			entry.
-		//		}
-
-
-
-
-
-		if (position.x == 650d * GamePanel.SCALE  && position.y == 140d * GamePanel.SCALE) {
-			this.state = VehicleState.ACCELERATION_FORWARD;
-			point_succ = a;
-			onSteering = OnSteering.LEFT;
-			degrees_succ = 0d;
-		}
-
-		Double distance = Math.sqrt( ((point_succ.x - position.x) * (point_succ.x - position.x)) + ((point_succ.y - position.y) * (point_succ.y - position.y)) );
+		Double distance = Math.sqrt( ((nextIntelligencePoint.getPoint().x - position.x) * (nextIntelligencePoint.getPoint().x - position.x)) + ((nextIntelligencePoint.getPoint().y - position.y) * (nextIntelligencePoint.getPoint().y - position.y)) );
 		Double iterations = distance/currentSpeed;
 		Double value = orientation_inDegrees/iterations;
 
-		updateSteering(value, degrees_succ);
+
+		//		System.out.println(this.toString()+" currentDegrees: "+orientation_inDegrees);
+
+//		if (orientation_inDegrees != 70d)
+//			updateSteering(1d, 70d);
+
+		//		System.out.println(this.toString()+"index out: "+indexOfIntelligencePoint);
 
 
+		//		System.out.println(this.toString()+" distance: "+distance);
+		//		System.out.println(this.toString()+" iteration: "+iterations);
+		//		System.out.println(this.toString()+" value: "+value);
+		//		System.out.println(this.toString()+" nextDegrees: "+nextIntelligencePoint.getDegree());
 
 
+				if (orientation_inDegrees != nextIntelligencePoint.getDegree())
+					updateSteering(value, nextIntelligencePoint.getDegree());
+		
+				if ((nextIntelligencePoint.getBounds().contains(vertexLeftBack))
+						|| (nextIntelligencePoint.getBounds().contains(vertexRightBack))
+						|| (nextIntelligencePoint.getBounds().contains(vertexLeftFront))
+						|| (nextIntelligencePoint.getBounds().contains(vertexRightFront)) ) {
+		
+					//			indexOfIntelligencePoint += (indexOfIntelligencePoint + 1) % 25;
+					indexOfIntelligencePoint++;
+					System.out.println(this.toString()+" index: "+indexOfIntelligencePoint);
+				}
 
 
-
-
-
-
-
-		//		if (position.x == 810d * GamePanel.SCALE)
-		//			setOrientation_inDegrees(0.98d);
-		//
-		//		if (position.x >= 920d * GamePanel.SCALE)
-		//			setOrientation_inDegrees(30d);
-
-		//		if (right) {
-		//			setOrientation_inDegrees(orientation_inDegrees + 1d);
-		//		}
 
 		switch (this.state) {
 		case ACCELERATION_FORWARD:
-			if (currentSpeed == 0d)
-				currentSpeed = getActualInitialAcceleration();
+			inAcceleration();
 
 			updateGears();
 
-			updatePositionXForwards();
-			updatePositionYForwards();
+			updatePositionForwards();
 
-			if (currentSpeed < maxSpeed)
-				currentSpeed += getPercentageAccelerationIncreaseForwardsMarch();
-			else
-				currentSpeed = maxSpeed;
+			if (GameManager.intersectBorder(this) == Border.UNDEFINED) {
+				if (currentSpeed < getActualMaxSpeed())
+					currentSpeed += getPercentageAccelerationIncreaseForwardsMarch();
+				else
+					currentSpeed = getActualMaxSpeed();
+			} else {
+				currentSpeed = 2d;
+				updatePositionBackwards();
+			}
 
-			inAcceleration();
 			break;
 
-			//		case ACCELERATION_BACKWARD:
-			//			if (currentSpeed == 0d)
-			//				currentSpeed = getActualInitialAcceleration();
-			//
-			//			updateSteeringBackwards();
-			//
-			//			if (GameManager.getActualBorder() != Border.UNDEFINED)
-			//				updateVehicleOnBorderBackwards();
-			//			else
-			//				updatePositionBackwards();
-			//
-			//			if (GameManager.intersectBorders(this) == GameManager.NO_INTERSECT) {
-			//				if (currentSpeed < getMaxSpeedBackwardsMarch())
-			//					currentSpeed += getPercentageAccelerationIncreaseBackwardsMarch();
-			//				else
-			//					currentSpeed = getMaxSpeedBackwardsMarch();
-			//			} else {
-			//				currentSpeed = 0d;
-			//			}
-			//			inAcceleration();
-			//			break;
-			//
-			//		case DECELERATION_FORWARD:
-			//			updateSteeringForwards();
-			//			updateGears();
-			//
-			//			if (GameManager.getActualBorder() != Border.UNDEFINED)
-			//				updateVehicleOnBorderForwards();
-			//			else
-			//				updatePositionForwards();
-			//
-			//			if (currentSpeed > getActualInitialAcceleration())
-			//				currentSpeed -= getPercentageAccelerationIncreaseForwardsMarch();
-			//			inDeceleraition();
-			//			break;
-			//
-			//		case DECELERATION_BACKWARD:
-			//			if (GameManager.getActualBorder() != Border.UNDEFINED)
-			//				updateVehicleOnBorderBackwards();
-			//			else
-			//				updatePositionBackwards();
-			//
-			//			if (currentSpeed > getActualInitialAcceleration())
-			//				currentSpeed -= getPercentageAccelerationIncreaseBackwardsMarch();
-			//			inDeceleraition();
-			//			break;
 		case STOP:
 		default:
 			break;
