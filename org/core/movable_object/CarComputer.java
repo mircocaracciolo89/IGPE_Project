@@ -37,7 +37,7 @@ public class CarComputer extends Vehicle {
 		orientation_inDegrees = startOrientation;
 		fixOrientation_inDegrees();
 		maxSpeed = 10d;
-		initialAcceleration = 5d;
+		initialAcceleration = 3.5d;
 
 		intelligencePoints = Racetrack.getIntelligencePoints();
 		indexOfIntelligencePoint = 0;
@@ -57,6 +57,13 @@ public class CarComputer extends Vehicle {
 
 	private void updateSteering(Double value, Double nextDegree) {
 
+<<<<<<< HEAD
+=======
+
+		//System.out.println("");
+
+
+>>>>>>> origin/master
 		if (orientation_inDegrees < 0d && nextDegree < 0d) {
 			onSteering = (orientation_inDegrees > nextDegree) ? OnSteering.RIGHT : OnSteering.LEFT;
 		}
@@ -66,6 +73,7 @@ public class CarComputer extends Vehicle {
 		else {
 
 			DegreesRange nextRange = getDegreesRange(nextDegree);
+			System.out.println(nextRange);
 
 			switch (getDegreesRange(orientation_inDegrees)) {
 
@@ -119,6 +127,7 @@ public class CarComputer extends Vehicle {
 				break;
 
 			case PART_3:
+				System.out.println("OK");
 				switch (nextRange) {
 				case PART_7:
 					onSteering = OnSteering.fromInteger((int) (Math.random()*2));
@@ -206,11 +215,23 @@ public class CarComputer extends Vehicle {
 
 		switch (onSteering) {
 		case RIGHT:
+<<<<<<< HEAD
 			orientation_inDegrees += value;
 			break;
 
 		case LEFT:
 			orientation_inDegrees -= value;
+=======
+						System.out.println("RIGHT");
+			if (orientation_inDegrees < nextDegree)
+				orientation_inDegrees += value;
+			break;
+
+		case LEFT:
+						System.out.println("LEFT");
+			if (orientation_inDegrees > nextDegree)
+				orientation_inDegrees -= value;
+>>>>>>> origin/master
 			break;
 
 		case UNDEFINED:
