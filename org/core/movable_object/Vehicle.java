@@ -234,7 +234,10 @@ public abstract class Vehicle extends MovableObject {
 
 	public Double			getPercentageAccelerationIncreaseForwardsMarch()	{ return (((getActualMaxSpeed() * getActualInitialAcceleration())/(1000d * (currentGear * 3))) * currentSpeed); }
 	public Double			getPercentageAccelerationIncreaseBackwardsMarch()	{ return (((getActualMaxSpeed() * getActualInitialAcceleration())/800d) * currentSpeed); }
-	public Double			getPercentageAccelerationDecrease()					{ return (((getActualMaxSpeed() * getActualInitialAcceleration())/(300d * (currentGear * 3))) * currentSpeed); }
+	public Double			getPercentageAccelerationDecrease()					{ 
+		double divisor = braking ? 200d : 300d;
+		return (((getActualMaxSpeed() * getActualInitialAcceleration())/(divisor * (currentGear * 3))) * currentSpeed);
+	}
 
 	public VehicleState 			getVehicleState() 		{ return state; }
 	public VehicleStateOnRacetrack 	getStateOnRacetrack() 	{ return stateOnRacetrack; }
@@ -307,20 +310,25 @@ public abstract class Vehicle extends MovableObject {
 	protected void updatePositionXBackwards(){ position.x -= getDeltaX(); }
 	protected void updatePositionYBackwards(){ position.y -= getDeltaY(); }
 
-	public void 	fixOrientation_inDegrees() 	{
-
-//		if (this instanceof CarPlayer)
-//			System.out.println("orientation prima "+orientation_inDegrees);
-
+	public void fixOrientation_inDegrees() 	{
 
 			if (orientation_inDegrees < 0d && orientation_inDegrees < (-180d))
 				orientation_inDegrees += 360d;
 			else if (orientation_inDegrees > 0d && orientation_inDegrees > 180d)
 				orientation_inDegrees -= 360d;
 			
-
-//		if (this instanceof CarPlayer)
-//			System.out.println("orientation dopo "+orientation_inDegrees);
+	}
+	
+	public void fixCurrentSpeedInAccelerationForwards() {
+		if (GameManager.intersectBorder(this) == Border.UNDEFINED) {
+			if (currentSpeed < getActualMaxSpeed())
+				currentSpeed += getPercentageAccelerationIncreaseForwardsMarch();
+			else
+				currentSpeed = getActualMaxSpeed();
+		} else {
+			currentSpeed = 2d;
+			updatePositionBackwards();
+		}
 	}
 
 	public void updateDirection() {
@@ -560,7 +568,7 @@ public abstract class Vehicle extends MovableObject {
 		if (currentSpeed <= 2d)
 			currentSpeed = getActualInitialAcceleration();
 
-		if (braking && currentSpeed >= getActualInitialAcceleration())
+		if (braking)
 			currentSpeed -= getPercentageAccelerationDecrease();
 
 	}
@@ -577,5 +585,7 @@ public abstract class Vehicle extends MovableObject {
 			currentSpeed = 0d;
 		}
 	}
+	
+	
 
 }

@@ -118,7 +118,7 @@ public class GameManager {
 
 	protected static Graphics g;
 
-	private static Environment 	 environment;
+	public static Environment 	 environment;
 	private static CarPlayer 	 carPlayer;
 	private static List<Vehicle> vehicles;
 
@@ -128,11 +128,11 @@ public class GameManager {
 
 	private Semaphore semaphore;
 
-	private boolean isNewLap;
-	private int 	lapCounter;
+	public boolean isNewLap;
+	public int 	lapCounter;
 	private boolean running;
 
-	private static int indexCheckpointNumber;
+	public static int indexCheckpointNumber;
 	private static Stopwatch stopwatch;
 	private float  time;
 
@@ -357,16 +357,6 @@ public class GameManager {
 		g2d.drawString(String.format("TIME REMAINING: %1$.3f", Math.abs(time)), 50, 100);
 		g2d.setColor(Color.WHITE);
 
-		if (isCorrectDirection(carPlayer) && intersectCheckpoint(carPlayer)) {
-			indexCheckpointNumber = (indexCheckpointNumber + 1) % environment.getRacetrack().getCheckpoints().size();
-			if (indexCheckpointNumber == 1) isNewLap = false;
-		}
-
-		if (intersectStartLine(carPlayer) && !isNewLap) {
-			lapCounter++;
-			isNewLap = true;
-		}
-
 		if (running == false)
 			g2d.drawString("GAME OVER", 600, 400);
 
@@ -498,9 +488,9 @@ public class GameManager {
 			else if(vehicle.getVertexLeftBack().y >= (GameManager.HEIGHT ) || vehicle.getVertexLeftFront().y >= (GameManager.HEIGHT )
 					|| vehicle.getVertexRightBack().y >= (GameManager.HEIGHT ) || vehicle.getVertexRightFront().y >= (GameManager.HEIGHT ))
 				border = Border.BOTTOM;
-			
+
 		} else {
-			
+
 			if(vehicle.getVertexLeftBack().x <= 0d || vehicle.getVertexLeftFront().x <= 0d 
 					|| vehicle.getVertexRightBack().x <= 0d || vehicle.getVertexRightFront().x <= 0d)
 				border = Border.LEFT;
@@ -518,8 +508,8 @@ public class GameManager {
 				border = Border.BOTTOM;
 
 		}
-		
-		
+
+
 		Border b = intersectBetweenElements(vehicle);
 		if (b == Border.UNDEFINED)
 			return border;
@@ -556,15 +546,14 @@ public class GameManager {
 		new Thread() {
 			public void run() {
 
-								//semaphore.start(runnable);
+				//semaphore.start(runnable);
 				stopwatch.startTimer();
 
 				while (running) {
 
 					if(GameManager.paused == false) { 
 
-						intersectBetweenVehicles();
-						//						intersectBetweenElements();
+						//						intersectBetweenVehicles();
 
 						carPlayer.update(gameManager);
 						for (Vehicle vehicle : vehicles) {

@@ -57,10 +57,6 @@ public class CarComputer extends Vehicle {
 
 	private void updateSteering(Double value, Double nextDegree) {
 
-
-		System.out.println("");
-
-
 		if (orientation_inDegrees < 0d && nextDegree < 0d) {
 			onSteering = (orientation_inDegrees > nextDegree) ? OnSteering.RIGHT : OnSteering.LEFT;
 		}
@@ -210,15 +206,11 @@ public class CarComputer extends Vehicle {
 
 		switch (onSteering) {
 		case RIGHT:
-			//			System.out.println("RIGHT");
-			if (orientation_inDegrees < nextDegree)
-				orientation_inDegrees += value;
+			orientation_inDegrees += value;
 			break;
 
 		case LEFT:
-			//			System.out.println("LEFT");
-			if (orientation_inDegrees > nextDegree)
-				orientation_inDegrees -= value;
+			orientation_inDegrees -= value;
 			break;
 
 		case UNDEFINED:
@@ -239,59 +231,48 @@ public class CarComputer extends Vehicle {
 		updateDirection();
 		fixOrientation_inDegrees();
 
+		GameManager.isOnTrack(this);
+
 		IntelligencePoint nextIntelligencePoint = intelligencePoints.get(indexOfIntelligencePoint);
 
-		Double distance = Math.sqrt( ((nextIntelligencePoint.getPoint().x - position.x) * (nextIntelligencePoint.getPoint().x - position.x)) + ((nextIntelligencePoint.getPoint().y - position.y) * (nextIntelligencePoint.getPoint().y - position.y)) );
+		Double distance = Math.sqrt(Math.pow((nextIntelligencePoint.getPoint().x - position.x), 2) + Math.pow((nextIntelligencePoint.getPoint().y - position.y), 2));
+		
+
+		
+//		distance = Math.sqrt(Math.pow((intelligencePoints.get(indexOfIntelligencePoint).getPoint().x - position.x), 2) + Math.pow((intelligencePoints.get(indexOfIntelligencePoint).getPoint().y - position.y), 2));
+		
+		for (IntelligencePoint intelligencePoint : intelligencePoints) {
+			Double tmp = Math.sqrt(Math.pow((intelligencePoint.getPoint().x - position.x), 2) + Math.pow((intelligencePoint.getPoint().y - position.y), 2));
+			if (tmp < distance) {
+				distance = tmp;
+				indexOfIntelligencePoint = intelligencePoints.indexOf(intelligencePoint);
+			}
+		}
+		System.out.println(this.toString()+" index: "+indexOfIntelligencePoint);
+
 		Double iterations = distance/currentSpeed;
 		Double value = orientation_inDegrees/iterations;
 
 
-		//		System.out.println(this.toString()+" currentDegrees: "+orientation_inDegrees);
+		if ((nextIntelligencePoint.getBounds().contains(vertexLeftBack))
+				|| (nextIntelligencePoint.getBounds().contains(vertexRightBack))
+				|| (nextIntelligencePoint.getBounds().contains(vertexLeftFront))
+				|| (nextIntelligencePoint.getBounds().contains(vertexRightFront)) ) {
 
-//		if (orientation_inDegrees != 70d)
-//			updateSteering(1d, 70d);
-
-		//		System.out.println(this.toString()+"index out: "+indexOfIntelligencePoint);
-
-
-		//		System.out.println(this.toString()+" distance: "+distance);
-		//		System.out.println(this.toString()+" iteration: "+iterations);
-		//		System.out.println(this.toString()+" value: "+value);
-		//		System.out.println(this.toString()+" nextDegrees: "+nextIntelligencePoint.getDegree());
-
-
-				if (orientation_inDegrees != nextIntelligencePoint.getDegree())
-					updateSteering(value, nextIntelligencePoint.getDegree());
+			indexOfIntelligencePoint = (indexOfIntelligencePoint + 1) % intelligencePoints.size();
+			//			System.out.println(this.toString()+" index: "+indexOfIntelligencePoint);
+		}
 		
-				if ((nextIntelligencePoint.getBounds().contains(vertexLeftBack))
-						|| (nextIntelligencePoint.getBounds().contains(vertexRightBack))
-						|| (nextIntelligencePoint.getBounds().contains(vertexLeftFront))
-						|| (nextIntelligencePoint.getBounds().contains(vertexRightFront)) ) {
-		
-					//			indexOfIntelligencePoint += (indexOfIntelligencePoint + 1) % 25;
-					indexOfIntelligencePoint++;
-					System.out.println(this.toString()+" index: "+indexOfIntelligencePoint);
-				}
-
-
+		updateSteering(value, nextIntelligencePoint.getDegree());
 
 		switch (this.state) {
 		case ACCELERATION_FORWARD:
 			inAcceleration();
-
 			updateGears();
 
 			updatePositionForwards();
 
-			if (GameManager.intersectBorder(this) == Border.UNDEFINED) {
-				if (currentSpeed < getActualMaxSpeed())
-					currentSpeed += getPercentageAccelerationIncreaseForwardsMarch();
-				else
-					currentSpeed = getActualMaxSpeed();
-			} else {
-				currentSpeed = 2d;
-				updatePositionBackwards();
-			}
+			fixCurrentSpeedInAccelerationForwards();
 
 			break;
 

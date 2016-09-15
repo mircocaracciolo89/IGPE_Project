@@ -20,7 +20,7 @@ public class CarPlayer extends Vehicle {
 
 	public CarPlayer(Point2D.Double startPoint, Point2D.Double startTranslation, Double startOrientation, Image img) {
 		super(startPoint.x, startPoint.y);
-		
+
 		//		translation = new Point2D.Double(0d, 0d);
 		//		translation = new Point2D.Double(-2300d, 0d);
 		translation = startTranslation;
@@ -93,12 +93,12 @@ public class CarPlayer extends Vehicle {
 		case LEFT:
 			orientation_inDegrees -= braking ? getSteeringAngleInBraking() : steeringAngle;
 			break;
-		
+
 		case RIGHT:
 			orientation_inDegrees += braking ? getSteeringAngleInBraking() : steeringAngle;
-			
+
 			break;
-		
+
 		case UNDEFINED:
 		default:
 			break;
@@ -109,20 +109,20 @@ public class CarPlayer extends Vehicle {
 	protected void updateSteeringBackwards() {
 
 		switch (onSteering) {
-		
+
 		case LEFT:
 			orientation_inDegrees += braking ? getSteeringAngleInBraking() : steeringAngle;
 			break;
-		
+
 		case RIGHT:
 			orientation_inDegrees -= braking ? getSteeringAngleInBraking() : steeringAngle;
 			break;
-		
+
 		case UNDEFINED:
 		default:
 			break;
 		}
-		
+
 	}
 
 	/******************************************************************************************************************/
@@ -258,6 +258,17 @@ public class CarPlayer extends Vehicle {
 
 	public void update(GameManager gameManager) {
 
+		if (GameManager.isCorrectDirection(this) && GameManager.intersectCheckpoint(this)) {
+			GameManager.indexCheckpointNumber = (GameManager.indexCheckpointNumber + 1) % GameManager.environment.getRacetrack().getCheckpoints().size();
+			if (GameManager.indexCheckpointNumber == 1) gameManager.isNewLap = false;
+		}
+
+		if (GameManager.intersectStartLine(this) && !gameManager.isNewLap) {
+			gameManager.lapCounter++;
+			gameManager.isNewLap = true;
+		}
+
+
 		updateVertex();
 		updateDirection();
 		fixOrientation_inDegrees();
@@ -273,15 +284,7 @@ public class CarPlayer extends Vehicle {
 			else 
 				updatePositionForwards();
 
-			if (GameManager.intersectBorder(this) == Border.UNDEFINED) {
-				if (currentSpeed < getActualMaxSpeed())
-					currentSpeed += getPercentageAccelerationIncreaseForwardsMarch();
-				else
-					currentSpeed = getActualMaxSpeed();
-			} else {
-				currentSpeed = 2d;
-				updatePositionBackwards();
-			}
+			fixCurrentSpeedInAccelerationForwards();
 
 			break;
 
