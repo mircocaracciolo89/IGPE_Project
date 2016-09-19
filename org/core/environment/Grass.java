@@ -1,9 +1,7 @@
 package org.core.environment;
 
 import org.core.GameManager;
-import org.core.environment.racetrack.IntelligencePoint;
 import org.core.environment.racetrack.Racetrack;
-import org.core.movable_object.CarComputer;
 import org.core.movable_object.CarPlayer;
 import org.core.still_object.StillObject;
 import org.core.still_object.environment.EnvironmentElement;
@@ -11,37 +9,41 @@ import org.gui.Loader;
 import org.gui.panels.GamePanel;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.imageio.ImageIO;
+public class Grass implements Environment {
 
-public class Herb implements Environment {
+	/******************* VARIABLES **********************************************************************************************/
 
 	private Image imageBackgroud;
 	private final List<EnvironmentElement> elements;
 	private Racetrack racetrack;
 	BufferedImage bufferedImageEnvironment;
 
-	public Herb(File racetrackFile) throws IOException {
-		imageBackgroud = Loader.imgBackGroundEnvironment;
+	/******************* CONSTRUCTOR **********************************************************************************************/
+
+	public Grass(File racetrackFile) throws IOException {
+		imageBackgroud = Loader.imgBackgroundEnvironment;
 		elements = new ArrayList<EnvironmentElement>();
 		racetrack = new Racetrack(racetrackFile);
 		createImageEnvironmet();
 	}
 
+	/******************* GETTERS **********************************************************************************************/
+
 	public Image getImageBackground() { return imageBackgroud; }
 	public List<EnvironmentElement> getElements() { return elements; }
 	public Racetrack getRacetrack() { return racetrack; }
+
+	/******************* SERVICE METHODS **********************************************************************************************/
 
 	public void createImageEnvironmet() {
 
@@ -96,34 +98,33 @@ public class Herb implements Environment {
 
 		// STILL OBJECTS
 
-		g2d.setStroke(GamePanel.stroke);
+		g2d.setStroke(GamePanel.strokeTest);
 		for (StillObject item : racetrack.getStillObjects()) {
 			g2d.setTransform(oldXform);
 			item.drawGameObject(g2d);
 		}
-		
-		// INTELLIGENCE POINTS
-		
-		for (IntelligencePoint intPoint : Racetrack.getIntelligencePoints()) {
-			g2d.setTransform(oldXform);
-			g2d.drawString(""+Racetrack.getIntelligencePoints().indexOf(intPoint), (int) intPoint.getPoint().getX(), (int) intPoint.getPoint().getY());
-			g2d.drawString(""+intPoint.getDegree(), (int) intPoint.getPoint().getX()+10, (int) intPoint.getPoint().getY()+10);
-			g2d.draw(intPoint.getBounds());
-			
-//			CarComputer car = new CarComputer(new Point2D.Double(intPoint.getPoint().getX(), intPoint.getPoint().getY()), intPoint.getDegree());
-//			car.drawGameObject(g2d);
-			
-		}
-		
-		
 
-		//		try {
-		//			ImageIO.write(bi, "PNG", new File("img"+File.separator+"imageEnvironment.png"));
-		//		} catch (IOException e) {
-		//			e.printStackTrace();
+		// INTELLIGENCE POINTS
+		//		g2d.setColor(Color.WHITE);
+		//		g2d.setStroke(GamePanel.strokeTest);
+		//		for (IntelligencePoint intPoint : racetrack.getIntelligencePoints()) {
+		//			g2d.setTransform(oldXform);
+		//			g2d.drawString(""+racetrack.getIntelligencePoints().indexOf(intPoint), (int) intPoint.getPoint().getX(), (int) intPoint.getPoint().getY());
+		//			g2d.drawString(""+intPoint.getDegree(), (int) intPoint.getPoint().getX()+10, (int) intPoint.getPoint().getY()+10);
+		//			g2d.drawString(""+intPoint.getNextIndexPoint(), (int) intPoint.getPoint().getX()+20, (int) intPoint.getPoint().getY()+20);
+		//			g2d.draw(intPoint.getBounds());
+		//
 		//		}
 
+
+		//				try {
+		//					ImageIO.write(bufferedImageEnvironment, "PNG", new File("img"+File.separator+"imageEnvironment.png"));
+		//				} catch (IOException e) {
+		//					e.printStackTrace();
+		//				}
+
 	}
+
 
 	public void drawEnvironment(Graphics2D g2d) {
 
@@ -140,14 +141,5 @@ public class Herb implements Environment {
 			else g2d.setColor(Color.YELLOW);
 			g2d.draw(line2d);
 		}
-		
-//		for (StillObject item : racetrack.getStillObjects())
-//			item.drawElement(g2d);
-
-		// STILL OBJECTS
-
-				for (StillObject item : racetrack.getStillObjects())
-					item.drawGameObject(g2d);
-
 	}
 }

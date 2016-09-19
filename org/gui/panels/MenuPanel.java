@@ -20,12 +20,15 @@ import org.gui.MainFrame;
 public class MenuPanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
+	
+	/******************* VARIABLES **********************************************************************************************/
+
 	Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 	Image img;
 	
+	/******************* CONSTRUCTOR **********************************************************************************************/
 
 	public MenuPanel(MainFrame mainFrame) throws IOException {
-		
 		
 		ImageIcon icona = new ImageIcon( Loader.imgButtonStart);
 		ImageIcon icona2 = new ImageIcon( Loader.imgButtonStartFocus);
@@ -37,7 +40,6 @@ public class MenuPanel extends JPanel {
 		quickStart.setIcon(icona);
 		quickStart.setRolloverIcon(icona2);
 		quickStart.setPressedIcon(icona2);
-		
 		
 		ImageIcon icona3 = new ImageIcon( Loader.imgButtonEditor);
 		JButton editorButton = new JButton(icona3);
@@ -66,11 +68,7 @@ public class MenuPanel extends JPanel {
 		exitButton.setRolloverIcon(icona8);
 		exitButton.setPressedIcon(icona8);
 		
-		
 		quickStart.addActionListener(e -> mainFrame.selectRacetrack());
-		
-		multiplayerButton.addActionListener(e -> mainFrame.setupNetworkGame());
-		
 		exitButton.addActionListener(e -> System.exit(0));
 		
 		setLayout(new GridBagLayout());
@@ -91,8 +89,9 @@ public class MenuPanel extends JPanel {
 		constraints.gridy = 4;
 		
 	}
+	
+	/******************* SERVICE METHODS **********************************************************************************************/
 
-	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(Loader.imgBackgroundMenu,0,0,null);

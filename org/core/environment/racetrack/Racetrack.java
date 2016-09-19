@@ -25,6 +25,8 @@ import org.gui.panels.GamePanel;
 
 public class Racetrack {
 
+	/******************* ENUM **********************************************************************************************/
+
 	public enum PositionOnFile { 
 		UNDEFINED (0X0), DIM_OUT(0x1), DIM_IN(0x2), COORDS_OUT(0x3), COORDS_IN(0x4),
 		NUM_PARTS(0x5), RANGE(0x6), DIRECTION(0x7),
@@ -56,6 +58,8 @@ public class Racetrack {
 		}
 	}
 
+	/******************* VARIABLES **********************************************************************************************/
+
 	private PositionOnFile positionOnFile;
 
 	private List<Point2D.Double> coordsOut;
@@ -82,6 +86,8 @@ public class Racetrack {
 	 * parameters for cars computer, key (startPoint) - value (orientation)
 	 */
 	private Map<Point2D.Double, Double> paramVehicles;
+
+	/******************* CONSTRUCTOR **********************************************************************************************/
 
 	public Racetrack(File racetrackFile) throws IOException {
 
@@ -303,7 +309,7 @@ public class Racetrack {
 
 			case INTELLIGENCE_POINT:
 				if (dim > 0) {
-					intelligencePoints.add(new IntelligencePoint(Double.parseDouble(item.nextToken()) * GamePanel.SCALE, Double.parseDouble(item.nextToken()) * GamePanel.SCALE, Double.parseDouble(item.nextToken())));
+					intelligencePoints.add(new IntelligencePoint(Double.parseDouble(item.nextToken()) * GamePanel.SCALE, Double.parseDouble(item.nextToken()) * GamePanel.SCALE, Double.parseDouble(item.nextToken()), Integer.parseInt(item.nextToken())));
 					dim--;
 					if (dim == 0)
 						positionOnFile = PositionOnFile.UNDEFINED;
@@ -383,8 +389,10 @@ public class Racetrack {
 
 	}
 
+	/******************* GETTERS **********************************************************************************************/
+
 	public List<StillObject> getStillObjects() { return stillObjects; }
-	public static List<GeneralPath> getRacetrackParts() { return racetrackParts; }
+	public List<GeneralPath> getRacetrackParts() { return racetrackParts; }
 
 	public GeneralPath getPathOut() { return pathOut; }
 	public GeneralPath getPathIn() { return pathIn; }
@@ -392,7 +400,7 @@ public class Racetrack {
 	public List<Point2D.Double> getCoordsOut() { return coordsOut; }
 	public List<Point2D.Double> getCoordsIn() { return coordsIn; }
 
-	public static List<Direction[]> getDirections() { return directions; }
+	public List<Direction[]> getDirections() { return directions; }
 	public List<Line2D.Double> getCheckpoints() { return checkpoints; }
 
 	public Point2D.Double getStartPointCarPlayer() { return startPointCarPlayer; }
@@ -403,7 +411,6 @@ public class Racetrack {
 
 	public Line2D.Double getStartLine() { return startLine; }
 
-	public static List<IntelligencePoint> getIntelligencePoints() { return intelligencePoints; }
+	public List<IntelligencePoint> getIntelligencePoints() { return intelligencePoints; }
 
 }
-

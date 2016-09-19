@@ -6,14 +6,18 @@ import org.core.GameManager;
 
 public class Stopwatch {
 
-	GameManager gameManager;
+	/******************* VARIABLES **********************************************************************************************/
 
+	GameManager gameManager;
+	
 	static float interval;
 	static Timer timer;
 	static boolean start;
 	static int delay;
 	static int period;
 	static int decreaseValue;
+
+	/******************* CONSTRUCTOR **********************************************************************************************/
 
 	public Stopwatch(GameManager gameManager) {
 		this.gameManager = gameManager;
@@ -24,20 +28,11 @@ public class Stopwatch {
 		period = 10;
 		decreaseValue = 1;
 	}
+	/******************* GETTERS **********************************************************************************************/
 
 	private static float 	getDecreaseInterval()  { return ( ((float) period) / 1000f) * decreaseValue; }
-	public void 			setDecreaseValue(int value) 	{ decreaseValue = value; }
-	public void				increaseInterval()				{ interval += 5f; }
 
-	public void startTimer() {
-		timer.scheduleAtFixedRate(new TimerTask() {
-
-			public void run() {
-				gameManager.setTime(setInterval());
-			}
-
-		}, delay, period);
-	}
+	/******************* SETTERS **********************************************************************************************/
 
 	private static final float setInterval() {
 		if (interval <= getDecreaseInterval()) {
@@ -46,5 +41,21 @@ public class Stopwatch {
 		}
 		else
 			return interval -= getDecreaseInterval();
+	}
+	
+	public void setDecreaseValue(int value) 	{ decreaseValue = value; }
+	
+	/******************* SERVICE METHODS **********************************************************************************************/
+
+	public void	increaseInterval()				{ interval += 5f; }
+	
+	public void startTimer() {
+		timer.scheduleAtFixedRate(new TimerTask() {
+
+			public void run() {
+				gameManager.setTime(setInterval());
+			}
+
+		}, delay, period);
 	}
 }

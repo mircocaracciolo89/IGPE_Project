@@ -4,15 +4,18 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 
-import org.core.GameManager.Border;
 import org.core.still_object.Element;
 
 public abstract class EnvironmentElement extends Element {
+	
+	/******************* CONSTRUCTOR **********************************************************************************************/
 	
 	public EnvironmentElement(double x, double y) {
 		super(x, y);
 	}
 	
+	/******************* SETTERS **********************************************************************************************/
+
 	public void setVertex() {
 		double a = Math.sqrt((((double) getWidth())/2d * ((double) getWidth())/2d) + (((double) getHeight())/2d * ((double) getHeight())/2d));
 		double sin_gamma = (((double) getHeight())/2d) / a;
@@ -26,6 +29,8 @@ public abstract class EnvironmentElement extends Element {
 		vertexSouthWest = new Point2D.Double((position.x - ax), (position.y + ay));
 		vertexSouthEast = new Point2D.Double((position.x + ax), (position.y + ay));
 	}
+
+	/******************* SERVICE METHODS **********************************************************************************************/
 
 	public void drawGameObject(Graphics2D g2d) {
 		g2d.translate(position.x, position.y);

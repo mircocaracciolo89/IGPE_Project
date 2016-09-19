@@ -6,16 +6,10 @@ import java.awt.event.KeyEvent;
 import org.core.GameManager;
 import org.core.movable_object.Vehicle.OnSteering;
 import org.core.movable_object.Vehicle.VehicleState;
-import org.gui.panels.GamePanel;
 
 public class KeyDetected extends KeyAdapter {
-
-//	GamePanel gamePanel;
-//	MainFrame mainFrame;
-
-	public KeyDetected() {
-//		this.gamePanel = gamePanel;
-	}
+	
+	/******************* PRESS **********************************************************************************************/
 
 	public void keyPressed(final KeyEvent e) {
 
@@ -63,6 +57,8 @@ public class KeyDetected extends KeyAdapter {
 		}
 
 	}
+	
+	/******************* RELEASE **********************************************************************************************/
 
 	public void keyReleased(final KeyEvent e) {
 		switch (e.getKeyCode()) {

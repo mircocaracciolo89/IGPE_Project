@@ -2,10 +2,6 @@ package org.gui.panels;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.Window;
-import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,8 +15,7 @@ public class SelectRacetrackPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
-	Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-	Image img = Toolkit.getDefaultToolkit().createImage("C:\\Users\\Giovanni\\workspaceIGPE\\Progetto_IGPE_\\img\\sfondo.jpg");
+	/******************* CONSTRUCTOR **********************************************************************************************/
 
 	public SelectRacetrackPanel(MainFrame mainFrame) {
 		setLayout(null);
@@ -52,14 +47,14 @@ public class SelectRacetrackPanel extends JPanel {
 		
 		setPreferredSize(new Dimension(GameManager.WIDTH-1,GameManager.HEIGHT-1));
 		
-		buttonRacetrack1.addActionListener(e -> mainFrame.selectCar("Japan"));
+		buttonRacetrack1.addActionListener(e -> mainFrame.selectCar("Italy"));
 		backButton.addActionListener( e -> mainFrame.goMenuPanel());
 	}
 	
-	@Override
+	/******************* SERVICE METHODS **********************************************************************************************/
+
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-	//	g.drawImage(img, 0, 0, (int)d.getWidth(), (int)d.getHeight(), null);
 		g.drawImage(Loader.imgBackgroundMenu,0,0,null);
 
 

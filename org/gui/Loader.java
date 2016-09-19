@@ -5,18 +5,17 @@ import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
 
-import javax.naming.LinkRef;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 
 public class Loader extends JComponent {
 
 	private static final long serialVersionUID = 1L;
 	
+	/******************* IMAGES **********************************************************************************************/
+	
 	public static Image imgBackgroundMenu = null;
-	public static Image imgBackGroundEnvironment = null;
+	public static Image imgBackgroundEnvironment = null;
 	
 	public static Image imgButtonStart = null;
 	public static Image imgButtonStartFocus = null;
@@ -30,12 +29,12 @@ public class Loader extends JComponent {
 	public static Image imgItaRacetrack= null;
 	public static Image imgBraRacetrack= null;
 	
-	public static Image imgCarPlayer = null;
+	public static Image imgRedCar = null;
 	public static Image imgCar1Menu = null;
 	public static Image imgCar2Menu = null;
-	public static Image imgGreenCarComputer = null;
-	public static Image imgYellowCarComputer = null;
-	public static Image imgBlueCarComputer = null;
+	public static Image imgGreenCar = null;
+	public static Image imgYellowCar = null;
+	public static Image imgBlueCar = null;
 	
 	public static Image imgTree1 = null;
 	public static Image imgTree2 = null;
@@ -56,14 +55,12 @@ public class Loader extends JComponent {
 	public MediaTracker mt = new MediaTracker(this);
 	Toolkit tk = Toolkit.getDefaultToolkit();
 
-	public Loader() {
-		super();
-	}
+	/******************* LOADER **********************************************************************************************/
 
 	public boolean load() throws MalformedURLException {
 
 		imgBackgroundMenu = 		tk.getImage( "img"+File.separator+"Backgrounds"+File.separator+"backgroundMenu.jpg");
-		imgBackGroundEnvironment = 	tk.getImage( "img"+File.separator+"Backgrounds"+File.separator+"backgroundEnvironment.jpg");
+		imgBackgroundEnvironment = 	tk.getImage( "img"+File.separator+"Backgrounds"+File.separator+"backgroundEnvironment.jpg");
 		imgButtonStart =			tk.getImage( "img"+File.separator+"Buttons"+File.separator+"quickStart.png");
 		imgButtonStartFocus =		tk.getImage( "img"+File.separator+"Buttons"+File.separator+"QuickStartFocus.png");
 		imgButtonMultiplayer =		tk.getImage( "img"+File.separator+"Buttons"+File.separator+"multiplayer.png");
@@ -76,12 +73,12 @@ public class Loader extends JComponent {
 		imgItaRacetrack = 			tk.getImage( "img"+File.separator+"Buttons"+File.separator+"Italy.png");
 		imgBraRacetrack = 			tk.getImage( "img"+File.separator+"Buttons"+File.separator+"Brasil.png");
 		
-		imgCarPlayer = 				tk.getImage( "img"+File.separator+"Cars"+File.separator+"carPlayer.png");
+		imgRedCar = 				tk.getImage( "img"+File.separator+"Cars"+File.separator+"carPlayer.png");
 		imgCar1Menu = 				tk.getImage( "img"+File.separator+"Buttons"+File.separator+"redCar.png");
 		imgCar2Menu = 				tk.getImage( "img"+File.separator+"Buttons"+File.separator+"yellowCar.png");
-		imgGreenCarComputer = 		tk.getImage( "img"+File.separator+"Cars"+File.separator+"greenCarComputer.png");
-		imgYellowCarComputer = 		tk.getImage( "img"+File.separator+"Cars"+File.separator+"yellowCarComputer.png");
-		imgBlueCarComputer = 		tk.getImage( "img"+File.separator+"Cars"+File.separator+"blueCarComputer.png");
+		imgGreenCar = 		tk.getImage( "img"+File.separator+"Cars"+File.separator+"greenCarComputer.png");
+		imgYellowCar = 		tk.getImage( "img"+File.separator+"Cars"+File.separator+"yellowCarComputer.png");
+		imgBlueCar = 		tk.getImage( "img"+File.separator+"Cars"+File.separator+"blueCarComputer.png");
 		
 		imgTree1 = 					tk.getImage( "img"+File.separator+"Trees"+File.separator+"tree1.png");
 		imgTree2 =					tk.getImage( "img"+File.separator+"Trees"+File.separator+"tree2.png");
@@ -100,7 +97,7 @@ public class Loader extends JComponent {
 		imgMalus = 					tk.getImage( "img"+File.separator+"Malus"+File.separator+"imgMalus1.png");
 
 		mt.addImage(imgBackgroundMenu, 1);
-		mt.addImage(imgBackGroundEnvironment, 2);
+		mt.addImage(imgBackgroundEnvironment, 2);
 		mt.addImage(imgButtonStart, 3);
 		mt.addImage(imgButtonStartFocus, 4);
 		mt.addImage(imgButtonMultiplayer, 5);
@@ -111,12 +108,12 @@ public class Loader extends JComponent {
 		mt.addImage(imgButtonBackFocus, 10);
 		mt.addImage(imgItaRacetrack, 11);
 		mt.addImage(imgBraRacetrack, 12);
-		mt.addImage(imgCarPlayer, 13);
+		mt.addImage(imgRedCar, 13);
 		mt.addImage(imgCar1Menu, 14);
 		mt.addImage(imgCar2Menu, 15);
-		mt.addImage(imgGreenCarComputer, 16);
-		mt.addImage(imgYellowCarComputer, 17);
-		mt.addImage(imgBlueCarComputer, 18);
+		mt.addImage(imgGreenCar, 16);
+		mt.addImage(imgYellowCar, 17);
+		mt.addImage(imgBlueCar, 18);
 		mt.addImage(imgTree1, 19);
 		mt.addImage(imgTree2, 20);
 		mt.addImage(imgTree3, 21);
@@ -140,6 +137,5 @@ public class Loader extends JComponent {
 		return true;
 		
 	}
-
 
 }

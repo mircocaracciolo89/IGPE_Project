@@ -18,10 +18,9 @@ import org.core.GameManager;
 
 public class MainFrame extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+
+	/******************* VARIABLES **********************************************************************************************/
 
 	static Loader loader;
 
@@ -30,6 +29,8 @@ public class MainFrame extends JFrame {
 	private static MenuPanel menuPanel;
 	private SelectRacetrackPanel selectRacetrackPanel;
 	private SelectCarPanel selectCarPanel;
+
+	/******************* CONSTRUCTOR **********************************************************************************************/
 
 	public MainFrame() throws IOException {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -45,35 +46,21 @@ public class MainFrame extends JFrame {
 		menuPanel = new MenuPanel(this);
 
 		setContentPane(menuPanel);
-//		setUndecorated(true);
+		setUndecorated(true);
 		pack();
 
 	}
 
-	protected void showExitConfirm() {
+	/******************* SERVICE METHODS **********************************************************************************************/
+	
+	void showExitConfirm() {
 		int option = JOptionPane.showConfirmDialog(MainFrame.this, "Do you really want to exit?","Exit",JOptionPane.YES_NO_CANCEL_OPTION);
 		if (option == JOptionPane.YES_OPTION) {
 			setContentPane(menuPanel);
 		}
 	}
 
-	private void start() 
-	{
-		gamePanel.start();
-	}
-
-	public void selectRacetrack()
-	{
-		selectRacetrackPanel = new SelectRacetrackPanel(this);
-
-		SwingUtilities.invokeLater(() -> {
-			setContentPane(selectRacetrackPanel);
-			setLocationRelativeTo(null);
-			pack();
-			//			start();
-		});
-	}
-
+	private void start() { gamePanel.start(); }
 	public void startGame(Image img)
 	{
 
@@ -105,9 +92,29 @@ public class MainFrame extends JFrame {
 			pack();
 		});
 	}
-
-	public void selectCar(String nameFile)
+	
+	public void goSelectRacetrack() {
+		SwingUtilities.invokeLater(() -> {
+			setContentPane(selectRacetrackPanel);
+			setLocationRelativeTo(null);
+			pack();
+		});
+	}
+	
+	public void selectRacetrack()
 	{
+		selectRacetrackPanel = new SelectRacetrackPanel(this);
+
+		SwingUtilities.invokeLater(() -> {
+			setContentPane(selectRacetrackPanel);
+			setLocationRelativeTo(null);
+			pack();
+			//			start();
+		});
+	}
+
+	public void selectCar(String nameFile) {
+		
 		gameManager.setEnvironment(nameFile);
 
 		try {
@@ -123,26 +130,9 @@ public class MainFrame extends JFrame {
 		});
 	}
 
-	public void goSelectRacetrack()
-	{
-		SwingUtilities.invokeLater(() -> {
-			setContentPane(selectRacetrackPanel);
-			setLocationRelativeTo(null);
-			pack();
-		});
-	}
 
-	public void setupNetworkGame() {
-		//		JDialog dialog = new JDialog(this);
-		//		dialog.setModal(true);
-		//		dialog.setContentPane(new ConnectionPanel(this, dialog));
-		//		dialog.pack();
-		//		dialog.setLocationRelativeTo(this);
-		//		dialog.setVisible(true);
-		//
-		//		SwingUtilities.invokeLater(() -> setContentPane(new JLabel(
-		//				"Please wait...")));
-	}
+	
+	/******************* MAIN **********************************************************************************************/
 
 	public static void main(String[] args) throws IOException {
 

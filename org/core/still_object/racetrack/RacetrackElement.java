@@ -9,15 +9,23 @@ import org.core.still_object.Element;
 
 public abstract class RacetrackElement extends Element {
 
+	/******************* VARIABLES **********************************************************************************************/
+	
 	protected Double orientation_inDegrees;
+	
+	/******************* CONSTRUCTOR **********************************************************************************************/
 
 	public RacetrackElement(double x, double y) {
 		super(x, y);
 	}
 
+	/******************* GETTERS **********************************************************************************************/
+	
 	public Double getOrientation_inDegrees() 	{ return orientation_inDegrees;	}
 	public Double getOrientation_inRadian() 	{ return ((orientation_inDegrees/180) * Math.PI);	}
 
+	/******************* SETTERS **********************************************************************************************/
+	
 	public void setVertex() {
 		
 		double 	halfWidth = getWidth()/2, halfHeight = getHeight()/2,
@@ -44,6 +52,8 @@ public abstract class RacetrackElement extends Element {
 		vertexNorthEast = new Point2D.Double((position.x + x41), (position.y - y41));
 
 	}
+
+	/******************* SERVICE METHODS **********************************************************************************************/
 
 	public void drawGameObject(Graphics2D g2d) {
 		g2d.translate(position.x, position.y);

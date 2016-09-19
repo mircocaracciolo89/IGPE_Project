@@ -3,26 +3,27 @@ package org.core.movable_object;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.util.Random;
 
 import org.core.GameManager;
 import org.core.GameManager.Border;
 import org.core.GameManager.BorderArea;
-import org.core.movable_object.Vehicle.VehicleStateOnRacetrack;
-import org.gui.Loader;
 
 public class CarPlayer extends Vehicle {
 
+	/******************* VARIABLES **********************************************************************************************/
+
 	protected static Point2D.Double translation;
 	protected Point2D.Double positionOnEnvironment;
+
+	/******************* CONSTRUCTOR **********************************************************************************************/
 
 	public CarPlayer(Point2D.Double startPoint, Point2D.Double startTranslation, Double startOrientation, Image img) {
 		super(startPoint.x, startPoint.y);
 
 		//		translation = new Point2D.Double(0d, 0d);
-		//		translation = new Point2D.Double(-2300d, 0d);
 		translation = startTranslation;
 		positionOnEnvironment = new Point2D.Double();
 
@@ -36,21 +37,26 @@ public class CarPlayer extends Vehicle {
 		fixOrientation_inDegrees();
 		updateDirection();
 		direction = getDirection();
-		maxSpeed = 32d;
-		initialAcceleration = 3.5d;
+		//		maxSpeed = 20d;
+		//		initialAcceleration = 3d;
+		maxSpeed = 25d + (27d - 25d) * new Random().nextDouble();
+		initialAcceleration = 3.9d + (4.5d - 3.9d) * new Random().nextDouble();		
 	}
+
+	/******************* GETTERS **********************************************************************************************/
 
 	public static Point2D.Double 	getTranslation() { return translation; }
 
-	public Line2D.Double	getLeftLineOnEnvironment() 	{ return new Line2D.Double(vertexLeftBack.x + Math.abs(translation.x), vertexLeftBack.y + Math.abs(translation.y), vertexLeftFront.x + Math.abs(translation.x), vertexLeftFront.y + Math.abs(translation.y)); }
-	public Line2D.Double 	getRightLineOnEnvironment() { return new Line2D.Double(vertexRightBack.x + Math.abs(translation.x), vertexRightBack.y + Math.abs(translation.y), vertexRightFront.x + Math.abs(translation.x), vertexRightFront.y + Math.abs(translation.y)); }
-	public Line2D.Double 	getFrontLineOnEnvironment() { return new Line2D.Double(vertexLeftFront.x + Math.abs(translation.x), vertexLeftFront.y + Math.abs(translation.y), vertexRightFront.x + Math.abs(translation.x), vertexRightFront.y + Math.abs(translation.y)); }
-	public Line2D.Double 	getBackLineOnEnvironment() 	{ return new Line2D.Double(vertexRightBack.x + Math.abs(translation.x), vertexRightBack.y + Math.abs(translation.y), vertexLeftBack.x + Math.abs(translation.x), vertexLeftBack.y + Math.abs(translation.y)); }
+	public Point2D.Double	getVertexLeftFrontOnEnvironment() 	{ return new Point2D.Double( (vertexLeftFront.x + Math.abs(translation.x)), (vertexLeftFront.y + Math.abs(translation.y))); }
+	public Point2D.Double	getVertexLeftBackOnEnvironment() 	{ return new Point2D.Double( (vertexLeftBack.x + Math.abs(translation.x)), (vertexLeftBack.y + Math.abs(translation.y))); }
+	public Point2D.Double	getVertexRightFrontOnEnvironment() 	{ return new Point2D.Double( (vertexRightFront.x + Math.abs(translation.x)), (vertexRightFront.y + Math.abs(translation.y))); }
+	public Point2D.Double	getVertexRightBackOnEnvironment() 	{ return new Point2D.Double( (vertexRightBack.x + Math.abs(translation.x)), (vertexRightBack.y + Math.abs(translation.y))); }
 
-	//	public Line2D.Double	getLeftLine() 	{ return getLeftLineOnEnvironment(); }
-	//	public Line2D.Double 	getRightLine() 	{ return getRightLineOnEnvironment(); }
-	//	public Line2D.Double 	getFrontLine() 	{ return getFrontLineOnEnvironment(); }
-	//	public Line2D.Double 	getBackLine() 	{ return getBackLineOnEnvironment(); }
+
+	public Line2D.Double	getLeftLineOnEnvironment() 	{ return new Line2D.Double(getVertexLeftBackOnEnvironment().x, getVertexLeftBackOnEnvironment().y, getVertexLeftFrontOnEnvironment().x, getVertexLeftFrontOnEnvironment().y); }
+	public Line2D.Double 	getRightLineOnEnvironment() { return new Line2D.Double(getVertexRightBackOnEnvironment().x, getVertexRightBackOnEnvironment().y, getVertexRightFrontOnEnvironment().x, getVertexRightFrontOnEnvironment().y); }
+	public Line2D.Double 	getFrontLineOnEnvironment() { return new Line2D.Double(getVertexLeftFrontOnEnvironment().x, getVertexLeftFrontOnEnvironment().y, getVertexRightFrontOnEnvironment().x, getVertexRightFrontOnEnvironment().y); }
+	public Line2D.Double 	getBackLineOnEnvironment() 	{ return new Line2D.Double(getVertexRightBackOnEnvironment().x, getVertexRightBackOnEnvironment().y, getVertexLeftBackOnEnvironment().x, getVertexLeftBackOnEnvironment().y); }
 
 	public Point2D.Double getPositionOnEnvironment() { 
 		positionOnEnvironment.x = position.x + Math.abs(translation.x);
@@ -58,25 +64,13 @@ public class CarPlayer extends Vehicle {
 		return positionOnEnvironment;
 	}
 
-	//	public Point2D.Double getPosition() {
-	//		return getPositionOnEnvironment();
-	//	}
-
-	public GeneralPath getPath() {
-		GeneralPath path = new GeneralPath(getFrontLineOnEnvironment());
-		path.append(getLeftLineOnEnvironment(), true);
-		path.append(getBackLineOnEnvironment(), true);
-		path.append(getRightLineOnEnvironment(), true);
-		path.closePath();
-		return path;
-	}
-
+	/******************* SETTERS **********************************************************************************************/
 
 	public void 	setTranslation(Point2D.Double t) 	{ translation = t; }
 	public void 	setTranslationX(Double x) 			{ translation.x = x; }
 	public void 	setTranslationY(Double y) 			{ translation.y = y; }
 
-	/******************************************************************************************************************/
+	/******************* SERVICE METHODS **********************************************************************************************/
 
 	public void drawGameObject(Graphics2D g2d) {
 		g2d.translate(position.x, position.y);
@@ -103,7 +97,7 @@ public class CarPlayer extends Vehicle {
 		default:
 			break;
 		}
-
+		//System.out.println(orientation_inDegrees);
 	}
 
 	protected void updateSteeringBackwards() {
@@ -127,7 +121,7 @@ public class CarPlayer extends Vehicle {
 
 	/******************************************************************************************************************/
 
-	protected void updateVehicleOnBorderForwards () {
+	public void updateVehicleOnBorderAreaForwards() {
 
 		switch (GameManager.getActualBorderArea()) {
 
@@ -182,7 +176,7 @@ public class CarPlayer extends Vehicle {
 
 	}
 
-	protected void updateVehicleOnBorderBackwards () {
+	public void updateVehicleOnBorderAreaBackwards () {
 
 		switch (GameManager.getActualBorderArea()) {
 		case TOP:
@@ -237,41 +231,25 @@ public class CarPlayer extends Vehicle {
 
 	/******************************************************************************************************************/
 
-	protected void increaseTranslationX(){
-		translation.x += getAbsDeltaX();
-	}
+	protected void increaseTranslationX()	{ translation.x += getAbsDeltaX(); }
 
-	protected void increaseTranslationY(){
-		translation.y += getAbsDeltaY();
-	}
+	protected void increaseTranslationY()	{ translation.y += getAbsDeltaY(); }
 
-	protected void decreaseTranslationX(){
-		translation.x -= getAbsDeltaX();
-	}
+	protected void decreaseTranslationX()	{ translation.x -= getAbsDeltaX(); }
 
-	protected void decreaseTranslationY(){
-		translation.y -= getAbsDeltaY();
-	}
-
+	protected void decreaseTranslationY()   { translation.y -= getAbsDeltaY(); }
 
 	/******************************************************************************************************************/
 
 	public void update(GameManager gameManager) {
 
-		if (GameManager.isCorrectDirection(this) && GameManager.intersectCheckpoint(this)) {
-			GameManager.indexCheckpointNumber = (GameManager.indexCheckpointNumber + 1) % GameManager.environment.getRacetrack().getCheckpoints().size();
-			if (GameManager.indexCheckpointNumber == 1) gameManager.isNewLap = false;
-		}
-
-		if (GameManager.intersectStartLine(this) && !gameManager.isNewLap) {
-			gameManager.lapCounter++;
-			gameManager.isNewLap = true;
-		}
-
-
+		//		maxPosition = null;
 		updateVertex();
 		updateDirection();
+		updateStateOnRacetrack();
 		fixOrientation_inDegrees();
+		GameManager.intersect(this);
+		GameManager.intersectBetweenVehicles(this);
 
 		switch (this.state) {
 		case ACCELERATION_FORWARD:
@@ -280,9 +258,9 @@ public class CarPlayer extends Vehicle {
 			updateGears();
 
 			if (GameManager.getActualBorderArea() != BorderArea.UNDEFINED)
-				updateVehicleOnBorderForwards();
+				updateVehicleOnBorderAreaForwards();
 			else 
-				updatePositionForwards();
+				updatePositionForwards(null);
 
 			fixCurrentSpeedInAccelerationForwards();
 
@@ -293,19 +271,31 @@ public class CarPlayer extends Vehicle {
 			updateSteeringBackwards();
 
 			if (GameManager.getActualBorderArea() != BorderArea.UNDEFINED)
-				updateVehicleOnBorderBackwards();
+				updateVehicleOnBorderAreaBackwards();
 			else
-				updatePositionBackwards();
+				updatePositionBackwards(null);
 
-			if (GameManager.intersectBorder(this) == Border.UNDEFINED) {
-				if (currentSpeed < getMaxSpeedBackwardsMarch())
-					currentSpeed += getPercentageAccelerationIncreaseBackwardsMarch();
-				else
-					currentSpeed = getMaxSpeedBackwardsMarch();
-			} else {
-				currentSpeed = 1d;
-				updatePositionForwards();
-			}
+			fixCurrentSpeedInAccelerationBackwards();
+
+			//			if (maxPosition == null) {
+			//				if (currentSpeed < getMaxSpeedBackwardsMarch())
+			//					currentSpeed += getPercentageAccelerationBackwards();
+			//				else
+			//					currentSpeed = getMaxSpeedBackwardsMarch();
+			//			}
+			//			else {
+			//				maxPosition = null;
+			//			}
+
+			//			if (GameManager.intersectBorder(this) == Border.UNDEFINED) {
+			//				if (currentSpeed < getMaxSpeedBackwardsMarch())
+			//					currentSpeed += getPercentageAccelerationBackwards();
+			//				else
+			//					currentSpeed = getMaxSpeedBackwardsMarch();
+			//			} else {
+			//				currentSpeed = 1d;
+			//				updatePositionForwards(null);
+			//			}
 
 			break;
 
@@ -315,17 +305,17 @@ public class CarPlayer extends Vehicle {
 			updateGears();
 
 			if (GameManager.getActualBorderArea() != BorderArea.UNDEFINED)
-				updateVehicleOnBorderForwards();
+				updateVehicleOnBorderAreaForwards();
 			else
-				updatePositionForwards();
+				updatePositionForwards(null);
 
-			if (GameManager.intersectBorder(this) != Border.UNDEFINED) {
-				currentSpeed = 1d;
-				updatePositionBackwards();
-			}
+			//			if (GameManager.intersectBorder(this) != Border.UNDEFINED) {
+			//				currentSpeed = 1d;
+			//				updatePositionBackwards(null);
+			//			}
 
 			if (currentSpeed > getActualInitialAcceleration())
-				currentSpeed -= getPercentageAccelerationIncreaseForwardsMarch();
+				currentSpeed -= getPercentageAccelerationForwards();
 			else {
 				this.state = VehicleState.STOP;
 				currentSpeed = 0d;
@@ -338,17 +328,17 @@ public class CarPlayer extends Vehicle {
 			updateSteeringBackwards();
 
 			if (GameManager.getActualBorderArea() != BorderArea.UNDEFINED)
-				updateVehicleOnBorderBackwards();
+				updateVehicleOnBorderAreaBackwards();
 			else
-				updatePositionBackwards();
+				updatePositionBackwards(null);
 
-			if (GameManager.intersectBorder(this) != Border.UNDEFINED) {
-				currentSpeed = 1d;
-				updatePositionForwards();
-			}
+			//			if (GameManager.intersectBorder(this) != Border.UNDEFINED) {
+			//				currentSpeed = 1d;
+			//				updatePositionForwards(null);
+			//			}
 
 			if (currentSpeed > getActualInitialAcceleration()) 
-				currentSpeed -= getPercentageAccelerationIncreaseBackwardsMarch();
+				currentSpeed -= getPercentageAccelerationBackwards();
 			else {
 				this.state = VehicleState.STOP;
 				currentSpeed = 0d;

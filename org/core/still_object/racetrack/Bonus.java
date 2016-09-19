@@ -1,12 +1,13 @@
 package org.core.still_object.racetrack;
 
-import org.core.movable_object.MovableObject;
 import org.core.movable_object.Vehicle;
 import org.core.movable_object.Vehicle.VehicleStateOnRacetrack;
 import org.gui.Loader;
 
 public class Bonus extends RacetrackElement {
 	
+	/******************* CONSTRUCTOR **********************************************************************************************/
+
 	public Bonus(double x, double y, double orientation) {
 		super(x, y);
 		this.image = Loader.imgBonus;
@@ -15,6 +16,8 @@ public class Bonus extends RacetrackElement {
 		orientation_inDegrees = orientation;
 		setVertex();
 	}
+
+	/******************* SERVICE METHODS **********************************************************************************************/
 
 	public void behavior(Vehicle vehicle) { 
 		vehicle.setStateOnRacetrack(VehicleStateOnRacetrack.ON_BONUS);

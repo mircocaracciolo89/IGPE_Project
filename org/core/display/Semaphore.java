@@ -7,6 +7,8 @@ import org.gui.Loader;
 
 public class Semaphore {
 
+	/******************* ENUM **********************************************************************************************/
+	
 	public enum SemaphoreState {
 		UNDEFINED(0x0), START(0x1), RED(0x2), ORANGE(0x3), GREEN(0x4);
 		private int format;
@@ -31,21 +33,25 @@ public class Semaphore {
 		}
 
 	}
+	
+	/******************* VARIABLES **********************************************************************************************/
 
 	private SemaphoreState state;
 	private Image image;
 	private Point2D.Double position;
 	private boolean visible;
 
+	/******************* CONSTRUCTOR **********************************************************************************************/
+
 	public Semaphore() {
 		state = SemaphoreState.START;
 		this.position = new Point2D.Double(650f, 10f);
 		visible = true;
 	}
+	/******************* GETTERS **********************************************************************************************/
 
 	public Point2D.Double getPosition() { return position; }
-	public void setState(SemaphoreState state) { this.state = state; }
-
+	
 	public Image getImage() {
 		switch (this.state) {
 		case START:
@@ -70,8 +76,14 @@ public class Semaphore {
 	}
 
 	public boolean isVisible() { return visible; }
-	public void setVisible(boolean visible) { this.visible = visible; }
+
+	/******************* SETTERS **********************************************************************************************/
+
+	public void setState(SemaphoreState state)  { this.state = state; }
+	public void setVisible(boolean visible) 	{ this.visible = visible; }
 	
+	/******************* SERVICE METHODS **********************************************************************************************/
+
 	public void start(Runnable runnable) {
 		try {
 			Thread.sleep(1500);

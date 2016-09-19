@@ -1,8 +1,6 @@
 package org.core.movable_object;
 
-import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
@@ -62,7 +60,7 @@ public abstract class Vehicle extends MovableObject {
 	}
 
 	public enum VehicleStateOnRacetrack { 
-		UNDEFINED(0x0), ON_BONUS(0x1), ON_MALUS(0x2), OFF_TRACK(0X3);
+		UNDEFINED(0x0), ON_BONUS(0x1), ON_MALUS(0x2), OFF_TRACK(0x3), ON_TRACK(0x4), WRONG_DIRECTION(0x5);
 		private int format;
 		VehicleStateOnRacetrack (int format) {
 			this.format = format;
@@ -135,6 +133,34 @@ public abstract class Vehicle extends MovableObject {
 
 	}
 
+	public enum Crash {
+		UNDEFINED(0x0), LEFT_LINE_WITH_LEFT_LINE(0x1), FRONT_LINE_WITH_LEFT_LINE(0x2), RIGHT_LINE_WITH_LEFT_LINE(0x3), BACK_LINE_WITH_LEFT_LINE(0x4)
+		,				LEFT_LINE_WITH_RIGHT_LINE(0x5), FRONT_LINE_WITH_RIGHT_LINE(0x6), RIGHT_LINE_WITH_RIGHT_LINE(0x7), BACK_LINE_WITH_RIGHT_LINE(0x8)
+		,				LEFT_LINE_WITH_FRONT_LINE(0x9), FRONT_LINE_WITH_FRONT_LINE(0x10), RIGHT_LINE_WITH_FRONT_LINE(0X11), BACK_LINE_WITH_FRONT_LINE(0x12)
+		,				LEFT_LINE_WITH_BACK_LINE(0x13), FRONT_LINE_WITH_BACK_LINE(0x14), RIGHT_LINE_WITH_BACK_LINE(0x15), BACK_LINE_WITH_BACK_LINE(0x16);
+		private int format;
+		Crash (int format) {
+			this.format = format;
+		}
+
+		public static Crash fromInteger(int format) throws IllegalArgumentException {
+			for (Crash dir : values()) {
+				if(dir.format == format)
+					return dir;
+			}
+			throw new IllegalArgumentException();
+		}
+
+		public int toInteger() {
+			return format;
+		}
+
+		public static Crash getDefault() {
+			return Crash.UNDEFINED;
+		}
+
+	}
+
 	/******************* VARIABLES **********************************************************************************************/
 
 	protected Image 			image;
@@ -142,6 +168,7 @@ public abstract class Vehicle extends MovableObject {
 	protected Integer 			width;
 
 	protected Point2D.Double 	position;
+	protected Point2D.Double 	maxPosition;
 	protected Double 			orientation_inDegrees;
 
 	protected Double 			mass;
@@ -163,14 +190,21 @@ public abstract class Vehicle extends MovableObject {
 	protected VehicleStateOnRacetrack	stateOnRacetrack;
 	protected OnSteering 				onSteering;
 	protected Direction 				direction;
+	protected Border 					border;
 	protected Boolean 					braking;
+
+	protected Boolean	isNewLap;
+	protected Integer	lapCounter;
+	protected Integer	ranking;
+	protected Integer 	indexCheckpointNumber;
 
 	/******************* CONSTRUCTOR **********************************************************************************************/
 
 	public Vehicle(double x, double y) {
-		
-		position = new Point2D.Double(x, y);
 
+		position = new Point2D.Double(x, y);
+		maxPosition = null;
+		
 		orientation_inDegrees = mass = maxSpeed = initialAcceleration = currentSpeed = steeringAngle = null;
 		gearsNumber = null;
 		currentGear = 1;
@@ -184,8 +218,12 @@ public abstract class Vehicle extends MovableObject {
 		state = VehicleState.STOP;
 		onSteering = OnSteering.UNDEFINED;
 		stateOnRacetrack = VehicleStateOnRacetrack.UNDEFINED;
+		border = Border.UNDEFINED;
 		braking = false;
 
+		isNewLap = false;
+		lapCounter = 0;
+		indexCheckpointNumber = 1;
 	}
 
 	/******************* GETTERS **********************************************************************************************/
@@ -209,32 +247,34 @@ public abstract class Vehicle extends MovableObject {
 			return maxSpeed - (0.3d * maxSpeed);
 		case OFF_TRACK:
 			return maxSpeed - (0.5d * maxSpeed);
+		case ON_TRACK:
+		case WRONG_DIRECTION:
 		case UNDEFINED:
 		default:
 			return maxSpeed; 
 		}
 	}
-	public Double 			getMaxSpeedBackwardsMarch() 	{ return getActualMaxSpeed() - (getActualMaxSpeed() * 0.8d); }
-	public Double 			getInitialAcceleration() 		{ return initialAcceleration; }
-	public Double 			getActualInitialAcceleration() 	{ return initialAcceleration/mass; }
-	public Double 			getCurrentSpeed() 				{ return currentSpeed; } 
-	public Double 			getActualPercentageSpeed() 		{ return ((currentSpeed * 100) / getActualMaxSpeed()); }
-	public Double 			getPercentageSpeedOf(double v)	{ return (getActualMaxSpeed() * (v / 100d)); }
+	public Double 	getMaxSpeedBackwardsMarch() 	{ return getActualMaxSpeed() - (getActualMaxSpeed() * 0.8d); }
+	public Double 	getInitialAcceleration() 		{ return initialAcceleration; }
+	public Double 	getActualInitialAcceleration() 	{ return initialAcceleration/mass; }
+	public Double 	getCurrentSpeed() 				{ return currentSpeed; } 
+	public Double 	getActualPercentageSpeed() 		{ return ((currentSpeed * 100) / getActualMaxSpeed()); }
+	public Double 	getPercentageSpeedOf(double v)	{ return (getActualMaxSpeed() * (v / 100d)); }
 
-	public Double 			getDeltaX()			{ return (currentSpeed * getVersors().x); }
-	public Double 			getDeltaY()			{ return (currentSpeed * getVersors().y); }
-	public Double 			getAbsDeltaX()		{ return (currentSpeed * Math.abs(getVersors().x)); }
-	public Double 			getAbsDeltaY()		{ return (currentSpeed * Math.abs(getVersors().y)); }
+	public Double 	getDeltaX()			{ return (currentSpeed * getVersors().x); }
+	public Double 	getDeltaY()			{ return (currentSpeed * getVersors().y); }
+	public Double 	getAbsDeltaX()		{ return (currentSpeed * Math.abs(getVersors().x)); }
+	public Double 	getAbsDeltaY()		{ return (currentSpeed * Math.abs(getVersors().y)); }
 
-	public Integer 			getCurrentGear() 	{ return currentGear; } 
-	public Integer 			getGearsNumber() 	{ return gearsNumber; } 
+	public Integer 	getCurrentGear() 	{ return currentGear; } 
+	public Integer 	getGearsNumber() 	{ return gearsNumber; } 
 
-	public Double 			getSteeringAngle() 			{ return steeringAngle;	}
-	public Double 			getSteeringAngleInBraking() { return steeringAngle + (steeringAngle * 0.3d);	}
+	public Double 	getSteeringAngle() 			{ return steeringAngle;	}
+	public Double 	getSteeringAngleInBraking() { return steeringAngle + (steeringAngle * 0.3d);	}
 
-	public Double			getPercentageAccelerationIncreaseForwardsMarch()	{ return (((getActualMaxSpeed() * getActualInitialAcceleration())/(1000d * (currentGear * 3))) * currentSpeed); }
-	public Double			getPercentageAccelerationIncreaseBackwardsMarch()	{ return (((getActualMaxSpeed() * getActualInitialAcceleration())/800d) * currentSpeed); }
-	public Double			getPercentageAccelerationDecrease()					{ 
+	public Double	getPercentageAccelerationForwards()		{ return (((getActualMaxSpeed() * getActualInitialAcceleration())/(1000d * (currentGear * 3))) * currentSpeed); }
+	public Double	getPercentageAccelerationBackwards()	{ return (((getActualMaxSpeed() * getActualInitialAcceleration())/800d) * currentSpeed); }
+	public Double	getPercentageDeceleration()				{ 
 		double divisor = braking ? 200d : 300d;
 		return (((getActualMaxSpeed() * getActualInitialAcceleration())/(divisor * (currentGear * 3))) * currentSpeed);
 	}
@@ -243,26 +283,109 @@ public abstract class Vehicle extends MovableObject {
 	public VehicleStateOnRacetrack 	getStateOnRacetrack() 	{ return stateOnRacetrack; }
 	public OnSteering 				getOnSteering() 		{ return onSteering; }
 	public Direction				getDirection()			{ return direction; }
-	public DegreesRange				getDegreesRange(double orientation_inDegrees)		{
+	public DegreesRange				getDegreesRange(double orientation_inDegrees) {
 
 		if (orientation_inDegrees < 45d && orientation_inDegrees >= 0d)
 			return DegreesRange.PART_0;
-		if (orientation_inDegrees < 90d && orientation_inDegrees >= 45)
+		else if (orientation_inDegrees < 90d && orientation_inDegrees >= 45)
 			return DegreesRange.PART_1;
-		if (orientation_inDegrees < 135d && orientation_inDegrees >= 90d)
+		else if (orientation_inDegrees < 135d && orientation_inDegrees >= 90d)
 			return DegreesRange.PART_2;
-		if (orientation_inDegrees < 180d && orientation_inDegrees >= 135d)
+		else if (orientation_inDegrees < 180d && orientation_inDegrees >= 135d)
 			return DegreesRange.PART_3;
-		if (orientation_inDegrees < (-135d) && orientation_inDegrees >= (-180d))
+		else if (orientation_inDegrees < 225d && orientation_inDegrees >= 180d)
 			return DegreesRange.PART_4;
-		if (orientation_inDegrees < (-90d) && orientation_inDegrees >= (-135d))
+		else if (orientation_inDegrees < 270d && orientation_inDegrees >= 225d)
 			return DegreesRange.PART_5;
-		if (orientation_inDegrees < (-45d) && orientation_inDegrees >= (-90d))
+		else if (orientation_inDegrees < 315d && orientation_inDegrees >= 270d)
 			return DegreesRange.PART_6;
-		if (orientation_inDegrees < 0d && orientation_inDegrees >= (-45d))
+		else if (orientation_inDegrees < 360d && orientation_inDegrees >= 315d)
 			return DegreesRange.PART_7;
 
 		return null;
+	}
+
+	public Crash getCrash(Vehicle vehicle) {
+
+		if (this instanceof CarPlayer) {
+
+			if (((CarPlayer) this).getFrontLineOnEnvironment().intersectsLine(vehicle.getFrontLine()))
+				return Crash.FRONT_LINE_WITH_FRONT_LINE;
+			else if (((CarPlayer) this).getFrontLineOnEnvironment().intersectsLine(vehicle.getBackLine()))
+				return Crash.FRONT_LINE_WITH_BACK_LINE;
+			else if (((CarPlayer) this).getFrontLineOnEnvironment().intersectsLine(vehicle.getLeftLine()))
+				return Crash.FRONT_LINE_WITH_LEFT_LINE;
+			else if (((CarPlayer) this).getFrontLineOnEnvironment().intersectsLine(vehicle.getRightLine()))
+				return Crash.FRONT_LINE_WITH_RIGHT_LINE;
+
+			else if (((CarPlayer) this).getBackLineOnEnvironment().intersectsLine(vehicle.getFrontLine()))
+				return Crash.BACK_LINE_WITH_FRONT_LINE;
+			else if (((CarPlayer) this).getBackLineOnEnvironment().intersectsLine(vehicle.getBackLine()))
+				return Crash.BACK_LINE_WITH_BACK_LINE;
+			else if (((CarPlayer) this).getBackLineOnEnvironment().intersectsLine(vehicle.getLeftLine()))
+				return Crash.BACK_LINE_WITH_LEFT_LINE;
+			else if (((CarPlayer) this).getBackLineOnEnvironment().intersectsLine(vehicle.getRightLine()))
+				return Crash.BACK_LINE_WITH_RIGHT_LINE;
+
+			else if (((CarPlayer) this).getLeftLineOnEnvironment().intersectsLine(vehicle.getFrontLine()))
+				return Crash.LEFT_LINE_WITH_FRONT_LINE;
+			else if (((CarPlayer) this).getLeftLineOnEnvironment().intersectsLine(vehicle.getBackLine()))
+				return Crash.LEFT_LINE_WITH_BACK_LINE;
+			else if (((CarPlayer) this).getLeftLineOnEnvironment().intersectsLine(vehicle.getLeftLine()))
+				return Crash.LEFT_LINE_WITH_LEFT_LINE;
+			else if (((CarPlayer) this).getLeftLineOnEnvironment().intersectsLine(vehicle.getRightLine()))
+				return Crash.LEFT_LINE_WITH_RIGHT_LINE;
+
+			else if (((CarPlayer) this).getRightLineOnEnvironment().intersectsLine(vehicle.getFrontLine()))
+				return Crash.RIGHT_LINE_WITH_FRONT_LINE;
+			else if (((CarPlayer) this).getRightLineOnEnvironment().intersectsLine(vehicle.getBackLine()))
+				return Crash.RIGHT_LINE_WITH_BACK_LINE;
+			else if (((CarPlayer) this).getRightLineOnEnvironment().intersectsLine(vehicle.getLeftLine()))
+				return Crash.RIGHT_LINE_WITH_LEFT_LINE;
+			else if (((CarPlayer) this).getRightLineOnEnvironment().intersectsLine(vehicle.getRightLine()))
+				return Crash.RIGHT_LINE_WITH_RIGHT_LINE;
+
+		} else {
+
+			if (this.getFrontLine().intersectsLine(vehicle.getFrontLine()))
+				return Crash.FRONT_LINE_WITH_FRONT_LINE;
+			else if (this.getFrontLine().intersectsLine(vehicle.getBackLine()))
+				return Crash.FRONT_LINE_WITH_BACK_LINE;
+			else if (this.getFrontLine().intersectsLine(vehicle.getLeftLine()))
+				return Crash.FRONT_LINE_WITH_LEFT_LINE;
+			else if (this.getFrontLine().intersectsLine(vehicle.getRightLine()))
+				return Crash.FRONT_LINE_WITH_RIGHT_LINE;
+
+			else if (this.getBackLine().intersectsLine(vehicle.getFrontLine()))
+				return Crash.BACK_LINE_WITH_FRONT_LINE;
+			else if (this.getBackLine().intersectsLine(vehicle.getBackLine()))
+				return Crash.BACK_LINE_WITH_BACK_LINE;
+			else if (this.getBackLine().intersectsLine(vehicle.getLeftLine()))
+				return Crash.BACK_LINE_WITH_LEFT_LINE;
+			else if (this.getBackLine().intersectsLine(vehicle.getRightLine()))
+				return Crash.BACK_LINE_WITH_RIGHT_LINE;
+
+			else if (this.getLeftLine().intersectsLine(vehicle.getFrontLine()))
+				return Crash.LEFT_LINE_WITH_FRONT_LINE;
+			else if (this.getLeftLine().intersectsLine(vehicle.getBackLine()))
+				return Crash.LEFT_LINE_WITH_BACK_LINE;
+			else if (this.getLeftLine().intersectsLine(vehicle.getLeftLine()))
+				return Crash.LEFT_LINE_WITH_LEFT_LINE;
+			else if (this.getLeftLine().intersectsLine(vehicle.getRightLine()))
+				return Crash.LEFT_LINE_WITH_RIGHT_LINE;
+
+			else if (this.getRightLine().intersectsLine(vehicle.getFrontLine()))
+				return Crash.RIGHT_LINE_WITH_FRONT_LINE;
+			else if (this.getRightLine().intersectsLine(vehicle.getBackLine()))
+				return Crash.RIGHT_LINE_WITH_BACK_LINE;
+			else if (this.getRightLine().intersectsLine(vehicle.getLeftLine()))
+				return Crash.RIGHT_LINE_WITH_LEFT_LINE;
+			else if (this.getRightLine().intersectsLine(vehicle.getRightLine()))
+				return Crash.RIGHT_LINE_WITH_RIGHT_LINE;
+
+		}
+
+		return Crash.UNDEFINED;
 	}
 
 	public Boolean			isForwardsMarch() 	{ return (state == VehicleState.ACCELERATION_FORWARD || state == VehicleState.DECELERATION_FORWARD); }
@@ -279,57 +402,261 @@ public abstract class Vehicle extends MovableObject {
 	public Line2D.Double 	getFrontLine() 	{ return new Line2D.Double(vertexLeftFront.x, vertexLeftFront.y, vertexRightFront.x, vertexRightFront.y); }
 	public Line2D.Double 	getBackLine() 	{ return new Line2D.Double(vertexRightBack.x, vertexRightBack.y, vertexLeftBack.x, vertexLeftBack.y); }
 
+	public Boolean 			isNewLap() 					{ return isNewLap; }
+	public Integer 			getLapCounter() 			{ return lapCounter; }
+	public Integer 			getRanking() 				{ return ranking; }
+	public Integer 			getIndexCheckpointNumber()  { return indexCheckpointNumber; }
+
 	/******************* SETTERS **********************************************************************************************/
 
-	public void 	setPosition(Point2D.Double p) 		{ position = p; }
-	public void 	setPositionX(Double x) 				{ position.x = x; }
-	public void 	setPositionY(Double y) 				{ position.y = y; }
+	public void 	setPosition(Point2D.Double p) 		{ 
+		setPositionX(p.x); 
+		setPositionY(p.y); 
+
+		//		if (this instanceof CarPlayer ) {
+		//			if (GameManager.getActualBorderArea() != BorderArea.UNDEFINED)
+		//				((CarPlayer) this).updateVehicleOnBorderForwards();
+		//			else 
+		//				updatePositionForwards();
+		//		}
+
+	}
+	public void 	setPositionX(Double x) 						{ position.x = x; }
+	public void 	setPositionY(Double y) 						{ position.y = y; }
+	public void 	setMaxPosition(Point2D.Double maxPosition) 	{ this.maxPosition = maxPosition; }
 
 	public void 	setMass(Double m) 					{ mass = m; }
-
 	public void 	setMaxSpeed(Double m) 				{ maxSpeed = m; }
 	public void		setInitialAcceleration(Double a)	{ initialAcceleration = a; }
 	public void 	setCurrentSpeed(Double c) 			{ currentSpeed = c; }
+	public void 	setOrientation_inDegrees(Double o) 	{ orientation_inDegrees = o; }
 
 	public void 	setGear(Integer g)	{ currentGear = g; }
-	public void 	setHigherGear() 	{ currentGear++; }
-	public void 	setLowerGear() 		{ currentGear--; }
 
 	public void 	setSteeringAngle(Double f)	{ steeringAngle = f; }
 
 	public void 	setVehicleState(VehicleState state) 				{ this.state = state; }
 	public void 	setOnSteering(OnSteering onSteering) 				{ this.onSteering = onSteering; }
 	public void 	setStateOnRacetrack(VehicleStateOnRacetrack value)	{ this.stateOnRacetrack = value; }
+	public void 	setBorder(Border border) 							{ this.border = border; }
 	public void 	setBraking(boolean value) 							{ braking = value; }
+
+	//	public void 	setIsNewLap(Boolean isNewLap) 							{ this.isNewLap = isNewLap; }
+	//	public void 	setLapCounter(Integer lapCounter) 						{ this.lapCounter = lapCounter; }
+	//	public void 	setRanking(Integer ranking) 							{ this.ranking = ranking; }
+	//	public void 	setIndexCheckpointNumber(Integer indexCheckpointNumber) { this.indexCheckpointNumber = indexCheckpointNumber; }
 
 	/******************* SERVICE METHODS **********************************************************************************************/
 
-	protected void updatePositionXForwards(){ position.x += getDeltaX(); }
-	protected void updatePositionYForwards(){ position.y += getDeltaY(); }
+	public void updateStateOnRacetrack() {
 
-	protected void updatePositionXBackwards(){ position.x -= getDeltaX(); }
-	protected void updatePositionYBackwards(){ position.y -= getDeltaY(); }
+		if (GameManager.isCorrectDirection(this)) {
 
-	public void fixOrientation_inDegrees() 	{
+			if( GameManager.intersectCheckpoint(this)) {
+				indexCheckpointNumber = (indexCheckpointNumber + 1) % GameManager.getEnvironment().getRacetrack().getCheckpoints().size();
+				if (indexCheckpointNumber == 1) isNewLap = false;
+				if (stateOnRacetrack != VehicleStateOnRacetrack.UNDEFINED)
+					stateOnRacetrack = VehicleStateOnRacetrack.UNDEFINED;
+			}
 
-			if (orientation_inDegrees < 0d && orientation_inDegrees < (-180d))
-				orientation_inDegrees += 360d;
-			else if (orientation_inDegrees > 0d && orientation_inDegrees > 180d)
-				orientation_inDegrees -= 360d;
-			
+			if (stateOnRacetrack == VehicleStateOnRacetrack.WRONG_DIRECTION)
+				stateOnRacetrack = VehicleStateOnRacetrack.UNDEFINED;
+
+		} else
+			stateOnRacetrack = VehicleStateOnRacetrack.WRONG_DIRECTION;
+
+		if (GameManager.intersectStartLine(this) && !isNewLap) {
+			lapCounter++;
+			isNewLap = true;
+		}
+
+		if (!GameManager.isOnTrack(this))
+			stateOnRacetrack = VehicleStateOnRacetrack.OFF_TRACK;
+		else {
+			if (stateOnRacetrack == VehicleStateOnRacetrack.OFF_TRACK)
+				stateOnRacetrack = VehicleStateOnRacetrack.ON_TRACK;
+		}
+
 	}
-	
-	public void fixCurrentSpeedInAccelerationForwards() {
-		if (GameManager.intersectBorder(this) == Border.UNDEFINED) {
-			if (currentSpeed < getActualMaxSpeed())
-				currentSpeed += getPercentageAccelerationIncreaseForwardsMarch();
-			else
-				currentSpeed = getActualMaxSpeed();
-		} else {
-			currentSpeed = 2d;
-			updatePositionBackwards();
+
+	public void updatePositionXForwards() { 
+
+		if (maxPosition == null)
+			position.x += getDeltaX();
+
+		else {
+
+			System.out.println("maxPosition.x "+maxPosition.x);
+
+			switch (getDirection()) {
+			case EAST:
+			case NE:
+			case SE:
+				if ((position.x + getDeltaX()) <= maxPosition.x)
+					position.x += getDeltaX();
+				else {
+					currentSpeed = 2d;
+					position.x -= (getDeltaX() * 2);
+				}
+				break;
+
+			case WEST:
+			case NW:
+			case SW:
+				if ((position.x + getDeltaX()) >= maxPosition.x)
+					position.x += getDeltaX();
+				else {
+					currentSpeed = 2d;
+					position.x -= (getDeltaX() * 2);
+				}
+				break;
+
+			default:
+				break;
+			}
+
+		}
+
+	}
+	public void updatePositionYForwards(){ 
+		if (maxPosition == null)
+			position.y += getDeltaY();
+
+		else {
+			System.out.println("maxPosition.y "+maxPosition.y);
+
+			switch (getDirection()) {
+			case NORTH:
+			case NE:
+			case NW:
+				if ((position.y + getDeltaY()) > maxPosition.y)
+					position.y += getDeltaY();
+				else {
+					currentSpeed = 2d;
+					position.y -= (getDeltaY() * 2);
+				}
+				break;
+
+			case SOUTH:
+			case SE:
+			case SW:
+				if ((position.y + getDeltaY()) < maxPosition.y)
+					position.y += getDeltaY();
+				else {
+					currentSpeed = 2d;
+					position.y -= (getDeltaY() * 2);
+				}
+				break;
+
+			default:
+				break;
+			}
+
 		}
 	}
+
+	public void updatePositionXBackwards(){ 
+		if (maxPosition == null)
+			position.x -= getDeltaX();
+		else {
+			System.out.println("maxPosition.x "+maxPosition.x);
+
+			switch (getDirection()) {
+			case EAST:
+			case NE:
+			case SE:
+				if ((position.x - getDeltaX()) > maxPosition.x)
+					position.x -= getDeltaX();
+				else {
+					currentSpeed = 2d;
+					position.x += (getDeltaX() * 2);
+				}
+				break;
+
+			case WEST:
+			case NW:
+			case SW:
+				if ((position.x - getDeltaX()) < maxPosition.x)
+					position.x -= getDeltaX();
+				else {
+					currentSpeed = 2d;
+					position.x += (getDeltaX() * 2);
+				}
+				break;
+
+			default:
+				break;
+			}
+
+		}
+	}
+	public void updatePositionYBackwards() { 
+		if (maxPosition == null)
+			position.y -= getDeltaY();
+		else {
+			System.out.println("maxPosition.y "+maxPosition.y);
+
+			switch (getDirection()) {
+			case NORTH:
+			case NE:
+			case NW:
+				if ((position.y - getDeltaY()) < maxPosition.y)
+					position.y -= getDeltaY();
+				else {
+					currentSpeed = 2d;
+					position.y += (getDeltaY() * 2);
+				}
+				break;
+
+			case SOUTH:
+			case SE:
+			case SW:
+				if ((position.y - getDeltaY()) > maxPosition.y)
+					position.y -= getDeltaY();
+				else {
+					currentSpeed = 2d;
+					position.y += (getDeltaY() * 2);
+				}
+				break;
+
+			default:
+				break;
+			}
+
+		}
+	}
+
+	public void fixOrientation_inDegrees() 	{
+		orientation_inDegrees = orientation_inDegrees % 359d;
+		if (orientation_inDegrees < 0d)
+			orientation_inDegrees += 360;
+	}
+
+	public void fixCurrentSpeedInAccelerationForwards() {
+		//		if (GameManager.intersectBorder(this) == Border.UNDEFINED) {
+		if (maxPosition == null) {
+			if (currentSpeed < getActualMaxSpeed())
+				currentSpeed += getPercentageAccelerationForwards();
+			else
+				currentSpeed = getActualMaxSpeed();
+		}
+		else {
+			maxPosition = null;
+		}
+	}
+
+	public void fixCurrentSpeedInAccelerationBackwards() {
+		if (maxPosition == null) {
+			if (currentSpeed < getMaxSpeedBackwardsMarch())
+				currentSpeed += getPercentageAccelerationBackwards();
+			else
+				currentSpeed = getMaxSpeedBackwardsMarch();
+		}
+		else {
+			maxPosition = null;
+		}
+	}
+
 
 	public void updateDirection() {
 		if(getVersors().x == 1 && getVersors().y == 0)
@@ -383,7 +710,6 @@ public abstract class Vehicle extends MovableObject {
 
 		vertexLeftFront.x = position.x + x41;
 		vertexLeftFront.y = position.y - y41;
-
 	}
 
 
@@ -409,156 +735,162 @@ public abstract class Vehicle extends MovableObject {
 
 	/******************************************************************************************************************/
 
-	protected void updatePositionForwards() {
+	public void updatePositionForwards(Border border) {
 
-		switch (GameManager.intersectBorder(this)) {
+		updatePositionXForwards();
+		updatePositionYForwards();
 
-		case UNDEFINED:
-			updatePositionXForwards();
-			updatePositionYForwards();
-			break;
-
-		case TOP:
-			updatePositionXForwards();
-
-			switch (getDirection()) {
-			case SOUTH:
-			case SE:
-			case SW:
-				updatePositionYForwards();
-				break;
-			default:
-				break;
-			}
-			break;
-
-		case RIGHT:
-			updatePositionYForwards();
-
-			switch (getDirection()) {
-			case WEST:
-			case NW:
-			case SW:
-				updatePositionXForwards();
-				break;
-			default:
-				break;
-			}
-
-			break;
-
-		case BOTTOM:
-			updatePositionXForwards();
-
-			switch (getDirection()) {
-			case NORTH:
-			case NW:
-			case NE:
-				updatePositionYForwards();
-				break;
-
-			default:
-				break;
-			}
-
-			break;
-
-		case LEFT:
-			updatePositionYForwards();
-
-			switch (getDirection()) {
-			case EAST:
-			case NE:
-			case SE:
-				updatePositionXForwards();
-				break;
-
-			default:
-				break;
-			}
-
-			break;
-
-		default:
-			break;
-		}
+		//		switch ((border == null) ? GameManager.intersectBorder(this) : border) {
+		//		//		switch (border) {
+		//
+		//		case UNDEFINED:
+		//			updatePositionXForwards();
+		//			updatePositionYForwards();
+		//			break;
+		//
+		//		case TOP:
+		//			updatePositionXForwards();
+		//
+		//			switch (getDirection()) {
+		//			case SOUTH:
+		//			case SE:
+		//			case SW:
+		//				updatePositionYForwards();
+		//				break;
+		//			default:
+		//				break;
+		//			}
+		//			break;
+		//
+		//		case RIGHT:
+		//			updatePositionYForwards();
+		//
+		//			switch (getDirection()) {
+		//			case WEST:
+		//			case NW:
+		//			case SW:
+		//				updatePositionXForwards();
+		//				break;
+		//			default:
+		//				break;
+		//			}
+		//
+		//			break;
+		//
+		//		case BOTTOM:
+		//			updatePositionXForwards();
+		//
+		//			switch (getDirection()) {
+		//			case NORTH:
+		//			case NW:
+		//			case NE:
+		//				updatePositionYForwards();
+		//				break;
+		//
+		//			default:
+		//				break;
+		//			}
+		//
+		//			break;
+		//
+		//		case LEFT:
+		//			updatePositionYForwards();
+		//
+		//			switch (getDirection()) {
+		//			case EAST:
+		//			case NE:
+		//			case SE:
+		//				updatePositionXForwards();
+		//				break;
+		//
+		//			default:
+		//				break;
+		//			}
+		//
+		//			break;
+		//
+		//		default:
+		//			break;
+		//		}
 
 	}
 
-	protected void updatePositionBackwards() {
+	public void updatePositionBackwards(Border border) {
 
+		updatePositionXBackwards();
+		updatePositionYBackwards();
 
-		switch (GameManager.intersectBorder(this)) {
-
-		case UNDEFINED:
-			updatePositionXBackwards();
-			updatePositionYBackwards();
-			break;
-
-		case BOTTOM:
-			updatePositionXBackwards();
-
-			switch (getDirection()) {
-			case SOUTH:
-			case SE:
-			case SW:
-				updatePositionYBackwards();
-				break;
-			default:
-				break;
-			}
-			break;
-
-		case LEFT:
-			updatePositionYBackwards();
-
-			switch (getDirection()) {
-			case WEST:
-			case NW:
-			case SW:
-				updatePositionXBackwards();
-				break;
-			default:
-				break;
-			}
-
-			break;
-
-		case TOP:
-			updatePositionXBackwards();
-
-			switch (getDirection()) {
-			case NORTH:
-			case NW:
-			case NE:
-				updatePositionYBackwards();
-				break;
-
-			default:
-				break;
-			}
-
-			break;
-
-		case RIGHT:
-			updatePositionYBackwards();
-
-			switch (getDirection()) {
-			case EAST:
-			case NE:
-			case SE:
-				updatePositionXBackwards();
-				break;
-
-			default:
-				break;
-			}
-
-			break;
-
-		default:
-			break;
-		}
+		//		switch ((border == null) ? GameManager.intersectBorder(this) : border) {
+		//
+		//		case UNDEFINED:
+		//			updatePositionXBackwards();
+		//			updatePositionYBackwards();
+		//			break;
+		//
+		//		case BOTTOM:
+		//			updatePositionXBackwards();
+		//
+		//			switch (getDirection()) {
+		//			case SOUTH:
+		//			case SE:
+		//			case SW:
+		//				updatePositionYBackwards();
+		//				break;
+		//			default:
+		//				break;
+		//			}
+		//			break;
+		//
+		//		case LEFT:
+		//			updatePositionYBackwards();
+		//
+		//			switch (getDirection()) {
+		//			case WEST:
+		//			case NW:
+		//			case SW:
+		//				updatePositionXBackwards();
+		//				break;
+		//			default:
+		//				break;
+		//			}
+		//
+		//			break;
+		//
+		//		case TOP:
+		//			updatePositionXBackwards();
+		//
+		//			switch (getDirection()) {
+		//			case NORTH:
+		//			case NW:
+		//			case NE:
+		//				updatePositionYBackwards();
+		//				break;
+		//
+		//			default:
+		//				break;
+		//			}
+		//
+		//			break;
+		//
+		//		case RIGHT:
+		//			updatePositionYBackwards();
+		//
+		//			switch (getDirection()) {
+		//			case EAST:
+		//			case NE:
+		//			case SE:
+		//				updatePositionXBackwards();
+		//				break;
+		//
+		//			default:
+		//				break;
+		//			}
+		//
+		//			break;
+		//
+		//		default:
+		//			break;
+		//		}
 	}
 
 	/******************************************************************************************************************/
@@ -569,7 +901,7 @@ public abstract class Vehicle extends MovableObject {
 			currentSpeed = getActualInitialAcceleration();
 
 		if (braking)
-			currentSpeed -= getPercentageAccelerationDecrease();
+			currentSpeed -= getPercentageDeceleration();
 
 	}
 
@@ -578,14 +910,12 @@ public abstract class Vehicle extends MovableObject {
 	protected void inDeceleraition() {
 
 		if (braking)
-			currentSpeed -= getPercentageAccelerationDecrease();
+			currentSpeed -= getPercentageDeceleration();
 
 		if (currentSpeed <= getActualInitialAcceleration()) {
 			this.state = VehicleState.STOP;
 			currentSpeed = 0d;
 		}
 	}
-	
-	
 
 }

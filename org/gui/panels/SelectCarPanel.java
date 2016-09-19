@@ -2,9 +2,6 @@ package org.gui.panels;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.io.File;
 import java.io.IOException;
 
 import javax.swing.ImageIcon;
@@ -18,6 +15,8 @@ import org.gui.MainFrame;
 public class SelectCarPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
+	/******************* CONSTRUCTOR **********************************************************************************************/
 	
 	public SelectCarPanel(MainFrame mainFrame) throws IOException {
 		setLayout(null);
@@ -48,11 +47,13 @@ public class SelectCarPanel extends JPanel {
 		
 		setPreferredSize(new Dimension(GameManager.WIDTH-2,GameManager.HEIGHT-2));
 		
-		buttonCar1.addActionListener(e -> mainFrame.startGame(Loader.imgCarPlayer));
+		buttonCar1.addActionListener(e -> mainFrame.startGame(Loader.imgRedCar));
+		buttonCar2.addActionListener(e -> mainFrame.startGame(Loader.imgYellowCar));
 		backButton.addActionListener( e -> mainFrame.goSelectRacetrack());
 	}
 	
-	@Override
+	/******************* SERVICE METHODS **********************************************************************************************/
+
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(Loader.imgBackgroundMenu, 0, 0, null);
