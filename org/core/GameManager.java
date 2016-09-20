@@ -520,166 +520,77 @@ public class GameManager {
 
 		for (Vehicle vehicle : vehicles) {
 
-
-			Point2D.Double currentPointMax = null;
-			Point2D.Double vehiclePointMax = null;
-
-
 			if (currentVehicle instanceof CarComputer && currentVehicle.equals(vehicle))
 				vehicle = GameManager.getCarPlayer();
 
 
 			if (currentVehicle.getCrash(vehicle) != Crash.UNDEFINED) {
 
-				//				currentVehicle.setMaxPosition(currentVehicle.getPosition());
-				currentPointMax = currentVehicle.getPosition();
-				vehiclePointMax = vehicle.getPosition();
+				currentVehicle.setMaxPosition(currentVehicle.getPosition());
+				vehicle.setMaxPosition(currentVehicle.getPosition());
 
 				currentVehicle.setCurrentSpeed(currentVehicle.getCurrentSpeed() * 0.8d);
 
 				if (currentVehicle instanceof CarPlayer) {
-
-					//					System.out.println("transatoon prima "+((CarPlayer) currentVehicle).getTranslation());
-					//					System.out.println("positiona prima "+((CarPlayer) currentVehicle).getPositionOnEnvironment());
 					switch (getActualBorderArea()) {
 					case TOP:
 
-
-						if ( currentVehicle.getPosition().y + vehicle.getAbsDeltaY() > currentPointMax.y)
-							((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y + (vehicle.getAbsDeltaY()));
-						else 
-							((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y + currentPointMax.y);
-
+						((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y + (vehicle.getAbsDeltaY()));
 						currentVehicle.setPositionX(currentVehicle.getPosition().x + vehicle.getDeltaX() );
 
-
-						//
-						//						System.out.println("top transatoon dopo "+((CarPlayer) currentVehicle).getTranslation());
-						//						System.out.println("top positiona dopo "+((CarPlayer) currentVehicle).getPositionOnEnvironment());
-
 						break;
+
 					case BOTTOM:
 
-						if ( currentVehicle.getPosition().y - vehicle.getAbsDeltaY() < currentPointMax.y)
-							((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y - (vehicle.getAbsDeltaY()));
-						else 
-							((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y - currentPointMax.y);
-
+						((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y - (vehicle.getAbsDeltaY()));
 						currentVehicle.setPositionX(currentVehicle.getPosition().x + vehicle.getDeltaX() );
-
-
-
-
-						//						System.out.println("bottom transatoon dopo "+((CarPlayer) currentVehicle).getTranslation());
-						//						System.out.println("botom positiona dopo "+((CarPlayer) currentVehicle).getPositionOnEnvironment());
 						break;
-
 
 					case LEFT:
 
-						if ( currentVehicle.getPosition().x + vehicle.getAbsDeltaX() > currentPointMax.x)
-							((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x + vehicle.getAbsDeltaX());
-						else 
-							((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x + currentPointMax.x);
-
+						((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x + vehicle.getAbsDeltaX());
 						currentVehicle.setPositionY(currentVehicle.getPosition().y + vehicle.getDeltaY() );
-
-
-						//						System.out.println("left transatoon dopo "+((CarPlayer) currentVehicle).getTranslation());
-						//						System.out.println("left positiona dopo "+((CarPlayer) currentVehicle).getPositionOnEnvironment());
 						break;
+
 					case RIGHT:
 
 
-						if ( currentVehicle.getPosition().x - vehicle.getAbsDeltaX() < currentPointMax.x)
-							((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x - vehicle.getAbsDeltaX());
-						else 
-							((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x - currentPointMax.x);
-
+						((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x - vehicle.getAbsDeltaX());
 						currentVehicle.setPositionY(currentVehicle.getPosition().y + vehicle.getDeltaY() );
-
-
-						//						System.out.println("right transatoon dopo "+((CarPlayer) currentVehicle).getTranslation());
-						//						System.out.println("right positiona dopo "+((CarPlayer) currentVehicle).getPositionOnEnvironment());
 						break;
+
 					case TOP_LEFT:
 
-
-						if ( currentVehicle.getPosition().y + vehicle.getAbsDeltaY() > currentPointMax.y)
-							((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y + (vehicle.getAbsDeltaY()));
-						else 
-							((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y + currentPointMax.y);
-
-						if ( currentVehicle.getPosition().x + vehicle.getAbsDeltaX() > currentPointMax.x)
-							((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x + vehicle.getAbsDeltaX());
-						else 
-							((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x + currentPointMax.x);
-
-
-
-						//						System.out.println("topLeft transatoon dopo "+((CarPlayer) currentVehicle).getTranslation());
-						//						System.out.println("topLeft positiona dopo "+((CarPlayer) currentVehicle).getPositionOnEnvironment());
+						((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y + (vehicle.getAbsDeltaY()));
+						((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x + vehicle.getAbsDeltaX());
 						break;
+
 					case TOP_RIGHT:
 
-						if ( currentVehicle.getPosition().y + vehicle.getAbsDeltaY() > currentPointMax.y)
-							((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y + (vehicle.getAbsDeltaY()));
-						else 
-							((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y + currentPointMax.y);
-
-						if ( currentVehicle.getPosition().x - vehicle.getAbsDeltaX() < currentPointMax.x)
-							((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x - vehicle.getAbsDeltaX());
-						else 
-							((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x - currentPointMax.x);
-
-
-						//						System.out.println("topRight transatoon dopo "+((CarPlayer) currentVehicle).getTranslation());
-						//						System.out.println("topRight positiona dopo "+((CarPlayer) currentVehicle).getPositionOnEnvironment());
+						((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y + (vehicle.getAbsDeltaY()));
+						((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x - vehicle.getAbsDeltaX());
 						break;
+
 					case BOTTOM_LEFT:
 
-						if ( currentVehicle.getPosition().y - vehicle.getAbsDeltaY() < currentPointMax.y)
-							((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y - (vehicle.getAbsDeltaY()));
-						else 
-							((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y - currentPointMax.y);
-
-						if ( currentVehicle.getPosition().x + vehicle.getAbsDeltaX() > currentPointMax.x)
-							((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x + vehicle.getAbsDeltaX());
-						else 
-							((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x + currentPointMax.x);
-
-						//						System.out.println("bottomLEft transatoon dopo "+((CarPlayer) currentVehicle).getTranslation());
-						//						System.out.println("bottomLeft positiona dopo "+((CarPlayer) currentVehicle).getPositionOnEnvironment());
+						((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y - (vehicle.getAbsDeltaY()));
+						((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x + vehicle.getAbsDeltaX());
 						break;
+
 					case BOTTOM_RIGHT:
 
-
-						if ( currentVehicle.getPosition().y - vehicle.getAbsDeltaY() < currentPointMax.y)
-							((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y - (vehicle.getAbsDeltaY()));
-						else 
-							((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y - currentPointMax.y);
-
-						if ( currentVehicle.getPosition().x - vehicle.getAbsDeltaX() < currentPointMax.x)
-							((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x - vehicle.getAbsDeltaX());
-						else 
-							((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x - currentPointMax.x);
-
-						//						System.out.println("bottomRight transatoon dopo "+((CarPlayer) currentVehicle).getTranslation());
-						//						System.out.println("bottomRight positiona dopo "+((CarPlayer) currentVehicle).getPositionOnEnvironment());
+						((CarPlayer)currentVehicle).setTranslationY( ((CarPlayer)currentVehicle).getTranslation().y - (vehicle.getAbsDeltaY()));
+						((CarPlayer)currentVehicle).setTranslationX( ((CarPlayer)currentVehicle).getTranslation().x - vehicle.getAbsDeltaX());
 						break;
+
 					case UNDEFINED:
 					default:
 						currentVehicle.setPosition(new Point2D.Double( (currentVehicle.getPosition().x + vehicle.getDeltaX() ) , ( currentVehicle.getPosition().y + vehicle.getDeltaY() ) ));
-						//						System.out.println("undefined transatoon dopo "+((CarPlayer) currentVehicle).getTranslation());
-						//						System.out.println("undefined positiona dopo "+((CarPlayer) currentVehicle).getPositionOnEnvironment());
 						break;
 					}
 				}
-				else {
-					//System.out.println("noPlayer undefined positiona prima "+currentVehicle.getPosition());
+				else
 					currentVehicle.setPosition(new Point2D.Double( (currentVehicle.getPosition().x + vehicle.getDeltaX()) , ( currentVehicle.getPosition().y + vehicle.getDeltaY()) ));
-					//System.out.println("noPlayer undefined positiona dopo "+currentVehicle.getPosition());
-				}
 
 				vehicle.setCurrentSpeed(vehicle.getCurrentSpeed() * 0.8d);
 
@@ -687,149 +598,74 @@ public class GameManager {
 					switch (getActualBorderArea()) {
 					case TOP:
 
-
-						if ( vehicle.getPosition().y + currentVehicle.getAbsDeltaY() > vehiclePointMax.y)
-							((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y + (currentVehicle.getAbsDeltaY()));
-						else 
-							((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y + vehiclePointMax.y);
-
+						((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y + (currentVehicle.getAbsDeltaY()));
 						vehicle.setPositionX(vehicle.getPosition().x + currentVehicle.getDeltaX() );
-
-
-						//						System.out.println("v top transatoon dopo "+((CarPlayer) vehicle).getTranslation());
-						//						System.out.println("v top positiona dopo "+((CarPlayer) vehicle).getPositionOnEnvironment());
 						break;
+
 					case BOTTOM:
 
-						if ( vehicle.getPosition().y - currentVehicle.getAbsDeltaY() < vehiclePointMax.y)
-							((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y - (currentVehicle.getAbsDeltaY()));
-						else 
-							((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y - vehiclePointMax.y);
-
+						((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y - (currentVehicle.getAbsDeltaY()));
 						vehicle.setPositionX(vehicle.getPosition().x + currentVehicle.getDeltaX() );
-
-
-
-						//						System.out.println("v bottom transatoon dopo "+((CarPlayer) vehicle).getTranslation());
-						//						System.out.println("v bottom positiona dopo "+((CarPlayer) vehicle).getPositionOnEnvironment());
 						break;
+
 					case RIGHT:
 
-
-						if ( vehicle.getPosition().x - currentVehicle.getAbsDeltaX() < vehiclePointMax.x)
-							((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x - (currentVehicle.getAbsDeltaX()));
-						else 
-							((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x - vehiclePointMax.x);
-
+						((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x - (currentVehicle.getAbsDeltaX()));
 						vehicle.setPositionY(vehicle.getPosition().y + currentVehicle.getDeltaY() );
-
-
-						//						System.out.println("v left transatoon dopo "+((CarPlayer) vehicle).getTranslation());
-						//						System.out.println("v left positiona dopo "+((CarPlayer) vehicle).getPositionOnEnvironment());
 						break;
+
 					case LEFT:
 
-						if ( vehicle.getPosition().x + currentVehicle.getAbsDeltaX() > vehiclePointMax.x)
-							((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x + (currentVehicle.getAbsDeltaX()));
-						else 
-							((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x + vehiclePointMax.x);
-
+						((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x + (currentVehicle.getAbsDeltaX()));
 						vehicle.setPositionY(vehicle.getPosition().y + currentVehicle.getDeltaY() );
-
-						//						System.out.println("v right transatoon dopo "+((CarPlayer) vehicle).getTranslation());
-						//						System.out.println("v right positiona dopo "+((CarPlayer) vehicle).getPositionOnEnvironment());
 						break;
+
 					case TOP_LEFT:
 
-						if ( vehicle.getPosition().y + currentVehicle.getAbsDeltaY() > vehiclePointMax.y)
-							((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y + (currentVehicle.getAbsDeltaY()));
-						else 
-							((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y + vehiclePointMax.y);
-
-						if ( vehicle.getPosition().x + currentVehicle.getAbsDeltaX() > vehiclePointMax.x)
-							((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x + (currentVehicle.getAbsDeltaX()));
-						else 
-							((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x + vehiclePointMax.x);
-
-
-						//						System.out.println("v topLeft transatoon dopo "+((CarPlayer) vehicle).getTranslation());
-						//						System.out.println("v topLeft positiona dopo "+((CarPlayer) vehicle).getPositionOnEnvironment());
+						((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y + (currentVehicle.getAbsDeltaY()));
+						((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x + (currentVehicle.getAbsDeltaX()));
 						break;
+
 					case TOP_RIGHT:
 
-						if ( vehicle.getPosition().x - currentVehicle.getAbsDeltaX() < vehiclePointMax.x)
-							((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x - (currentVehicle.getAbsDeltaX()));
-						else 
-							((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x - vehiclePointMax.x);
-
-						if ( vehicle.getPosition().y + currentVehicle.getAbsDeltaY() > vehiclePointMax.y)
-							((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y + (currentVehicle.getAbsDeltaY()));
-						else 
-							((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y + vehiclePointMax.y);
-
-
-
-						//						System.out.println("v topRigt transatoon dopo "+((CarPlayer) vehicle).getTranslation());
-						//						System.out.println("v topRight positiona dopo "+((CarPlayer) vehicle).getPositionOnEnvironment());
+						((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x - (currentVehicle.getAbsDeltaX()));
+						((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y + (currentVehicle.getAbsDeltaY()));
 						break;
+
 					case BOTTOM_RIGHT:
 
-
-						if ( vehicle.getPosition().x + currentVehicle.getAbsDeltaX() > vehiclePointMax.x)
-							((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x + (currentVehicle.getAbsDeltaX()));
-						else 
-							((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x + vehiclePointMax.x);
-
-						if ( vehicle.getPosition().y + currentVehicle.getAbsDeltaY() > vehiclePointMax.y)
-							((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y + (currentVehicle.getAbsDeltaY()));
-						else 
-							((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y + vehiclePointMax.y);
-
-
-
-						//System.out.println("v bottomLeft transatoon dopo "+((CarPlayer) vehicle).getTranslation());
-						//System.out.println("v bottomLeft positiona dopo "+((CarPlayer) vehicle).getPositionOnEnvironment());
+						((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x + (currentVehicle.getAbsDeltaX()));
+						((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y + (currentVehicle.getAbsDeltaY()));
 						break;
+
 					case BOTTOM_LEFT:
 
-						if ( vehicle.getPosition().x + currentVehicle.getAbsDeltaX() > vehiclePointMax.x)
-							((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x + (currentVehicle.getAbsDeltaX()));
-						else 
-							((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x + vehiclePointMax.x);
-
-						if ( vehicle.getPosition().y - currentVehicle.getAbsDeltaY() < vehiclePointMax.y)
-							((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y - (currentVehicle.getAbsDeltaY()));
-						else 
-							((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y - vehiclePointMax.y);
-
-
-						//System.out.println("v bottomRight transatoon dopo "+((CarPlayer) vehicle).getTranslation());
-						//System.out.println("v bottomRight positiona dopo "+((CarPlayer) vehicle).getPositionOnEnvironment());
+						((CarPlayer)vehicle).setTranslationX( ((CarPlayer)vehicle).getTranslation().x + (currentVehicle.getAbsDeltaX()));
+						((CarPlayer)vehicle).setTranslationY( ((CarPlayer)vehicle).getTranslation().y - (currentVehicle.getAbsDeltaY()));
 						break;
+
 					case UNDEFINED:
 					default:
 						vehicle.setPosition(new Point2D.Double( (vehicle.getPosition().x + currentVehicle.getDeltaX()*2 ) , ( vehicle.getPosition().y + currentVehicle.getDeltaY() *2) ));
-						//System.out.println("v undefined transatoon dopo "+((CarPlayer) vehicle).getTranslation());
-						//System.out.println("v undefined positiona dopo "+((CarPlayer) vehicle).getPositionOnEnvironment());
 						break;
 					}
 				}
-				else { 
-					//System.out.println("noPlayer v undefined positiona prima "+vehicle.getPosition());
+				else 
 					vehicle.setPosition(new Point2D.Double( (vehicle.getPosition().x + currentVehicle.getDeltaX()*2 ) , ( vehicle.getPosition().y + currentVehicle.getDeltaY() *2) ));
-					//System.out.println("noPlayer v undefined positiona dopo "+vehicle.getPosition());
-				}
 			}
 		}
-
-
-		//		currentVehicle.setVehicleState(VehicleState.ACCELERATION_FORWARD);
 
 	}
 
 
+
+
+
+
+
 	public static Border intersectBetweenElements(Vehicle vehicle) {
 		Border b = Border.UNDEFINED;
+
 		for (StillObject stillObject : environment.getRacetrack().getStillObjects()) {
 
 			b = ((Element)stillObject).getBorder(vehicle);
@@ -842,18 +678,12 @@ public class GameManager {
 				return b; 
 		}
 		return b;
-
 	}
-
 
 	public static void intersect(Vehicle vehicle) {
-		if (GameManager.intersectBorder(vehicle) != Border.UNDEFINED) {
-			System.out.println("set max position with "+border);
+		if (GameManager.intersectBorder(vehicle) != Border.UNDEFINED)
 			vehicle.setMaxPosition(vehicle.getPosition());
-		}
-
 	}
-
 
 	private void updateInfo() {
 

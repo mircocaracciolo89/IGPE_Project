@@ -298,7 +298,6 @@ public class CarComputer extends Vehicle {
 
 
 		for (IntelligencePoint intelligencePoint : intelligencePoints) {
-			//			if ((intelligencePoint.getBounds().contains(position))) {
 
 			if ((intelligencePoint.getBounds().contains(vertexLeftBack))
 					|| (intelligencePoint.getBounds().contains(vertexRightBack))
@@ -309,69 +308,28 @@ public class CarComputer extends Vehicle {
 			}
 		}
 
-		//		}
-
-		//		IntelligencePoint nextIntelligencePoint = intelligencePoints.get(indexOfIntelligencePoint);
-
-		//		Double distance = Math.sqrt(Math.pow((nextIntelligencePoint.getPoint().x - position.x), 2) + Math.pow((nextIntelligencePoint.getPoint().y - position.y), 2));
 		Double distance = nextIntelligencePoint.getPoint().distance(position);
-
-		//		System.out.println("distance "+distance);
-		//		System.out.println("lib distance "+nextIntelligencePoint.getPoint().distance(position));
-
 		Double iterations = distance/currentSpeed;
 		Double value = orientation_inDegrees/iterations;
 
-
-		//		if ((nextIntelligencePoint.getBounds().contains(vertexLeftBack))
-		//				|| (nextIntelligencePoint.getBounds().contains(vertexRightBack))
-		//				|| (nextIntelligencePoint.getBounds().contains(vertexLeftFront))
-		//				|| (nextIntelligencePoint.getBounds().contains(vertexRightFront)) ) {
-		//
-		//			indexOfIntelligencePoint = (indexOfIntelligencePoint + 1) % intelligencePoints.size();
-		//			//			System.out.println(this.toString()+" index: "+indexOfIntelligencePoint);
-		//		}
-
-
-
-		//		
-		//		
-		//		
-		//		Double moduleA = Math.sqrt( Math.pow(position.x, 2) +  Math.pow(position.y, 2));
-		//		Double moduleB = Math.sqrt( Math.pow(nextIntelligencePoint.getPoint().x, 2) +  Math.pow(nextIntelligencePoint.getPoint().y, 2));
-		//
-		//		Double a = (position.x * getVersors().x) + (position.y * getVersors().y);
-		//		Double b = (nextIntelligencePoint.getPoint().x * nextIntelligencePoint.getVersors().x) + (nextIntelligencePoint.getPoint().y * nextIntelligencePoint.getVersors().y);
-		//		
-		//		Double cosAlpha = (a * b) / (moduleA * moduleB);
-		////		Double alpha = Math.acos(cosAlpha);
-		//		Double alpha = Math.atan( (nextIntelligencePoint.getPoint().x - position.x) / (nextIntelligencePoint.getPoint().y - position.y));
-
-		//		System.out.println(alpha);
-
-		//		orientation_inDegrees = alpha;
-
 		if (nextIntelligencePoint.getDegree() != orientation_inDegrees)
 			updateSteering(value, nextIntelligencePoint.getDegree());
-		//		fixOrientation_inDegrees();
 
-		//		System.out.println(orientation_inDegrees);
+		//		switch (this.state) {
+		//		case ACCELERATION_FORWARD:
+		inAcceleration();
+		updateGears();
 
-		switch (this.state) {
-		case ACCELERATION_FORWARD:
-			inAcceleration();
-			updateGears();
+		updatePositionForwards(null);
 
-			updatePositionForwards(null);
+		fixCurrentSpeedInAccelerationForwards();
 
-			fixCurrentSpeedInAccelerationForwards();
-
-			break;
-
-		case STOP:
-		default:
-			break;
-		}
+		//			break;
+		//
+		//		case STOP:
+		//		default:
+		//			break;
+		//		}
 
 	}
 

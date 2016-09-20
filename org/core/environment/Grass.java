@@ -1,6 +1,7 @@
 package org.core.environment;
 
 import org.core.GameManager;
+import org.core.environment.racetrack.IntelligencePoint;
 import org.core.environment.racetrack.Racetrack;
 import org.core.movable_object.CarPlayer;
 import org.core.still_object.StillObject;
@@ -105,16 +106,16 @@ public class Grass implements Environment {
 		}
 
 		// INTELLIGENCE POINTS
-		//		g2d.setColor(Color.WHITE);
-		//		g2d.setStroke(GamePanel.strokeTest);
-		//		for (IntelligencePoint intPoint : racetrack.getIntelligencePoints()) {
-		//			g2d.setTransform(oldXform);
-		//			g2d.drawString(""+racetrack.getIntelligencePoints().indexOf(intPoint), (int) intPoint.getPoint().getX(), (int) intPoint.getPoint().getY());
-		//			g2d.drawString(""+intPoint.getDegree(), (int) intPoint.getPoint().getX()+10, (int) intPoint.getPoint().getY()+10);
-		//			g2d.drawString(""+intPoint.getNextIndexPoint(), (int) intPoint.getPoint().getX()+20, (int) intPoint.getPoint().getY()+20);
-		//			g2d.draw(intPoint.getBounds());
-		//
-		//		}
+		g2d.setColor(Color.WHITE);
+		g2d.setStroke(GamePanel.strokeTest);
+		for (IntelligencePoint intPoint : racetrack.getIntelligencePoints()) {
+			g2d.setTransform(oldXform);
+			g2d.drawString(""+racetrack.getIntelligencePoints().indexOf(intPoint), (int) intPoint.getPoint().getX(), (int) intPoint.getPoint().getY());
+			g2d.drawString(""+intPoint.getDegree(), (int) intPoint.getPoint().getX()+10, (int) intPoint.getPoint().getY()+10);
+			g2d.drawString(""+intPoint.getNextIndexPoint(), (int) intPoint.getPoint().getX()+20, (int) intPoint.getPoint().getY()+20);
+			g2d.draw(intPoint.getBounds());
+
+		}
 
 
 		//				try {

@@ -18,7 +18,6 @@ public class Tree extends EnvironmentElement {
 
 	/******************* SERVICE METHODS **********************************************************************************************/
 
-	public void behavior(Vehicle vehicle) {
-	}
+	public void behavior(Vehicle vehicle) {}
 
 }

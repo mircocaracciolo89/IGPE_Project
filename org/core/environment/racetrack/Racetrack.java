@@ -105,6 +105,7 @@ public class Racetrack {
 		int dim = 0;
 
 		StringTokenizer item;
+		
 		for(String line: FileUtils.readLines(racetrackFile, Charset.defaultCharset())) {
 
 			item = new StringTokenizer(line, " ");
